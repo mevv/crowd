@@ -6,13 +6,16 @@
 class SceneObject
 {
 public:
-    SceneObject(QVector2D pos);
+    SceneObject(int id, QVector2D pos);
 
     inline QVector2D getPos() const { return m_position; }
+
+    inline int getID() const { return m_id; }
 
     void setPos(const QVector2D& pos) { m_position = pos; }
 
 private:
+    int m_id;
     QVector2D m_position;
 
 };

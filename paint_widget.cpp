@@ -5,7 +5,7 @@
 
 PaintWidget::PaintWidget(QWidget *parent, int interval) : QWidget(parent)
 {
-    //m_painter.reset(new QPainter(this));
+    //get out all this shit from here! just for demo
     m_timer.reset(new QTimer(this));
 
     std::shared_ptr<ObjectsPool> pool(new ObjectsPool());
@@ -13,7 +13,7 @@ PaintWidget::PaintWidget(QWidget *parent, int interval) : QWidget(parent)
     std::srand(std::time(0));
 
     for (size_t i = 0; i < 10000; i++)
-        pool->addAgent(Agent(5, 1, QVector2D(50, 50), QVector2D(std::rand() % 50 + 1, std::rand() % 50 + 1), QVector2D()));
+        pool->addAgent(Agent(i ,5, 1, QVector2D(50, 50), QVector2D(std::rand() % 50 + 1, std::rand() % 50 + 1), QVector2D()));
 
     m_scene.reset(new Scene(pool));
     m_calculator.reset(new Calculator(pool));

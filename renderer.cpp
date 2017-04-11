@@ -1,6 +1,6 @@
 #include "renderer.h"
 
-//not used, alternative way of render
+//NOT USED! alternative way of render
 
 Renderer::Renderer()
 {
@@ -10,11 +10,11 @@ Renderer::Renderer()
 Renderer::~Renderer()
 {
     std::shared_ptr<ObjectsPool> pool(new ObjectsPool());
-    pool->addAgent(Agent(5, 1, QVector2D(50, 50), QVector2D(10, 15), QVector2D()));
-    pool->addAgent(Agent(5, 1, QVector2D(50, 50), QVector2D(15, 20), QVector2D()));
-    pool->addAgent(Agent(5, 1, QVector2D(50, 50), QVector2D(-10, -15), QVector2D()));
-    pool->addAgent(Agent(5, 1, QVector2D(50, 50), QVector2D(-30, 20), QVector2D()));
-    pool->addAgent(Agent(5, 1, QVector2D(50, 50), QVector2D(10, -15), QVector2D()));
+    pool->addAgent(Agent(1, 5, 1, QVector2D(50, 50), QVector2D(10, 15), QVector2D()));
+    pool->addAgent(Agent(1, 5, 1, QVector2D(50, 50), QVector2D(15, 20), QVector2D()));
+    pool->addAgent(Agent(1, 5, 1, QVector2D(50, 50), QVector2D(-10, -15), QVector2D()));
+    pool->addAgent(Agent(1, 5, 1, QVector2D(50, 50), QVector2D(-30, 20), QVector2D()));
+    pool->addAgent(Agent(1, 5, 1, QVector2D(50, 50), QVector2D(10, -15), QVector2D()));
 
     m_scene.reset(new Scene(pool));
     m_calculator.reset(new Calculator(pool));

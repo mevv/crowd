@@ -10,7 +10,7 @@
 #include "calculator.h"
 #include "objects_pool.h"
 
-//not used, alternative way of render
+//NOT USED! alternative way of render
 
 class Renderer : public QObject
 {
