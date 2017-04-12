@@ -14,7 +14,6 @@
 #include "scene.h"
 #include "calculator.h"
 #include "objects_pool.h"
-#include "renderer.h"
 
 class PaintWidget : public QWidget
 {

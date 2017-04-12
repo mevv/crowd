@@ -13,7 +13,9 @@ PaintWidget::PaintWidget(QWidget *parent, int interval) : QWidget(parent)
     std::srand(std::time(0));
 
     for (size_t i = 0; i < 10000; i++)
-        pool->addAgent(Agent(i ,5, 1, QVector2D(50, 50), QVector2D(std::rand() % 50 + 1, std::rand() % 50 + 1), QVector2D()));
+        pool->addAgent(Agent(i, 5, 1, QVector2D(50, 50), QVector2D(std::rand() % 50 + 1, std::rand() % 50 + 1), QVector2D(), QColor()));
+
+    pool->addObstacle(Obstacle(1, QVector2D(10, 10),QColor(), {QPoint(100, 0), QPoint(100, 100), QPoint(0, 100)}));
 
     m_scene.reset(new Scene(pool));
     m_calculator.reset(new Calculator(pool));
@@ -23,15 +25,6 @@ PaintWidget::PaintWidget(QWidget *parent, int interval) : QWidget(parent)
     connect(m_timer.get(),  &QTimer::timeout, this, [this]{ this->update(); });
     m_timer->setInterval(interval);
     m_timer->start();
-
-//for outside render
-//    m_renderer = new Renderer();
-//    m_renderThread = new QThread();
-//    m_renderer->moveToThread(m_renderThread);
-//    connect(m_renderer, &Renderer::update, this, [this]{ this->update(); });
-
-//    m_renderThread->start();
-
 }
 
 

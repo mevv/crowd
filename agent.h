@@ -8,7 +8,7 @@
 class Agent : public SceneObject
 {
 public:
-    Agent(int id, double size, double mass, QVector2D position, QVector2D speed, QVector2D acceleration);
+    Agent(int id, double size, double mass, QVector2D position, QVector2D speed, QVector2D acceleration, QColor color);
 
     inline double getSize() const { return m_size; }
 

@@ -2,11 +2,12 @@
 #define SCENEOBJECT_H
 
 #include <QVector2D>
+#include <QColor>
 
 class SceneObject
 {
 public:
-    SceneObject(int id, QVector2D pos);
+    SceneObject(int id, QVector2D pos, QColor color);
 
     inline QVector2D getPos() const { return m_position; }
 
@@ -17,6 +18,7 @@ public:
 private:
     int m_id;
     QVector2D m_position;
+    QColor m_color;
 
 };
 
