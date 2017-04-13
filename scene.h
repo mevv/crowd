@@ -17,6 +17,7 @@ public:
 private:
     double m_scale = 1;//number of screen pixels in real meter
 
+
     std::shared_ptr<ObjectsPool> m_pool;
 };
 

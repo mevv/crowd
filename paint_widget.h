@@ -9,17 +9,14 @@
 #include <QPainter>
 #include <QTimer>
 #include <QAction>
-#include <QThread>
 
-#include "scene.h"
-#include "calculator.h"
-#include "objects_pool.h"
+#include "engine.h"
 
 class PaintWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PaintWidget(QWidget *parent = 0, int interval = 0);
+    explicit PaintWidget(QWidget *parent = 0, const std::shared_ptr<Engine>& engine = nullptr);
 
     void paintEvent(QPaintEvent * event);
 
@@ -31,15 +28,7 @@ public slots:
 
 private:
     std::unique_ptr<QPainter> m_painter;
-    std::unique_ptr<QTimer> m_timer;
-
-    std::unique_ptr<Scene> m_scene;
-    std::unique_ptr<Calculator> m_calculator;
-
-//    Renderer * m_renderer;
-//    QThread * m_renderThread;
-
-
+    std::shared_ptr<Engine> m_engine;
 };
 
 #endif // PAINTWIDGET_H

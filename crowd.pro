@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     agent.cpp \
     scene.cpp \
     calculator.cpp \
-    obstacle.cpp
+    obstacle.cpp \
+    engine.cpp
 
 HEADERS  += mainwindow.h \
     paint_widget.h \
@@ -30,6 +31,7 @@ HEADERS  += mainwindow.h \
     agent.h \
     scene.h \
     calculator.h \
-    obstacle.h
+    obstacle.h \
+    engine.h
 
 FORMS    += mainwindow.ui
