@@ -4,6 +4,7 @@
 #include <memory>
 
 #include <QMainWindow>
+#include <QWheelEvent>
 
 #include "engine.h"
 
@@ -18,6 +19,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    void wheelEvent(QWheelEvent *event);
 
 private slots:
     void on_playButton_clicked();

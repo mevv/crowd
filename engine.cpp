@@ -13,7 +13,11 @@ Engine::Engine()
 
     pool->addObstacle(Obstacle(1, QVector2D(10, 10),QColor(), {QPoint(100, 0), QPoint(100, 100), QPoint(0, 100)}));
 
-    m_scene.reset(new Scene(pool));
+    QPoint sceneRealSize(100, 100);
+
+
+
+    m_scene.reset(new Scene(QPoint(100, 100), pool));
     m_calculator.reset(new Calculator(pool));
 
     qDebug() << "Pool count:" << pool.use_count();
@@ -26,7 +30,8 @@ Engine::Engine()
 
 void Engine::update()
 {
-    this->m_calculator->update(m_timer->remainingTime());
+    if (m_timer->remainingTime() > 0)
+        this->m_calculator->update(m_timer->remainingTime());
 
     emit tick();
 }
@@ -46,4 +51,10 @@ void Engine::resume()
 {
     m_timer->setInterval(timerTick);
     m_timer->start();
+}
+
+void Engine::scrollEvent(QWheelEvent * event)
+{
+    m_scene->setScale(event->delta() / 10000.0);
+    m_timer->singleShot(0, [this]{ this->update(); });
 }

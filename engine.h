@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QPainter>
 #include <QTimer>
+#include <QWheelEvent>
 
 #include "scene.h"
 #include "calculator.h"
@@ -25,8 +26,11 @@ public:
 
     void resume();
 
+    void scrollEvent(QWheelEvent * event);
+
 signals:
     void tick();
+
 
 private:
     int timerTick = 10;//milliseconds

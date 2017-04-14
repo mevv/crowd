@@ -4,19 +4,23 @@
 #include <memory>
 
 #include <QPainter>
+#include <QPoint>
+#include <QDebug>
 
 #include "objects_pool.h"
 
 class Scene
 {
 public:
-    Scene(std::shared_ptr<ObjectsPool> pool);
+    Scene(QPoint size,std::shared_ptr<ObjectsPool> pool);
 
     void draw(QPainter& painter);
 
-private:
-    double m_scale = 1;//number of screen pixels in real meter
+    void setScale(double delta) { qDebug() << m_scale; m_scale += delta; }
 
+private:
+    QPoint m_size;//meters
+    double m_scale = 1;//number of screen pixels in real meter
 
     std::shared_ptr<ObjectsPool> m_pool;
 };

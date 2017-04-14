@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "paint_widget.h"
@@ -34,4 +36,9 @@ void MainWindow::on_playButton_clicked()
         ui->playButton->setText("Pause");
         m_engine->resume();
     }
+}
+
+void MainWindow::wheelEvent(QWheelEvent *event)
+{
+    m_engine->scrollEvent(event);
 }
