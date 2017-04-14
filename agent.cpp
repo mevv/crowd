@@ -5,7 +5,8 @@ Agent::Agent(int id, double size, double mass, QVector2D position, QVector2D spe
     m_size(size),
     m_mass(mass),
     m_speed(speed),
-    m_acceleration(acceleration)
+    m_acceleration(acceleration),
+    m_color(color)
 {
 
 }

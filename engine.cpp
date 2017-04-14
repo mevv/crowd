@@ -9,7 +9,11 @@ Engine::Engine()
     std::srand(time(0));
 
     for (size_t i = 0; i < 10000; i++)
-        pool->addAgent(Agent(i, 5, 1, QVector2D(200, 200), QVector2D(std::rand() % 50 + 1, std::rand() % 50 + 1), QVector2D(), QColor()));
+        pool->addAgent(Agent(i, 5, 1,
+                             QVector2D(200, 200),
+                             QVector2D(std::rand() % 50 + 1,std::rand() % 50 + 1),
+                             QVector2D(),
+                             QColor(i%255, (i*2)%255, (i*3)%255)));
 
     pool->addObstacle(Obstacle(1, QVector2D(10, 10),QColor(), {QPoint(100, 0), QPoint(100, 100), QPoint(0, 100)}));
 

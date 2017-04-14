@@ -16,11 +16,14 @@ public:
 
     void setSpeed(const QVector2D speed) { m_speed = speed; }
 
+    QColor getColor() {return this->m_color; }
+
 private:
     int m_size;
     double m_mass;
     QVector2D m_speed;
     QVector2D m_acceleration;
+    QColor m_color;
 };
 
 #endif // AGENT_H
