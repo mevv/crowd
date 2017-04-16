@@ -14,7 +14,7 @@ void Scene::draw(QPainter&  painter)
 {
     //draw background
     painter.setBrush(Qt::gray);
-    painter.drawRect(0, 0, m_size.x() * m_scale, m_size.y() * m_scale);
+    painter.drawRect(m_pos.x(), m_pos.y(), m_size.x() * m_scale, m_size.y() * m_scale);
 
     //draw agents
     auto brush = new QBrush();
@@ -23,7 +23,7 @@ void Scene::draw(QPainter&  painter)
     {
         brush->setColor(i.getColor());
         painter.setBrush(*brush);
-        painter.drawEllipse(i.getPos().x() * m_scale, i.getPos().y() * m_scale, i.getSize() * m_scale, i.getSize() * m_scale);
+        painter.drawEllipse(i.getPos().x() * m_scale + m_pos.x(), i.getPos().y() * m_scale + m_pos.y(), i.getSize() * m_scale, i.getSize() * m_scale);
     }
 
     //draw obstacles
@@ -31,10 +31,10 @@ void Scene::draw(QPainter&  painter)
     {
         QPainterPath path;
 
-        path.moveTo(i.getPos().x() * m_scale, i.getPos().y() * m_scale);
+        path.moveTo(i.getPos().x() * m_scale + m_pos.x(), i.getPos().y() * m_scale + m_pos.y());
 
         for (auto j : i.getPoints())
-            path.lineTo((j.x() + i.getPos().x()) * m_scale, (j.y() + i.getPos().y()) * m_scale);
+            path.lineTo((j.x() + i.getPos().x()) * m_scale + m_pos.x(), (j.y() + i.getPos().y()) * m_scale + m_pos.y());
 
         path.closeSubpath();
 

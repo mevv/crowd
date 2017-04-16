@@ -1,5 +1,7 @@
 #include "engine.h"
 
+#include <QWidget>
+
 Engine::Engine()
 {
     m_timer.reset(new QTimer(this));
@@ -32,6 +34,12 @@ Engine::Engine()
 
 void Engine::update()
 {
+    if (m_isMouseMove)
+    {
+        m_scene->moveBy(QCursor::pos() - m_mousePrevPos);
+        m_mousePrevPos = QCursor::pos();
+    }
+
     if (m_timer->remainingTime() > 0)
         this->m_calculator->update(m_timer->remainingTime());
 
@@ -45,7 +53,6 @@ void Engine::draw(QPainter& painter)
 
 void Engine::pause()
 {
-    if (m_timer->isActive())
         m_timer->stop();
 }
 
@@ -59,4 +66,24 @@ void Engine::scrollEvent(QWheelEvent * event)
 {
     m_scene->setScale(event->delta() / 10000.0);
     m_timer->singleShot(0, [this]{ this->update(); });
+}
+
+void Engine::mouseClickEvent(QMouseEvent * event)
+{
+    m_isMouseMove = true;
+    m_mousePrevPos = QCursor::pos();
+
+    if (!m_timer->isActive())
+    {
+        m_timer->setInterval(0);
+        m_timer->start();
+    }
+}
+
+void Engine::mouseReleaseEvent(QMouseEvent * event)
+{
+    m_isMouseMove = false;
+
+    if (m_timer->interval() == 0)
+        m_timer->stop();
 }

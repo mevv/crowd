@@ -42,3 +42,13 @@ void PaintWidget::resizeEvent(QResizeEvent * event)
 //        painter.drawRect(0, 0, this->height(), this->width());
 //    painter.end();
 }
+
+void PaintWidget::mousePressEvent (QMouseEvent * event)
+{
+    m_engine->mouseClickEvent(event);
+}
+
+void PaintWidget::mouseReleaseEvent (QMouseEvent * event)
+{
+    m_engine->mouseReleaseEvent(event);
+}

@@ -28,12 +28,20 @@ public:
 
     void scrollEvent(QWheelEvent * event);
 
+    void mouseClickEvent(QMouseEvent * event);
+
+    void mouseReleaseEvent(QMouseEvent * event);
+
 signals:
     void tick();
 
 
 private:
     int timerTick = 10;//milliseconds
+
+    bool m_isMouseMove = false;
+
+    QPoint m_mousePrevPos;
 
     std::unique_ptr<QTimer> m_timer;
     std::unique_ptr<Scene> m_scene;

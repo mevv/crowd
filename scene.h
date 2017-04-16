@@ -18,8 +18,11 @@ public:
 
     void setScale(double delta) { m_scale += delta; }
 
+    void moveBy(QPoint delta) { m_pos += delta; }
+
 private:
     QPoint m_size;//meters
+    QPoint m_pos;//position of building on widget in pixels
     double m_scale = 1;//number of screen pixels in real meter
 
     std::shared_ptr<ObjectsPool> m_pool;
