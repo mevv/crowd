@@ -17,7 +17,7 @@ public:
 
 private:
     int m_id;
-    QVector2D m_position;
+    QVector2D m_position;//up left corner
     QColor m_color;
 
 };

@@ -10,11 +10,13 @@
 class Calculator
 {
 public:
-    Calculator(std::shared_ptr<ObjectsPool> pool);
+    Calculator(QPoint sceneSize, std::shared_ptr<ObjectsPool> pool);
 
     void update(double delta);
 
 private:
+    QPoint m_sceneSize;//meters
+
     std::shared_ptr<ObjectsPool> m_pool;
 
 };

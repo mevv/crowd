@@ -17,12 +17,10 @@ Engine::Engine()
 
     pool->addObstacle(Obstacle(1, QVector2D(10, 10),QColor(), {QPoint(100, 0), QPoint(100, 100), QPoint(0, 100)}));
 
-    QPoint sceneRealSize(100, 100);
+    QPoint sceneRealSize(500, 500);
 
-
-
-    m_scene.reset(new Scene(QPoint(100, 100), pool));
-    m_calculator.reset(new Calculator(pool));
+    m_scene.reset(new Scene(sceneRealSize, pool));
+    m_calculator.reset(new Calculator(sceneRealSize ,pool));
 
     qDebug() << "Pool count:" << pool.use_count();
 

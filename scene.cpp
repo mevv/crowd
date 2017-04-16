@@ -12,13 +12,16 @@ Scene::Scene(QPoint size,std::shared_ptr<ObjectsPool> pool) :
 
 void Scene::draw(QPainter&  painter)
 {
+    //draw background
+    painter.setBrush(Qt::gray);
+    painter.drawRect(0, 0, m_size.x() * m_scale, m_size.y() * m_scale);
+
     //draw agents
     auto brush = new QBrush();
     brush->setStyle(Qt::SolidPattern);
     for (auto i : m_pool->getAgents())
     {
         brush->setColor(i.getColor());
-//        painter.setBackground(*brush);
         painter.setBrush(*brush);
         painter.drawEllipse(i.getPos().x() * m_scale, i.getPos().y() * m_scale, i.getSize() * m_scale, i.getSize() * m_scale);
     }

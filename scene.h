@@ -16,7 +16,7 @@ public:
 
     void draw(QPainter& painter);
 
-    void setScale(double delta) { qDebug() << m_scale; m_scale += delta; }
+    void setScale(double delta) { m_scale += delta; }
 
 private:
     QPoint m_size;//meters

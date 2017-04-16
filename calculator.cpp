@@ -1,6 +1,7 @@
 #include "calculator.h"
 
-Calculator::Calculator(std::shared_ptr<ObjectsPool> pool) :
+Calculator::Calculator(QPoint sceneSize, std::shared_ptr<ObjectsPool> pool) :
+    m_sceneSize(sceneSize),
     m_pool(pool)
 {
 
@@ -15,10 +16,10 @@ void Calculator::update(double delta)
 //        qDebug() << i.getSpeed();
 //        qDebug() << i.getPos();
 
-        if (i.getPos().x() > 500 || i.getPos().x() < 0)
+        if (i.getPos().x() > m_sceneSize.x() - i.getSize() || i.getPos().x() < 0)
             i.setSpeed(QVector2D(i.getSpeed().x() * -1, i.getSpeed().y()));
 
-        if (i.getPos().y() > 500 || i.getPos().y() < 0)
+        if (i.getPos().y() > m_sceneSize.y() - i.getSize() || i.getPos().y() < 0)
             i.setSpeed(QVector2D(i.getSpeed().x(), i.getSpeed().y() * -1));
 
         i.setPos(QVector2D(i.getPos().x() + time * i.getSpeed().x(), i.getPos().y() + time * i.getSpeed().y()));
