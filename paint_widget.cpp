@@ -13,9 +13,7 @@ PaintWidget::PaintWidget(QWidget *parent, const std::shared_ptr<Engine>& engine)
 
 
 void PaintWidget::update()
-{
-    //qDebug() << m_timer->remainingTime();
-
+{  
     this->repaint();
 }
 

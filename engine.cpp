@@ -28,8 +28,7 @@ Engine::Engine()
 
     connect(m_timer.get(),  &QTimer::timeout, this, [this]{ this->update(); });
 
-    m_timer->setInterval(timerTick);
-    //m_timer->start();
+    m_timer->setInterval(m_timerTick);
 }
 
 void Engine::update()
@@ -41,7 +40,10 @@ void Engine::update()
     }
 
     if (m_timer->remainingTime() > 0)
+    {
+        m_simulationTime += m_timer->remainingTime();
         this->m_calculator->update(m_timer->remainingTime());
+    }
 
     emit tick();
 }
@@ -58,7 +60,7 @@ void Engine::pause()
 
 void Engine::resume()
 {
-    m_timer->setInterval(timerTick);
+    m_timer->setInterval(m_timerTick);
     m_timer->start();
 }
 

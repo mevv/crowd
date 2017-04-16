@@ -18,6 +18,9 @@ public:
 
     bool isStarted() const { return m_timer->isActive(); }
 
+    int getSimulationTime() const { return m_simulationTime; }
+
+
     void update();
 
     void draw(QPainter& painter);
@@ -37,7 +40,8 @@ signals:
 
 
 private:
-    int timerTick = 10;//milliseconds
+    int m_timerTick = 10;//milliseconds
+    int m_simulationTime = 0;
 
     bool m_isMouseMove = false;
 

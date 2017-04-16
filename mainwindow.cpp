@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->gridLayout->addWidget(paint_widget);
 
     connect(m_engine.get(), &Engine::tick, paint_widget, &PaintWidget::update);
+    connect(m_engine.get(), &Engine::tick, this, &MainWindow::updateTime);
 }
 
 MainWindow::~MainWindow()
@@ -41,4 +42,9 @@ void MainWindow::on_playButton_clicked()
 void MainWindow::wheelEvent(QWheelEvent *event)
 {
     m_engine->scrollEvent(event);
+}
+
+void MainWindow::updateTime()
+{
+    ui->totalTimeLineEdit->setText(QString::number(m_engine->getSimulationTime() / 1000.0));
 }
