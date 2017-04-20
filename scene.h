@@ -20,12 +20,21 @@ public:
 
     void moveBy(QPoint delta) { m_pos += delta; }
 
+    //get out this methods from here, need another entity for it
+    std::vector<QPoint> movePolygonTo(const std::vector<QPoint>& polygon, QPoint place);
+
+    std::vector<QPoint> scalePolygon(const std::vector<QPoint>& polygon, double scale);
+
 private:
     QPoint m_size;//meters
     QPoint m_pos;//position of building on widget in pixels
+
     double m_scale = 1;//number of screen pixels in real meter
 
     std::shared_ptr<ObjectsPool> m_pool;
+
+    //arrow primitive
+    std::vector<QPoint> m_arrow;
 };
 
 #endif // SCENE_H

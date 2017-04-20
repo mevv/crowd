@@ -19,6 +19,9 @@ Engine::Engine()
 
     pool->addObstacle(Obstacle(1, QVector2D(10, 10),QColor(), {QPoint(100, 0), QPoint(100, 100), QPoint(0, 100)}));
 
+
+    pool->addExit(Exit(1, QVector2D(10, 200), QColor(), QVector2D(10, 300)));
+
     QPoint sceneRealSize(500, 500);
 
     m_scene.reset(new Scene(sceneRealSize, pool));
