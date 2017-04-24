@@ -9,6 +9,8 @@
 #include "scene.h"
 #include "calculator.h"
 #include "objects_pool.h"
+#include "chrono"
+
 
 class Engine : public QObject
 {
@@ -47,6 +49,7 @@ private:
 
     QPoint m_mousePrevPos;
 
+    std::chrono::time_point<std::chrono::system_clock> m_timeFrame;
     std::unique_ptr<QTimer> m_timer;
     std::unique_ptr<Scene> m_scene;
     std::unique_ptr<Calculator> m_calculator;

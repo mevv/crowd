@@ -42,10 +42,15 @@ void Engine::update()
         m_mousePrevPos = QCursor::pos();
     }
 
-    if (m_timer->remainingTime() > 0)
+    //if (m_timer->remainingTime() > 0)
     {
-        m_simulationTime += m_timer->remainingTime();
-        this->m_calculator->update(m_timer->remainingTime());
+        m_simulationTime += m_timerTick;
+        std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - m_timeFrame);
+        qDebug() << diff.count();
+        qDebug() << m_timer->remainingTime();
+        m_timeFrame = std::chrono::system_clock::now();
+        this->m_calculator->update(m_timerTick);
+
     }
 
     emit tick();
