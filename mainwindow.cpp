@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_engine.get(), &Engine::tick, paint_widget, &PaintWidget::update);
     connect(m_engine.get(), &Engine::tick, this, &MainWindow::updateTime);
+    connect(this, &MainWindow::openedSchemeFile, m_engine.get(), &Engine::setSchemeFileName);
 }
 
 MainWindow::~MainWindow()
@@ -47,4 +48,10 @@ void MainWindow::wheelEvent(QWheelEvent *event)
 void MainWindow::updateTime()
 {
     ui->totalTimeLineEdit->setText(QString::number(m_engine->getSimulationTime() / 1000.0));
+}
+
+void MainWindow::on_action_2_triggered()
+{
+    auto file_name = QFileDialog::getOpenFileName(this, tr("Open draft"), "/home/peter", tr("JSON Files (*.json)"));
+    emit openedSchemeFile(file_name);
 }

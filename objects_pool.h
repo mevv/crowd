@@ -6,6 +6,11 @@
 #include "agent.h"
 #include "obstacle.h"
 #include "exit.h"
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QVariantMap>
 
 class ObjectsPool
 {
@@ -25,6 +30,8 @@ public:
     void addObstacle(const Obstacle& obstacle) { m_obstacles.push_back(obstacle); }
 
     void addExit(const Exit& exit) { m_exits.push_back(exit); }
+
+    void initFromFile(QString filename);
 
 private:
     std::vector<Agent> m_agents;

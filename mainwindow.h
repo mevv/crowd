@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 #include <QWheelEvent>
+#include <QFileDialog>
 
 #include "engine.h"
 
@@ -29,10 +30,15 @@ private slots:
     void on_playButton_clicked();
 
 
+    void on_action_2_triggered();
+
 private:
     Ui::MainWindow *ui;
 
     std::shared_ptr<Engine> m_engine;
+
+signals:
+    void openedSchemeFile(QString file_name);
 
 };
 

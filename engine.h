@@ -40,10 +40,15 @@ public:
 signals:
     void tick();
 
+public slots:
+    void setSchemeFileName(QString filename);
+
 
 private:
     int m_timerTick = 10;//milliseconds
     int m_simulationTime = 0;
+
+    QString schemeFileName = "some/default/value.json";
 
     bool m_isMouseMove = false;
 
@@ -53,6 +58,7 @@ private:
     std::unique_ptr<QTimer> m_timer;
     std::unique_ptr<Scene> m_scene;
     std::unique_ptr<Calculator> m_calculator;
+    std::shared_ptr<ObjectsPool> m_objects_pool;
 };
 
 #endif // ENGINE_H

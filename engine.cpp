@@ -6,28 +6,18 @@ Engine::Engine()
 {
     m_timer.reset(new QTimer(this));
 
-    std::shared_ptr<ObjectsPool> pool(new ObjectsPool());
+    m_objects_pool.reset(new ObjectsPool());
+
+    m_objects_pool->initFromFile(this->schemeFileName);
 
     std::srand(time(0));
 
-    for (size_t i = 0; i < 10000; i++)
-        pool->addAgent(Agent(i, 5, 1,
-                             QVector2D(200, 200),
-                             QVector2D(std::rand() % 50 + 1,std::rand() % 50 + 1),
-                             QVector2D(),
-                             QColor(i%255, (i*2)%255, (i*3)%255)));
-
-    pool->addObstacle(Obstacle(1, QVector2D(10, 10),QColor(), {QPoint(100, 0), QPoint(100, 100), QPoint(0, 100)}));
-
-
-    pool->addExit(Exit(1, QVector2D(10, 200), QColor(), QVector2D(10, 300)));
-
     QPoint sceneRealSize(500, 500);
 
-    m_scene.reset(new Scene(sceneRealSize, pool));
-    m_calculator.reset(new Calculator(sceneRealSize ,pool));
+    m_scene.reset(new Scene(sceneRealSize, m_objects_pool));
+    m_calculator.reset(new Calculator(sceneRealSize ,m_objects_pool));
 
-    qDebug() << "Pool count:" << pool.use_count();
+//    qDebug() << "Pool count:" << m_objects_pool.get()->use_count();
 
     connect(m_timer.get(),  &QTimer::timeout, this, [this]{ this->update(); });
 
@@ -45,10 +35,6 @@ void Engine::update()
     //if (m_timer->remainingTime() > 0)
     {
         m_simulationTime += m_timerTick;
-        std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - m_timeFrame);
-        qDebug() << diff.count();
-        qDebug() << m_timer->remainingTime();
-        m_timeFrame = std::chrono::system_clock::now();
         this->m_calculator->update(m_timerTick);
 
     }
@@ -97,3 +83,11 @@ void Engine::mouseReleaseEvent(QMouseEvent * event)
     if (m_timer->interval() == 0)
         m_timer->stop();
 }
+
+void Engine::setSchemeFileName(QString filename)
+{
+    this->schemeFileName = filename;
+    m_objects_pool->initFromFile(this->schemeFileName);
+
+}
+
