@@ -62,10 +62,17 @@ void ObjectsPool::initFromFile(QString filename)
 
     for(auto i : exits)
     {
-        qDebug() << i.value(QString("a"));
-//        Exit(int id, QVector2D pos, QColor color, QVector2D end);
+        QJsonObject tmp = i.toObject();
+        QJsonObject a = tmp.value(QString("a")).toObject();
+        QJsonObject b = tmp.value(QString("b")).toObject();
 
-//        this->addExit(Exit(n, QVector2D(0, 0), QColor(), apexes));
+
+        qDebug() << a;
+
+        this->addExit(Exit(n,
+                           QVector2D(a.value(QString("x")).toInt(), a.value(QString("y")).toInt()),
+                           QColor(),
+                           QVector2D(b.value(QString("x")).toInt(), b.value(QString("y")).toInt())));
         n++;
     }
 
