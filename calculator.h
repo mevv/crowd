@@ -14,10 +14,17 @@ public:
 
     void update(double delta);
 
+
 private:
     QPoint m_sceneSize;//meters
 
     std::shared_ptr<ObjectsPool> m_pool;
+
+    double time;
+
+    void setDirection(Agent &agent);
+
+    bool isInExit(Agent agent);
 
 };
 

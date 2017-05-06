@@ -33,10 +33,13 @@ public:
 
     void initFromFile(QString filename);
 
+    void removeAgent(Agent &agent);
+
 private:
     std::vector<Agent> m_agents;
     std::vector<Obstacle> m_obstacles;
     std::vector<Exit> m_exits;
+    int deleted = 0;
 };
 
 #endif // OBJECTSPOOL_H

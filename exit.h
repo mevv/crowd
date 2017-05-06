@@ -14,7 +14,10 @@ public:
 
     QVector2D getEnd() const { return m_end; }
 
+    QVector2D getBegin() const { return m_begin; }
+
 private:
+    QVector2D m_begin;
     QVector2D m_end;//exit represented as line, begining of the line is m_position from base class and this is the end
     //QVector2D m_frontSide;
 };

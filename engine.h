@@ -45,7 +45,7 @@ public slots:
 
 
 private:
-    int m_timerTick = 10;//milliseconds
+    int m_timerTick = 100;//milliseconds
     int m_simulationTime = 0;
 
     QString schemeFileName = "some/default/value.json";

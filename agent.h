@@ -18,10 +18,22 @@ public:
 
     QColor getColor() {return this->m_color; }
 
+    void setPrevPos(){ m_prevPos = this->getPos(); }
+
+    inline QVector2D getPrevPos(){ return m_prevPos; }
+
+    bool operator==(const Agent& a)
+    {
+        if(this->getID() == a.getID())
+            return true;
+        return false;
+    }
+
 private:
     int m_size;
     double m_mass;
     QVector2D m_speed;
+    QVector2D m_prevPos;
     QVector2D m_acceleration;
     QColor m_color;
 };
