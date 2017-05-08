@@ -24,7 +24,7 @@ void Calculator::setDirection(Agent &agent)
         }
     }
 
-    double hypotenuse = sqrt((pow(agent.getSpeed().x(),2) + pow(agent.getSpeed().y(),2))) * time;
+    double hypotenuse = sqrt((pow(agent.getSpeed().x(),2) + pow(agent.getSpeed().y(),2))) * time + 2;
     QPoint newCoords = QPoint(hypotenuse*(agent.getPos().x() - coord.x())/distance,
                               hypotenuse*(agent.getPos().y() - coord.y())/distance);
 
@@ -32,7 +32,6 @@ void Calculator::setDirection(Agent &agent)
 
     agent.setPos(QVector2D(agent.getPos().x() - newCoords.x(),
                            agent.getPos().y() - newCoords.y()));
-
 }
 
 bool Calculator::isInExit(Agent agent)
@@ -62,9 +61,10 @@ bool Calculator::isInExit(Agent agent)
 }
 
 
-void Calculator::update(double delta)
+std::vector<QVector2D> Calculator::update(double delta)
 {
     time = delta / 1000;
+    std::vector<QVector2D> moveRecord;
 
     for (auto&& i : m_pool->getAgents())
     {
@@ -83,9 +83,8 @@ void Calculator::update(double delta)
             m_pool->removeAgent(i);
             continue;
         }
+        moveRecord.push_back(i.getPos());
 
-//        i.setPos(QVector2D(i.getPos().x() + time * i.getSpeed().x(), i.getPos().y() + time * i.getSpeed().y()));
     }
-
-    auto i  = m_pool->getExits();
+    return moveRecord;
 }

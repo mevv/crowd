@@ -1,6 +1,10 @@
 #include "engine.h"
 
 #include <QWidget>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QFile>
+#include <QTextStream>
 
 Engine::Engine()
 {
@@ -8,7 +12,7 @@ Engine::Engine()
 
     m_objects_pool.reset(new ObjectsPool());
 
-    m_objects_pool->initFromFile(this->schemeFileName);
+    m_objects_pool->initFromFile(this->m_schemeFileName);
 
     std::srand(time(0));
 
@@ -20,6 +24,7 @@ Engine::Engine()
 //    qDebug() << "Pool count:" << m_objects_pool.get()->use_count();
 
     connect(m_timer.get(),  &QTimer::timeout, this, [this]{ this->update(); });
+    connect(m_objects_pool.get(), &ObjectsPool::endOfSimulation, this, &Engine::finishSimulation);
 
     m_timer->setInterval(m_timerTick);
 }
@@ -35,7 +40,8 @@ void Engine::update()
     //if (m_timer->remainingTime() > 0)
     {
         m_simulationTime += m_timerTick;
-        this->m_calculator->update(m_timerTick);
+        auto tmpMoveRecord = this->m_calculator->update(m_timerTick);
+        m_moveRecord.push_back(tmpMoveRecord);
 
     }
 
@@ -49,7 +55,7 @@ void Engine::draw(QPainter& painter)
 
 void Engine::pause()
 {
-        m_timer->stop();
+    m_timer->stop();
 }
 
 void Engine::resume()
@@ -86,8 +92,48 @@ void Engine::mouseReleaseEvent(QMouseEvent * event)
 
 void Engine::setSchemeFileName(QString filename)
 {
-    this->schemeFileName = filename;
-    m_objects_pool->initFromFile(this->schemeFileName);
+    this->m_schemeFileName = filename;
+    m_objects_pool->initFromFile(this->m_schemeFileName);
 
 }
 
+void Engine::setSaveFileName(QString filename)
+{
+    this->m_saveFileName = filename;
+
+}
+
+void Engine::finishSimulation()
+{
+    this->pause();
+    emit enableStatButton();
+    writeRecordToFile();
+}
+
+void Engine::writeRecordToFile()
+{
+
+//     QJsonArray ** data = new QJsonArray*[m_moveRecord.size()];
+
+//     int i = 0;
+//     for(auto frame : m_moveRecord)
+//     {
+//         QVector2D * tmp = &frame[0];
+//         QVector2D tmp2 [frame.size()] = *tmp;
+//         data[i] = new QJsonArray(tmp2);
+//         i++;
+//     }
+
+
+
+
+    QFile file;
+    file.setFileName(m_saveFileName);
+    file.open(QIODevice::ReadWrite | QIODevice::Text);
+    QTextStream stream(&file);
+//    stream << js_data << endl;
+    file.close();
+
+
+
+}

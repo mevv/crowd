@@ -39,16 +39,22 @@ public:
 
 signals:
     void tick();
+    void enableStatButton();
 
 public slots:
     void setSchemeFileName(QString filename);
 
+    void setSaveFileName(QString filename);
+
+    void finishSimulation();
+
 
 private:
-    int m_timerTick = 100;//milliseconds
+    int m_timerTick = 10;//milliseconds
     int m_simulationTime = 0;
 
-    QString schemeFileName = "some/default/value.json";
+    QString m_schemeFileName = "some/default/value.json";
+    QString m_saveFileName = "another/default/value.json";
 
     bool m_isMouseMove = false;
 
@@ -59,6 +65,10 @@ private:
     std::unique_ptr<Scene> m_scene;
     std::unique_ptr<Calculator> m_calculator;
     std::shared_ptr<ObjectsPool> m_objects_pool;
+
+    std::vector<std::vector<QVector2D>> m_moveRecord;
+
+    void writeRecordToFile();
 };
 
 #endif // ENGINE_H

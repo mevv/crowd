@@ -12,7 +12,7 @@ class Calculator
 public:
     Calculator(QPoint sceneSize, std::shared_ptr<ObjectsPool> pool);
 
-    void update(double delta);
+    std::vector<QVector2D> update(double delta);
 
 
 private:

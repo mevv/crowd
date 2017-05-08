@@ -32,6 +32,10 @@ private slots:
 
     void on_action_2_triggered();
 
+    void on_pushButton_clicked();
+
+    void on_action_4_triggered();
+
 private:
     Ui::MainWindow *ui;
 
@@ -39,6 +43,7 @@ private:
 
 signals:
     void openedSchemeFile(QString file_name);
+    void openedSaveFile(QString file_name);
 
 };
 

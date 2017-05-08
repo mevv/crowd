@@ -12,8 +12,9 @@
 #include <QJsonArray>
 #include <QVariantMap>
 
-class ObjectsPool
+class ObjectsPool: public QObject
 {
+    Q_OBJECT
 public:
     ObjectsPool();
 
@@ -34,6 +35,9 @@ public:
     void initFromFile(QString filename);
 
     void removeAgent(Agent &agent);
+
+signals:
+    void endOfSimulation();
 
 private:
     std::vector<Agent> m_agents;

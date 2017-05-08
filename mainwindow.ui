@@ -80,6 +80,58 @@
      <enum>Qt::NoFocus</enum>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>500</y>
+      <width>85</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Write to file</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="widgetStat" native="true">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>140</y>
+      <width>161</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>131</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Симуляція проведена</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>40</y>
+       <width>85</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Статистика</string>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -96,6 +148,7 @@
     </property>
     <addaction name="action"/>
     <addaction name="action_2"/>
+    <addaction name="action_4"/>
     <addaction name="action_3"/>
    </widget>
    <addaction name="menu"/>
@@ -107,12 +160,17 @@
   </action>
   <action name="action_2">
    <property name="text">
-    <string>Відкрити</string>
+    <string>Відкрити креслення</string>
    </property>
   </action>
   <action name="action_3">
    <property name="text">
     <string>Зберегти</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>Відкрити симуляцію</string>
    </property>
   </action>
  </widget>
