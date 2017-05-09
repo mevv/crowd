@@ -53,7 +53,7 @@ private:
     int m_timerTick = 10;//milliseconds
     int m_simulationTime = 0;
 
-    QString m_schemeFileName = "some/default/value.json";
+    QString m_schemeFileName = "/home/peter/scheme.json";
     QString m_saveFileName = "another/default/value.json";
 
     bool m_isMouseMove = false;

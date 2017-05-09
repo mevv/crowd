@@ -14,6 +14,8 @@ public:
 
     inline QVector2D getSpeed() const { return m_speed; }
 
+    inline double getMass() const { return m_mass; }
+
     void setSpeed(const QVector2D speed) { m_speed = speed; }
 
     QColor getColor() {return this->m_color; }
@@ -22,12 +24,15 @@ public:
 
     inline QVector2D getPrevPos(){ return m_prevPos; }
 
-    bool operator==(const Agent& a)
+    bool operator==(const Agent& a) const
     {
         if(this->getID() == a.getID())
             return true;
         return false;
     }
+
+    QVector2D getCenter() const {return QVector2D(this->getPos().x() +  this->getSize(),
+                                            this->getPos().y() +  this->getSize());};
 
 private:
     int m_size;

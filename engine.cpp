@@ -14,6 +14,8 @@ Engine::Engine()
 
     std::srand(time(0));
 
+    readSchemeFromFile(m_schemeFileName);
+
     QPoint sceneRealSize(500, 500);
 
     m_scene.reset(new Scene(sceneRealSize, m_objects_pool));
@@ -111,22 +113,20 @@ void Engine::finishSimulation()
 void Engine::readSchemeFromFile(QString filename)
 {
     /* DUMMY INIT*/
-//    for (size_t i = 0; i < 10; i++)
-//    {
-
-//        Agent(int id, double size, double mass, QVector2D position, QVector2D speed, QVector2D acceleration, QColor color);
-//        this->addAgent(Agent(i, 5, 1,
-//                             QVector2D(200, 200),
-//                             QVector2D(std::rand() % 50 + 1,std::rand() % 50 + 1),
-//                             QVector2D(),
-//                             QColor(i%255, (i*2)%255, (i*3)%255)));
-        //}
+    for (size_t i = 0; i < 1; i++)
+    {
+        m_objects_pool->addAgent(Agent(i, 5, 1,
+                             QVector2D(100, 300+i*10),
+                             QVector2D(0, 0),
+                             QVector2D(),
+                             QColor(i%255, (i*2)%255, (i*3)%255)));
+     }
 
 
-//    this->addObstacle(Obstacle(1, QVector2D(10, 10),QColor(), {QPoint(100, 0), QPoint(100, 100), QPoint(0, 100)}));
+//    m_objects_pool->addObstacle(Obstacle(1, QVector2D(10, 10),QColor(), {QPoint(100, 0), QPoint(100, 100), QPoint(0, 100)}));
 
 //    m_objects_pool->addExit(Exit(1, QVector2D(1, 200), QColor(), QVector2D(1, 300)));
-//    m_objects_pool->addExit(Exit(1, QVector2D(300, 200), QColor(), QVector2D(300, 300)));
+//    m_objects_pool->addExit(Exit(1, QVector2D(400, 200), QColor(), QVector2D(400, 300)));
 
 
     /* INIT FROM FILE*/
@@ -194,14 +194,14 @@ void Engine::readSchemeFromFile(QString filename)
         QJsonObject b =  tmp.value(QString("b")).toObject();
 
         int n = 0;
-        for(int j  = a.value(QString("x")).toInt(); j < b.value(QString("x")).toInt(); j += 5)
+        for(int j  = a.value(QString("x")).toInt(); j < b.value(QString("x")).toInt(); j += 20)
         {
-            for(int k  = a.value(QString("y")).toInt(); k < b.value(QString("y")).toInt(); k += 5)
+            for(int k  = a.value(QString("y")).toInt(); k < b.value(QString("y")).toInt(); k += 20)
             {
                 n++;
                 m_objects_pool->addAgent(Agent(n, 5, 1,
                                      QVector2D(j, k),
-                                     QVector2D(std::rand() % 50 + 1,std::rand() % 50 + 1),
+                                     QVector2D(0, 0),
                                      QVector2D(),
                                      QColor(n%255, (n*2)%255, (n*3)%255)));
             }

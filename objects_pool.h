@@ -32,7 +32,7 @@ public:
 
     void addExit(const Exit& exit) { m_exits.push_back(exit); }
 
-    void removeAgent(Agent &agent);
+    std::vector<Agent>::iterator removeAgent(const Agent &agent);
 
 signals:
     void endOfSimulation();
