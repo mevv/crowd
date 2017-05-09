@@ -69,6 +69,8 @@ private:
     std::vector<std::vector<QVector2D>> m_moveRecord;
 
     void writeRecordToFile();
+
+    void readSchemeFromFile(QString filename);
 };
 
 #endif // ENGINE_H

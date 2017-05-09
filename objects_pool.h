@@ -32,8 +32,6 @@ public:
 
     void addExit(const Exit& exit) { m_exits.push_back(exit); }
 
-    void initFromFile(QString filename);
-
     void removeAgent(Agent &agent);
 
 signals:
