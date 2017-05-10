@@ -26,7 +26,7 @@ public:
 
     inline std::vector<Exit>& getExits() { return m_exits; }
 
-    void addAgent(const Agent& agent) { m_agents.push_back(agent); }
+    void addAgent(Agent agent) { m_agents.push_back(agent); }
 
     void addObstacle(const Obstacle& obstacle) { m_obstacles.push_back(obstacle); }
 

@@ -29,14 +29,13 @@ public:
 private:
 
     QPoint m_sceneSize;//meters
-
     std::shared_ptr<ObjectsPool> m_pool;
-
     double m_time;
 
-    void setDirection(Agent &agent);
 
-    bool isInExit(Agent agent);
+    void move(Agent &agent);
+
+    bool isInExit(const Agent &agent);
 
     void calcForce(Agent &agent);
 
