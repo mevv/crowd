@@ -13,7 +13,6 @@ const double A = 2000;
 const double B = 0.08;
 const double K = 120000;
 const double Awall = 20;
-//const double Bwall = 0.8;
 const double Bwall = 0.8;
 const double Kwall = 24;
 
@@ -29,14 +28,13 @@ public:
 private:
 
     QPoint m_sceneSize;//meters
-
     std::shared_ptr<ObjectsPool> m_pool;
-
     double m_time;
 
-    void setDirection(Agent &agent);
 
-    bool isInExit(Agent agent);
+    void move(Agent &agent);
+
+    bool isInExit(const Agent &agent);
 
     void calcForce(Agent &agent);
 
