@@ -25,6 +25,8 @@ ui_*.h
 Makefile*
 *build-*
 
+crowd.pro.user
+
 # QtCreator
 
 *.autosave
