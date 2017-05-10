@@ -26,7 +26,7 @@ public:
 
     void setSpeed(const QVector2D speed) { m_speed = speed; }
 
-    void setPrevPos(){ m_prevPos = this->getPos(); }
+    void setPrevPos(){ m_prevPos = this->getCenter(); }
 
 
     bool operator==(const Agent& a) const

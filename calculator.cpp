@@ -16,7 +16,7 @@ void Calculator::move(Agent &agent)
 bool Calculator::isInExit(const Agent &agent)
 {
     auto exits = m_pool->getExits();
-    QVector2D a = agent.getPos();
+    QVector2D a = agent.getCenter();
     QVector2D b = agent.getPrevPos();
 
     for(auto i : exits)
@@ -43,17 +43,21 @@ bool Calculator::isInExit(const Agent &agent)
 QPoint Calculator::getNearestExit(const Agent &agent)
 {
     auto exits = m_pool->getExits();
-    QPoint coord;
+    QPoint coord(0,0);
     double distance = INFINITY;
 
     for(auto i : exits)
     {
-        double tmp = sqrt( pow( agent.getPos().x() - i.getCenter().x() ,2) + pow( agent.getPos().y() - i.getCenter().y() ,2) );
+//        double tmp = sqrt( pow( agent.getPos().x() - i.getCenter().x() ,2) + pow( agent.getPos().y() - i.getCenter().y() ,2) );
+//        if(tmp < distance)
+//        {
+//            distance = tmp;
+//            coord = i.getCenter();
+//        }
+
+        double tmp = getDistanceToSide(i.getBegin().toPoint(), i.getEnd().toPoint(), agent, coord);
         if(tmp < distance)
-        {
             distance = tmp;
-            coord = i.getCenter();
-        }
     }
     return coord;
 }
@@ -93,7 +97,6 @@ QVector2D Calculator::calcCrossAgentForce(const Agent &agent)
         QVector2D n = calcNormal( i.getCenter().toPoint(), agent.getCenter().toPoint());
         QVector2D deltaV = i.getSpeed() - agent.getSpeed();
         QVector2D tau(n.y(), -n.x());//normal rotated on 90 degrees
-
         crossAgentForce += A*n*exp(D/B) + K*Heaviside(D)*D*n + K*Heaviside(D)*D*deltaV*tau*tau;
     }
 
@@ -115,7 +118,6 @@ QVector2D Calculator::calcWallForce(const Agent &agent)
 
         wallForce += Awall*n*exp(D/Bwall) + Kwall*Heaviside(D)*D*n  - Kwall*Heaviside(D)*D*agent.getSpeed()*tau*tau;
     }
-
     return wallForce;
 }
 
@@ -208,7 +210,6 @@ void Calculator::calcForce(Agent &agent)
     QVector2D panicForce = calcPanicForce(agent);
     QVector2D crossAgentForce = calcCrossAgentForce(agent);
     QVector2D wallForce = calcWallForce(agent);
-
     QVector2D totalForce = panicForce + crossAgentForce + wallForce;
 
     QVector2D speed = agent.getSpeed() + m_time*totalForce/agent.getMass();
