@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     scene.cpp \
     calculator.cpp \
     obstacle.cpp \
-    engine.cpp
+    engine.cpp \
+    exit.cpp
 
 HEADERS  += mainwindow.h \
     paint_widget.h \
@@ -32,6 +33,7 @@ HEADERS  += mainwindow.h \
     scene.h \
     calculator.h \
     obstacle.h \
-    engine.h
+    engine.h \
+    exit.h
 
 FORMS    += mainwindow.ui

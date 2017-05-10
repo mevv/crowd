@@ -26,6 +26,10 @@ signals:
 public slots:
     void update();
 
+    void mousePressEvent (QMouseEvent * event);
+
+    void mouseReleaseEvent (QMouseEvent * event);
+
 private:
     std::unique_ptr<QPainter> m_painter;
     std::shared_ptr<Engine> m_engine;

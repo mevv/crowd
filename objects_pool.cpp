@@ -11,3 +11,15 @@ ObjectsPool::~ObjectsPool()
     qDebug() << "~ObjectsPool()";
     m_agents.clear();
 }
+
+std::vector<Agent>::iterator ObjectsPool::removeAgent(const Agent &agent)
+{
+    auto it =  m_agents.erase(std::remove(m_agents.begin(), m_agents.end(), agent), m_agents.end());
+
+    ++deleted;
+
+    if(m_agents.size() == 0)
+        emit endOfSimulation();
+
+    return it;
+}

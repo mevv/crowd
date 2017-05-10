@@ -13,6 +13,8 @@ public:
 
     inline QVector<QPoint> getPoints() const { return m_points; }
 
+    QVector<QPoint> getAbsolutePoints() const;
+
 private:
     QVector<QPoint> m_points;//up left point (0, 0)
 };

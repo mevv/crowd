@@ -13,9 +13,7 @@ PaintWidget::PaintWidget(QWidget *parent, const std::shared_ptr<Engine>& engine)
 
 
 void PaintWidget::update()
-{
-    //qDebug() << m_timer->remainingTime();
-
+{  
     this->repaint();
 }
 
@@ -41,4 +39,14 @@ void PaintWidget::resizeEvent(QResizeEvent * event)
 //        painter.setBrush(Qt::black);
 //        painter.drawRect(0, 0, this->height(), this->width());
 //    painter.end();
+}
+
+void PaintWidget::mousePressEvent (QMouseEvent * event)
+{
+    m_engine->mouseClickEvent(event);
+}
+
+void PaintWidget::mouseReleaseEvent (QMouseEvent * event)
+{
+    m_engine->mouseReleaseEvent(event);
 }
