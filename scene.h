@@ -20,6 +20,8 @@ public:
 
     void moveBy(QPoint delta) { m_pos += delta; }
 
+    QPoint getSize() {return this->m_size; }
+
     //get out this methods from here, need another entity for it
     std::vector<QPoint> movePolygonTo(const std::vector<QPoint>& polygon, QPoint place);
 

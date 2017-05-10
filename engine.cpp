@@ -113,19 +113,19 @@ void Engine::finishSimulation()
 void Engine::readSchemeFromFile(QString filename)
 {
     /* DUMMY INIT*/
-    for (size_t i = 0; i < 1; i++)
-    {
-        m_objects_pool->addAgent(Agent(i, 5, 1,
-                             QVector2D(100, 300+i*10),
-                             QVector2D(0, 0),
-                             QVector2D(),
-                             QColor(i%255, (i*2)%255, (i*3)%255)));
-     }
+//    for (size_t i = 0; i < 10; i++)
+//    {
+//        m_objects_pool->addAgent(Agent(i, 5, 1,
+//                             QVector2D(10+i*10, 50),
+//                             QVector2D(0, 0),
+//                             QVector2D(),
+//                             QColor(i%255, (i*2)%255, (i*3)%255)));
+//     }
 
 
-//    m_objects_pool->addObstacle(Obstacle(1, QVector2D(10, 10),QColor(), {QPoint(100, 0), QPoint(100, 100), QPoint(0, 100)}));
+    m_objects_pool->addObstacle(Obstacle(1, QVector2D(100, 100),QColor(), {QPoint(-90, 300), QPoint(300, 300), QPoint(300, 100)}));
 
-//    m_objects_pool->addExit(Exit(1, QVector2D(1, 200), QColor(), QVector2D(1, 300)));
+//    m_objects_pool->addExit(Exit(1, QVector2D(0, 500), QColor(), QVector2D(50, 500)));
 //    m_objects_pool->addExit(Exit(1, QVector2D(400, 200), QColor(), QVector2D(400, 300)));
 
 
@@ -210,6 +210,34 @@ void Engine::readSchemeFromFile(QString filename)
 
         qDebug() << n;
     }
+
+    // OBSTACLES BEHIND THE WALLS
+
+    // left wall
+    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
+                                         QVector2D(0,0),
+                                         QColor(n%255, (n*2)%255, (n*3)%255),
+                                         {QPoint(0, size.value(QString("x")).toInt())}
+                                         ));
+
+    // top wall
+    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
+                                         QVector2D(0,0),
+                                         QColor(n%255, (n*2)%255, (n*3)%255),
+                                         {QPoint(size.value(QString("y")).toInt(), 0)}
+                                         ));
+    // right wall
+    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
+                                         QVector2D(size.value(QString("x")).toInt(),0),
+                                         QColor(n%255, (n*2)%255, (n*3)%255),
+                                         {QPoint(0, size.value(QString("y")).toInt())}
+                                         ));
+    // bottom wall
+    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
+                                         QVector2D(0, size.value(QString("y")).toInt()),
+                                         QColor(n%255, (n*2)%255, (n*3)%255),
+                                         {QPoint(size.value(QString("x")).toInt(), 0)}
+                                         ));
 }
 
 void Engine::writeRecordToFile()

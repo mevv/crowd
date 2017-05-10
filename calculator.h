@@ -7,14 +7,14 @@
 
 #include "objects_pool.h"
 
-const double defaultSpeedModule = 15;
+const double defaultSpeedModule = 5;
 const double delta_T = 0.5;
 const double A = 2000;
 const double B = 0.08;
 const double K = 120000;
 const double Awall = 20;
-//const double Bwall = 0.8;
 const double Bwall = 0.8;
+//const double Bwall = 0.8;
 const double Kwall = 24;
 
 class Calculator

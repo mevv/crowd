@@ -20,7 +20,7 @@ public:
 
     QColor getColor() {return this->m_color; }
 
-    void setPrevPos(){ m_prevPos = this->getPos(); }
+    void setPrevPos(){ m_prevPos = this->getCenter(); }
 
     inline QVector2D getPrevPos(){ return m_prevPos; }
 

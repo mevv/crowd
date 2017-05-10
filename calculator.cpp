@@ -10,26 +10,13 @@ Calculator::Calculator(QPoint sceneSize, std::shared_ptr<ObjectsPool> pool) :
 
 void Calculator::setDirection(Agent &agent)
 {
-//    QPoint coord = getNearestExit(agent);
-//    double distance = sqrt( pow( agent.getPos().x() - coord.x() ,2)
-//                          + pow( agent.getPos().y() - coord.y() ,2) );
-
-//    double hypotenuse = sqrt((pow(agent.getSpeed().x(),2) + pow(agent.getSpeed().y(),2))) * m_time + 2;
-//    QPoint newCoords = QPoint(hypotenuse*(agent.getPos().x() - coord.x())/distance,
-//                              hypotenuse*(agent.getPos().y() - coord.y())/distance);
-
-//    agent.setPrevPos();
-
-//    agent.setPos(QVector2D(agent.getPos().x() - newCoords.x(),
-//                           agent.getPos().y() - newCoords.y()));
-
     agent.setPos(agent.getPos() + agent.getSpeed() * m_time);
 }
 
 bool Calculator::isInExit(Agent agent)
 {
     auto exits = m_pool->getExits();
-    QVector2D a = agent.getPos();
+    QVector2D a = agent.getCenter();
     QVector2D b = agent.getPrevPos();
 
     for(auto i : exits)
@@ -55,17 +42,21 @@ bool Calculator::isInExit(Agent agent)
 QPoint Calculator::getNearestExit(const Agent &agent)
 {
     auto exits = m_pool->getExits();
-    QPoint coord;
+    QPoint coord(0,0);
     double distance = INFINITY;
 
     for(auto i : exits)
     {
-        double tmp = sqrt( pow( agent.getPos().x() - i.getCenter().x() ,2) + pow( agent.getPos().y() - i.getCenter().y() ,2) );
+//        double tmp = sqrt( pow( agent.getPos().x() - i.getCenter().x() ,2) + pow( agent.getPos().y() - i.getCenter().y() ,2) );
+//        if(tmp < distance)
+//        {
+//            distance = tmp;
+//            coord = i.getCenter();
+//        }
+
+        double tmp = getDistanceToSide(i.getBegin().toPoint(), i.getEnd().toPoint(), agent, coord);
         if(tmp < distance)
-        {
             distance = tmp;
-            coord = i.getCenter();
-        }
     }
     return coord;
 }
@@ -99,12 +90,10 @@ QVector2D Calculator::calcCrossAgentForce(const Agent &agent)
     {
         if(agent == i) continue;
         double D = agent.getSize() + i.getSize() - (i.getCenter() - agent.getCenter()).length();
-//        D /= 50;
         QVector2D n = calcNormal( i.getCenter().toPoint(), agent.getCenter().toPoint());
 
         QVector2D deltaV = i.getSpeed() - agent.getSpeed();
         QVector2D tau(n.y(), -n.x());
-//        crossAgentForce += A*n*exp(D/B) + K*Heaviside(D)*D*n + K*Heaviside(D)*D*deltaV*tau*tau;
         crossAgentForce += A*n*exp(D/B) + K*Heaviside(D)*D*n + K*Heaviside(D)*D*deltaV*tau*tau;
 
     }
@@ -118,15 +107,12 @@ QVector2D Calculator::calcWallForce(const Agent &agent)
     auto obstacles = m_pool->getObstacles();
     for(auto i : obstacles)
     {
-
         QVector2D nearestPoint(getMinDistanceToObstalce(agent, i));
         double D = agent.getSize() - (agent.getCenter() - nearestPoint).length();
         QVector2D n = calcNormal(nearestPoint.toPoint(), agent.getCenter().toPoint());
         QVector2D tau(n.y(), -n.x());
         wallForce += Awall*n*exp(D/Bwall) + Kwall*Heaviside(D)*D*n  - Kwall*Heaviside(D)*D*agent.getSpeed()*tau*tau;
-//        qDebug() << "n: " << n << " WF: " << wallForce.normalized();
     }
-//    qDebug() << "____________________";
     return wallForce;
 }
 
@@ -213,11 +199,9 @@ void Calculator::calcForce(Agent &agent)
     QVector2D panicForce = calcPanicForce(agent);
     QVector2D crossAgentForce = calcCrossAgentForce(agent);
     QVector2D wallForce = calcWallForce(agent);
-//    QVector2D totalForce = panicForce + crossAgentForce;
     QVector2D totalForce = panicForce + crossAgentForce + wallForce;
     QVector2D speed = agent.getSpeed() + m_time*totalForce/agent.getMass();
     agent.setSpeed(speed);
-//    qDebug() << totalForce;
 }
 
 std::vector<QVector2D> Calculator::update(double delta)
