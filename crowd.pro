@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     obstacle.cpp \
     engine.cpp \
     exit.cpp \
-    entry.cpp
+    entry.cpp \
+    plan_builder.cpp
 
 HEADERS  += mainwindow.h \
     paint_widget.h \
@@ -36,6 +37,7 @@ HEADERS  += mainwindow.h \
     obstacle.h \
     engine.h \
     exit.h \
-    entry.h
+    entry.h \
+    plan_builder.h
 
 FORMS    += mainwindow.ui

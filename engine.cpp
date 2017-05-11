@@ -6,6 +6,8 @@
 #include <QFile>
 #include <QTextStream>
 
+#include "plan_builder.h"
+
 Engine::Engine()
 {
     m_timer.reset(new QTimer(this));
@@ -14,7 +16,7 @@ Engine::Engine()
 
     std::srand(time(0));
 
-    readSchemeFromFile(m_schemeFileName);
+    //readSchemeFromFile(m_schemeFileName);
 
     QPoint sceneRealSize(500, 500);
 
@@ -123,7 +125,7 @@ void Engine::readSchemeFromFile(QString filename)
 //     }
 
 
-    m_objects_pool->addObstacle(Obstacle(1, QVector2D(100, 100),QColor(), {QPoint(-90, 300), QPoint(300, 300), QPoint(300, 100)}));
+    //m_objects_pool->addObstacle(Obstacle(1, QVector2D(100, 100),QColor(), {QPoint(-90, 300), QPoint(300, 300), QPoint(300, 100)}));
 
 //    m_objects_pool->addExit(Exit(1, QVector2D(0, 500), QColor(), QVector2D(50, 500)));
 //    m_objects_pool->addExit(Exit(1, QVector2D(400, 200), QColor(), QVector2D(400, 300)));
@@ -140,76 +142,12 @@ void Engine::readSchemeFromFile(QString filename)
 
     QJsonDocument sd = QJsonDocument::fromJson(val.toUtf8());
     QJsonObject mainData = sd.object();
-    QJsonArray obstacles = mainData.value(QString("obstacles")).toArray();
-    QJsonArray agents = mainData.value(QString("agents")).toArray();
-    QJsonArray exits = mainData.value(QString("exits")).toArray();
+
     QJsonObject size = mainData.value(QString("size")).toObject();
 
+    PlanBuilder::buildObjectsPool(mainData, *m_objects_pool);
 
-
-    int n = 0;
-    for(auto i : obstacles)
-    {
-        QJsonArray tmp = i.toArray();
-        QVector<QPoint> apexes;
-
-        bool isFirst = true;
-        int first_x = 0;
-        int first_y = 0;
-
-        for(auto j : tmp)
-        {
-            if(isFirst)
-            {
-                first_x = j.toObject().value(QString("x")).toInt();
-                first_y = j.toObject().value(QString("y")).toInt();
-                isFirst = false;
-            }
-            else
-                apexes.append(QPoint(j.toObject().value(QString("x")).toInt() - first_x,
-                                     j.toObject().value(QString("y")).toInt() - first_y ));
-        }
-
-        m_objects_pool->addObstacle(Obstacle(n, QVector2D(first_x,first_y), QColor(), apexes));
-        n++;
-    }
-
-    for(auto i : exits)
-    {
-        QJsonObject tmp = i.toObject();
-        QJsonObject a = tmp.value(QString("a")).toObject();
-        QJsonObject b = tmp.value(QString("b")).toObject();
-
-        m_objects_pool->addExit(Exit(n,
-                           QVector2D(a.value(QString("x")).toInt(), a.value(QString("y")).toInt()),
-                           QColor(),
-                           QVector2D(b.value(QString("x")).toInt(), b.value(QString("y")).toInt())));
-        n++;
-    }
-
-    for(auto i : agents)
-    {
-        QJsonObject tmp = i.toObject();
-        QJsonObject a =  tmp.value(QString("a")).toObject();
-        QJsonObject b =  tmp.value(QString("b")).toObject();
-
-        int n = 0;
-        for(int j  = a.value(QString("x")).toInt(); j < b.value(QString("x")).toInt(); j += 20)
-        {
-            for(int k  = a.value(QString("y")).toInt(); k < b.value(QString("y")).toInt(); k += 20)
-            {
-                n++;
-                m_objects_pool->addAgent(Agent(n, 5, 1,
-                                     QVector2D(j, k),
-                                     QVector2D(0, 0),
-                                     QVector2D(),
-                                     QColor(n%255, (n*2)%255, (n*3)%255)));
-            }
-
-        }
-
-        qDebug() << n;
-    }
+    int n = 10;
 
     // OBSTACLES BEHIND THE WALLS
 
