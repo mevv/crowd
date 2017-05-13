@@ -92,27 +92,7 @@ void Engine::mouseReleaseEvent(QMouseEvent * event)
         m_timer->stop();
 }
 
-void Engine::setSchemeFileName(QString filename)
-{
-    this->m_schemeFileName = filename;
-    readSchemeFromFile(this->m_schemeFileName);
-
-}
-
-void Engine::setSaveFileName(QString filename)
-{
-    this->m_saveFileName = filename;
-
-}
-
-void Engine::finishSimulation()
-{
-    this->pause();
-    emit enableStatButton();
-    writeRecordToFile();
-}
-
-void Engine::readSchemeFromFile(QString filename)
+void Engine::loadPlan(QString filename)
 {
     /* DUMMY INIT*/
     for (size_t i = 0; i < 10; i++)
@@ -176,6 +156,14 @@ void Engine::readSchemeFromFile(QString filename)
                                          QColor(n%255, (n*2)%255, (n*3)%255),
                                          {QPoint(size.value(QString("x")).toInt(), 0)}
                                          ));
+
+}
+
+void Engine::finishSimulation()
+{
+    this->pause();
+    emit enableStatButton();
+    writeRecordToFile();
 }
 
 void Engine::writeRecordToFile()
@@ -196,7 +184,7 @@ void Engine::writeRecordToFile()
 
 
     QFile file;
-    file.setFileName(m_saveFileName);
+    file.setFileName("");
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     QTextStream stream(&file);
 //    stream << js_data << endl;

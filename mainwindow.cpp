@@ -20,8 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_engine.get(), &Engine::tick, paint_widget, &PaintWidget::update);
     connect(m_engine.get(), &Engine::tick, this, &MainWindow::updateTime);
-    connect(this, &MainWindow::openedSchemeFile, m_engine.get(), &Engine::setSchemeFileName);
-    connect(this, &MainWindow::openedSaveFile, m_engine.get(), &Engine::setSaveFileName);
+    connect(this, &MainWindow::openedSchemeFile, m_engine.get(), &Engine::loadPlan);
+    //connect(this, &MainWindow::openedSaveFile, m_engine.get(), &Engine::setSaveFileName);
     connect(m_engine.get(), &Engine::enableStatButton, this, [this](){ ui->widgetStat->show();});
 
 }
