@@ -48,17 +48,17 @@ QPoint Calculator::getNearestExit(const Agent &agent)
 
     for(auto i : exits)
     {
-//        double tmp = sqrt( pow( agent.getPos().x() - i.getCenter().x() ,2) + pow( agent.getPos().y() - i.getCenter().y() ,2) );
-//        if(tmp < distance)
-//        {
-//            distance = tmp;
-//            coord = i.getCenter();
-//        }
+        QPoint point(0, 0);
 
-        double tmp = getDistanceToSide(i.getBegin().toPoint(), i.getEnd().toPoint(), agent, coord);
+        double tmp = getDistanceToSide(i.getBegin().toPoint(), i.getEnd().toPoint(), agent, point);
+
         if(tmp < distance)
+        {
             distance = tmp;
+            coord = point;
+        }
     }
+
     return coord;
 }
 

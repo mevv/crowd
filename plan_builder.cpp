@@ -9,18 +9,20 @@ PlanBuilder::PlanBuilder()
 
 bool PlanBuilder::buildObjectsPool(const QJsonObject& plan, ObjectsPool& pool)
 {
+    bool result = true;
+
     QJsonArray obstacles = plan.value(QString("obstacles")).toArray();
-    QJsonArray agents = plan.value(QString("spawn_zones")).toArray();
+    QJsonArray spawn_zones = plan.value(QString("spawn_zones")).toArray();
     QJsonArray exits = plan.value(QString("exits")).toArray();
     QJsonArray entries = plan.value(QString("entries")).toArray();
     QJsonObject size = plan.value(QString("size")).toObject();
 
-    int n = 0;
+    result = buildObstacles(obstacles, pool);
+    result = buildExits(exits, pool);
+    result = buildEntries(entries, pool);
+    result = buildSpawnZones(spawn_zones, pool);
 
-    buildObstacles(obstacles, pool);
-    buildExits(exits, pool);
-    buildEntries(entries, pool);
-
+    return result;
 }
 
 bool PlanBuilder::buildObstacles(const QJsonArray& obstacles, ObjectsPool& pool)
@@ -83,6 +85,27 @@ bool PlanBuilder::buildEntries(const QJsonArray& entries, ObjectsPool& pool)
                             QVector2D(tmp.value("end").toObject().value("x").toDouble(),
                                       tmp.value("end").toObject().value("y").toDouble())
                        ));
+        id++;
+    }
+
+    return true;
+}
+
+bool PlanBuilder::buildSpawnZones(const QJsonArray& spawnZones, ObjectsPool& pool)
+{
+    int id = 0;
+
+    for (auto i : spawnZones)
+    {
+        QJsonObject tmp = i.toObject();
+
+        pool.addSpawnZone(SpawnZone(id,
+                                    QVector2D(tmp.value("a").toObject().value("x").toDouble(),
+                                              tmp.value("a").toObject().value("y").toDouble()),
+                                    QColor(),
+                                    QPoint(tmp.value("b").toObject().value("x").toDouble(),
+                                           tmp.value("b").toObject().value("y").toDouble())
+                                    ));
         id++;
     }
 
