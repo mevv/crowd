@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     entry.cpp \
     plan_builder.cpp \
     spawn_zone.cpp \
-    general_builder.cpp
+    general_builder.cpp \
+    json_manager.cpp
 
 HEADERS  += mainwindow.h \
     paint_widget.h \
@@ -42,6 +43,7 @@ HEADERS  += mainwindow.h \
     entry.h \
     plan_builder.h \
     spawn_zone.h \
-    general_builder.h
+    general_builder.h \
+    json_manager.h
 
 FORMS    += mainwindow.ui

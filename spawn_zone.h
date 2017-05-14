@@ -3,7 +3,7 @@
 
 #include "scene_object.h"
 
-const double MIN_DISTANCE_BETWEEN_SPAWN_AGENTS = 1;
+const double MIN_DISTANCE_BETWEEN_SPAWN_AGENTS = 0;
 
 class SpawnZone : public SceneObject
 {

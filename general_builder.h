@@ -15,7 +15,7 @@ public:
     static bool buildAgents(const QJsonObject& settings, ObjectsPool& pool);
 
 private:
-    static int getRandomNumber(int a, int b);
+    static double getRandomNumber(double a, double b);
 
     static inline double distanceBetweenPoints(const QPoint &a, const QPoint &b)
     {

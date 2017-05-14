@@ -1,6 +1,7 @@
 #include "general_builder.h"
 
 #include <unistd.h>
+#include <time.h>
 
 #include <QTime>
 
@@ -16,14 +17,16 @@ static bool CalculatorBuilder(const QJsonObject& settings, Calculator& calculato
 
 }
 
-int GeneralBuilder::getRandomNumber(int a, int b)
+double GeneralBuilder::getRandomNumber(double a, double b)
 {
-    usleep(10);
+    //usleep(100);
 
-    QTime midnight(0, 0, 0);
-    qsrand(midnight.secsTo(QTime::currentTime()));
+    double hack = 1000;
 
-    return qrand() % (b - a) + a;
+    a *= hack;
+    b *= hack;
+
+    return (qrand() % ((int)b - (int)a) + (int)a) / hack;
 }
 
 bool GeneralBuilder::buildCalculator(const QJsonObject& settings, Calculator& calculator)
@@ -39,7 +42,7 @@ bool GeneralBuilder::buildCalculator(const QJsonObject& settings, Calculator& ca
     param.Awall = tmp.value("Awall").toDouble();
     param.Bwall = tmp.value("Bwall").toDouble();
     param.Kwall = tmp.value("Kwall").toDouble();
-
+    qDebug() << param.A;
     calculator.setMathParams(param);
 
     return true;
@@ -49,17 +52,15 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
 {
     int id = 0;
 
+    QTime t = QTime::currentTime();
+    qsrand((uint)t.msec());
+
+    qDebug() << "GeneralBuilder::buildAgents()" << settings;
 
     int totalNumber = settings.value("agent").toObject().value("number").toInt();
     double panic = settings.value("agent").toObject().value("number").toDouble();
     QPair<double, double> entryFreq(settings.value("agent").toObject().value("entry_period").toObject().value("min").toDouble(),
                                     settings.value("agent").toObject().value("entry_period").toObject().value("max").toDouble());
-
-//    QJsonObject childrenConf = settings.value("agent").toObject().value("children").toObject();
-//    QJsonObject manConf = settings.value("agent").toObject().value("man").toObject();
-//    QJsonObject womenConf = settings.value("agent").toObject().value("women").toObject();
-//    QJsonObject oldConf = settings.value("agent").toObject().value("old").toObject();
-//    QJsonObject customConf = settings.value("agent").toObject().value("custom").toObject();
 
     QVector<QJsonObject> agentTypes;
 
@@ -85,49 +86,73 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
         for (auto agentType : agentTypes)
         {
             int typeNum = int(curNum * agentType.value("part").toDouble());
-            bool flag = false;
+
 
             QVector2D pos;
             int size;
+            int count = 0;
 
-            for (int count = 0 ; count < typeNum; count++)
-            {
-                do
-                {
-                    pos.setX(getRandomNumber(i.getPos().x(), i.getPos().x() + i.getSize().x()));
-                    pos.setY(getRandomNumber(i.getPos().y(), i.getPos().y() + i.getSize().y()));
+//            for (int count = 0 ; count < typeNum; count++)
+//            {
+//                bool flag = false;
 
-                    size = getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
-                                               agentType.value("size").toObject().value("max").toDouble());
+//                do
+//                {
+//                    pos.setX(getRandomNumber(i.getPos().x(), i.getPos().x() + i.getSize().x()));
+//                    pos.setY(getRandomNumber(i.getPos().y(), i.getPos().y() + i.getSize().y()));
 
-                    for (auto j : pool.getAgents())
-                    {
-                        if (distanceBetweenPoints(pos.toPoint(), j.getCenter().toPoint()) < (j.getSize() + size + MIN_DISTANCE_BETWEEN_SPAWN_AGENTS))
-                        {
-                            flag = true;
-                            break;
-                        }
-                    }
-                }
-                while(flag);
+//                    size = getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
+//                                               agentType.value("size").toObject().value("max").toDouble());
 
-                pool.addAgent(Agent(id,
-                                    size,
-                                    getRandomNumber(agentType.value("mass").toObject().value("min").toDouble(),
-                                                    agentType.value("mass").toObject().value("max").toDouble()),
-                                    pos,
-                                    QVector2D(0, 0),
-                                    QColor(0, 0, 0, 1),
-                                    (double)getRandomNumber(agentType.value("wish_speed").toObject().value("min").toDouble(),
-                                                    agentType.value("wish_speed").toObject().value("max").toDouble())));
+//                    qDebug() << "__________";
+//                    for (auto j : pool.getAgents())
+//                    {
 
+//                        if (distanceBetweenPoints(pos.toPoint(), j.getCenter().toPoint()) < (j.getSize() + size + MIN_DISTANCE_BETWEEN_SPAWN_AGENTS))
+//                        {
+//                            qDebug() << pos << j.getCenter() << distanceBetweenPoints(pos.toPoint(), j.getCenter().toPoint()) << j.getSize() + size + MIN_DISTANCE_BETWEEN_SPAWN_AGENTS;
+//                            flag = true;
+//                            //break;
+//                        }
+//                    }
+//                }
+//                while(flag);
 
-                id++;
-            }
+//                for (int h = 20; h < i.getPos().x() + i.getSize().x(); h += 20)
+//                {
+//                    for (int w = 20; w < i.getPos().y() + i.getSize().y(); w += 20)
+//                    {
+//                        if (count > typeNum)
+//                            break;
+//                        pool.addAgent(Agent(id,
+//                                            5,
+//                                            50,
+//                                            QVector2D(h, w),
+//                                            QVector2D(0, 0),
+//                                            QColor(0, 0, 0),
+//                                            5));
+//                        count++;
+//                        id++;
+//                    }
+//                }
+
+//                pool.addAgent(Agent(id,
+//                                    5,
+//                                    getRandomNumber(agentType.value("mass").toObject().value("min").toDouble(),
+//                                                    agentType.value("mass").toObject().value("max").toDouble()),
+//                                    pos,
+//                                    QVector2D(0, 0),
+//                                    QColor(0, 0, 0),
+//                                    agentType.value("wish_speed").toObject().value("max").toDouble()));
+
+//                qDebug() << "GeneralBuilder::buildAgents()" << id;
+
+//                id++;
+//            }
         }
 
 
     }
 
-
+    return true;
 }
