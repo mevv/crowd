@@ -17,13 +17,18 @@ const double Bwall = 0.8;
 //const double Bwall = 0.8;
 const double Kwall = 24;
 
-class Calculator
+class Calculator: public QObject
 {
+    Q_OBJECT
 public:
 
     Calculator(QPoint sceneSize, std::shared_ptr<ObjectsPool> pool);
 
     std::vector<QVector2D> update(double delta);
+
+signals:
+    void agentStat(const Agent &agent);
+    void removeAgentSignal();
 
 
 private:

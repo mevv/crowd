@@ -29,6 +29,20 @@ Engine::Engine()
     connect(m_objects_pool.get(), &ObjectsPool::endOfSimulation, this, &Engine::finishSimulation);
 
     m_timer->setInterval(m_timerTick);
+
+    m_stat_thread.reset(new QThread());
+    m_stat.reset(new Statistics());
+    m_stat->moveToThread(m_stat_thread.get());
+    m_stat_thread->start();
+    connect(this, &Engine::startSimulation, m_stat.get(), &Statistics::simulationStart);
+//    connect(m_calculator, &Calculator::agentStat, m_stat.get(), &Statistics::gather_info);
+    connect(m_calculator.get(), &Calculator::removeAgentSignal, m_stat.get(), &Statistics::agent_quit);
+
+}
+
+Engine::~Engine()
+{
+
 }
 
 void Engine::update(bool isTimeRun)
@@ -72,7 +86,7 @@ void Engine::scrollEvent(QWheelEvent * event)
     m_timer->singleShot(0, [this]{ this->update(false); });
 }
 
-void Engine::mouseClickEvent(QMouseEvent * event)
+void Engine::mouseClickEvent(QMouseEvent *event)
 {
     m_isMouseMove = true;
     m_mousePrevPos = QCursor::pos();
@@ -98,7 +112,7 @@ void Engine::loadPlan(QString filename)
     for (size_t i = 0; i < 10; i++)
     {
         m_objects_pool->addAgent(Agent(i, 5, 1,
-                             QVector2D(10+i*20, 50),
+                             QVector2D(10+i*20, 50+i*10),
                              QVector2D(0, 0),
                              QVector2D(),
                              QColor(i%255, (i*2)%255, (i*3)%255)));
@@ -183,4 +197,9 @@ void Engine::clear()
     m_objects_pool->clear();
     m_simulationTime = 0;
     m_timer->singleShot(0, [this]{ this->update(false); });
+}
+
+void Engine::startSimulationSlot()
+{
+    emit startSimulation(m_objects_pool->getAgents().size());
 }

@@ -231,7 +231,10 @@ std::vector<QVector2D> Calculator::update(double delta)
         moveRecord.push_back(i->getCenter());
 
         if (isInExit(*i))
+        {
+            emit removeAgentSignal();
             i =  m_pool->removeAgent(*i);
+        }
         else
             i++;
     }

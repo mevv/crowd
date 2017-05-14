@@ -3,7 +3,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "paint_widget.h"
-#include <QJsonObject>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -24,10 +23,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_engine.get(), &Engine::tick, paint_widget, &PaintWidget::update);
     connect(m_engine.get(), &Engine::tick, this, &MainWindow::updateTime);
     connect(this, &MainWindow::openedSchemeFile, m_engine.get(), &Engine::loadPlan);
-    //connect(this, &MainWindow::openedSaveFile, m_engine.get(), &Engine::setSaveFileName);
     connect(m_engine.get(), &Engine::enableStatButton, this, [this](){ ui->stat_groupBox->show();});
     connect(this, &MainWindow::clearSimulation, m_engine.get(), &Engine::clear);
+    connect(this, &MainWindow::startSimulation, m_engine.get(), &Engine::startSimulationSlot);
 
+    //connect(this, &MainWindow::openedSaveFile, m_engine.get(), &Engine::setSaveFileName);
 }
 
 MainWindow::~MainWindow()
@@ -37,6 +37,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_playButton_clicked()
 {
+    if(ui->playButton->text() == "Почати")
+        emit startSimulation();
+
     if (m_engine->isStarted())
     {
         ui->playButton->setText("Продовжити");

@@ -8,7 +8,6 @@ ObjectsPool::ObjectsPool()
 
 ObjectsPool::~ObjectsPool()
 {
-    qDebug() << "~ObjectsPool()";
     m_agents.clear();
 }
 

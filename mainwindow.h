@@ -6,9 +6,11 @@
 #include <QMainWindow>
 #include <QWheelEvent>
 #include <QFileDialog>
+#include <QJsonObject>
 
 #include "engine.h"
 #include "crowd_parameters.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -55,6 +57,7 @@ signals:
     void changedPathToSimulations(QString path);
     void openedCrowdParamsFile(QString file_name);
     void clearSimulation();
+    void startSimulation();
 
 };
 

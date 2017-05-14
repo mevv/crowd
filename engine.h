@@ -5,10 +5,12 @@
 #include <QPainter>
 #include <QTimer>
 #include <QWheelEvent>
+#include <QThread>
 
 #include "scene.h"
 #include "calculator.h"
 #include "objects_pool.h"
+#include "statistics.h"
 
 #include <chrono>
 
@@ -18,9 +20,13 @@ class Engine : public QObject
 public:
     Engine();
 
+    ~Engine();
+
     bool isStarted() const { return m_timer->isActive(); }
 
     int getSimulationTime() const { return m_simulationTime; }
+
+    int getTimerTick() const { return m_timerTick; }
 
     void update(bool isTimeRun = true);
 
@@ -39,6 +45,7 @@ public:
 signals:
     void tick();
     void enableStatButton();
+    void startSimulation(int n);
 
 public slots:
     void loadPlan(QString filename);
@@ -47,6 +54,7 @@ public slots:
 
     void clear();
 
+    void startSimulationSlot();
 
 private:
     int m_timerTick = 10;//milliseconds
@@ -61,6 +69,8 @@ private:
     std::unique_ptr<Scene> m_scene;
     std::unique_ptr<Calculator> m_calculator;
     std::shared_ptr<ObjectsPool> m_objects_pool;
+    std::unique_ptr<Statistics> m_stat;
+    std::unique_ptr<QThread>m_stat_thread;
 
     std::vector<std::vector<QVector2D>> m_moveRecord;
 
