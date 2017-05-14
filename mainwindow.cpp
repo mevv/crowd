@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     PaintWidget * paint_widget = new PaintWidget(this, m_engine);
 
     ui->stat_groupBox->hide();
+    ui->playButton->hide();
+    ui->clearButton->hide();
 
     ui->gridLayout->addWidget(paint_widget);
 
@@ -24,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, &MainWindow::openedSchemeFile, m_engine.get(), &Engine::loadPlan);
     //connect(this, &MainWindow::openedSaveFile, m_engine.get(), &Engine::setSaveFileName);
     connect(m_engine.get(), &Engine::enableStatButton, this, [this](){ ui->stat_groupBox->show();});
+    connect(this, &MainWindow::clearSimulation, m_engine.get(), &Engine::clear);
 
 }
 
@@ -36,12 +39,12 @@ void MainWindow::on_playButton_clicked()
 {
     if (m_engine->isStarted())
     {
-        ui->playButton->setText("Start");
+        ui->playButton->setText("Продовжити");
         m_engine->pause();
     }
     else
     {
-        ui->playButton->setText("Pause");
+        ui->playButton->setText("Зупинити");
         m_engine->resume();
     }
 }
@@ -69,12 +72,16 @@ void MainWindow::on_change_crowd_params_triggered()
 void MainWindow::on_open_shcheme_menu_triggered()
 {
     auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити креслення"), "/home/peter", tr("JSON Files (*.json)"));
+    ui->clearButton->show();
+    ui->playButton->show();
     emit openedSchemeFile(file_name);
 }
 
 void MainWindow::on_open_simulation_menu_triggered()
 {
     auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити файл симуляції"), "/home/peter", tr("JSON Files (*.sim)"));
+    ui->clearButton->show();
+    ui->playButton->show();
     emit openedSaveFile(file_name);
 }
 
@@ -88,4 +95,10 @@ void MainWindow::on_path_to_simulations_menu_triggered()
 {
     auto path = QFileDialog::getExistingDirectory( this, tr("Зберегти симуляції до..."), "/home/peter", QFileDialog::ShowDirsOnly);
     emit changedPathToSimulations(path);
+}
+
+void MainWindow::on_clearButton_clicked()
+{
+    ui->playButton->setText("Почати");
+    emit clearSimulation();
 }

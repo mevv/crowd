@@ -23,3 +23,12 @@ std::vector<Agent>::iterator ObjectsPool::removeAgent(const Agent &agent)
 
     return it;
 }
+
+void ObjectsPool::clear()
+{
+    m_agents.clear();
+    m_obstacles.clear();
+    m_exits.clear();
+    m_entries.clear();
+    m_spawnZones.clear();
+}

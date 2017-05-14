@@ -40,6 +40,8 @@ private slots:
 
     void on_path_to_simulations_menu_triggered();
 
+    void on_clearButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -52,6 +54,7 @@ signals:
     void openedSaveFile(QString file_name);
     void changedPathToSimulations(QString path);
     void openedCrowdParamsFile(QString file_name);
+    void clearSimulation();
 
 };
 

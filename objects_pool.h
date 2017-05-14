@@ -44,6 +44,7 @@ public:
 
     void addSpawnZone(const SpawnZone& spawnZone) { m_spawnZones.push_back(spawnZone); }
 
+    void clear();
 
     std::vector<Agent>::iterator removeAgent(const Agent &agent);
 

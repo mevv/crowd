@@ -22,8 +22,7 @@ public:
 
     int getSimulationTime() const { return m_simulationTime; }
 
-
-    void update();
+    void update(bool isTimeRun = true);
 
     void draw(QPainter& painter);
 
@@ -45,6 +44,8 @@ public slots:
     void loadPlan(QString filename);
 
     void finishSimulation();
+
+    void clear();
 
 
 private:
