@@ -18,7 +18,6 @@ private:
     static bool buildExits(const QJsonArray& exits, ObjectsPool& pool);
     static bool buildEntries(const QJsonArray& entries, ObjectsPool& pool);
     static bool buildSpawnZones(const QJsonArray& spawnZones, ObjectsPool& pool);
-
 };
 
 #endif // PLANBUILDER_H

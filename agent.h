@@ -8,7 +8,7 @@
 class Agent : public SceneObject
 {
 public:
-    Agent(int id, double size, double mass, QVector2D position, QVector2D speed, QVector2D acceleration, QColor color);
+    Agent(int id, double size, double mass, QVector2D position, QVector2D speed, QColor color, double wishSpeed);
 
 
     inline double getSize() const { return m_size; }
@@ -22,6 +22,8 @@ public:
     inline QColor getColor() const {return this->m_color; }
 
     inline QVector2D getCenter() const {return QVector2D(this->getPos().x() +  this->getSize(), this->getPos().y() +  this->getSize());}
+
+    inline double getWishSpeed() const { return this->m_wishSpeed; }
 
 
     void setSpeed(const QVector2D speed) { m_speed = speed; }
@@ -44,6 +46,7 @@ private:
     QVector2D m_prevPos;
     QVector2D m_acceleration;
     QColor m_color;
+    double m_wishSpeed;
 };
 
 #endif // AGENT_H

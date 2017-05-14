@@ -6,7 +6,10 @@
 #include <QFile>
 #include <QTextStream>
 
+
 #include "plan_builder.h"
+#include "general_builder.h"
+#include "json_manager.h"
 
 Engine::Engine()
 {
@@ -97,11 +100,11 @@ void Engine::loadPlan(QString filename)
     /* DUMMY INIT*/
     for (size_t i = 0; i < 10; i++)
     {
-        m_objects_pool->addAgent(Agent(i, 5, 1,
-                             QVector2D(10+i*20, 50),
+        m_objects_pool->addAgent(Agent(i, 5, 50,
+                             QVector2D(10+i*20, 50+i*1),
                              QVector2D(0, 0),
-                             QVector2D(),
-                             QColor(i%255, (i*2)%255, (i*3)%255)));
+                             QColor(i%255, (i*2)%255, (i*3)%255),
+                             5));
      }
 
 
@@ -113,49 +116,45 @@ void Engine::loadPlan(QString filename)
 
     /* INIT FROM FILE*/
 
-    QFile file;
-    QString val;
-    file.setFileName(filename);
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
-    val = file.readAll();
-    file.close();
 
-    QJsonDocument sd = QJsonDocument::fromJson(val.toUtf8());
-    QJsonObject mainData = sd.object();
+    QJsonObject planData = JsonManager::parseJsonFile(filename);
+    QJsonObject configData = JsonManager::parseJsonFile("/home/valera/source/crowd/config.json");
 
-    QJsonObject size = mainData.value(QString("size")).toObject();
+    QJsonObject size = planData.value(QString("size")).toObject();
 
-    PlanBuilder::buildObjectsPool(mainData, *m_objects_pool);
+    PlanBuilder::buildObjectsPool(planData, *m_objects_pool);
+    GeneralBuilder::buildCalculator(configData, *m_calculator);
+    GeneralBuilder::buildAgents(configData, *m_objects_pool);
 
     int n = 10;
 
     // OBSTACLES BEHIND THE WALLS
 
     // left wall
-    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
-                                         QVector2D(0,0),
-                                         QColor(n%255, (n*2)%255, (n*3)%255),
-                                         {QPoint(0, size.value(QString("x")).toInt())}
-                                         ));
+//    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
+//                                         QVector2D(0,0),
+//                                         QColor(n%255, (n*2)%255, (n*3)%255),
+//                                         {QPoint(0, size.value(QString("x")).toInt())}
+//                                         ));
 
-    // top wall
-    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
-                                         QVector2D(0,0),
-                                         QColor(n%255, (n*2)%255, (n*3)%255),
-                                         {QPoint(size.value(QString("y")).toInt(), 0)}
-                                         ));
-    // right wall
-    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
-                                         QVector2D(size.value(QString("x")).toInt(),0),
-                                         QColor(n%255, (n*2)%255, (n*3)%255),
-                                         {QPoint(0, size.value(QString("y")).toInt())}
-                                         ));
-    // bottom wall
-    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
-                                         QVector2D(0, size.value(QString("y")).toInt()),
-                                         QColor(n%255, (n*2)%255, (n*3)%255),
-                                         {QPoint(size.value(QString("x")).toInt(), 0)}
-                                         ));
+//    // top wall
+//    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
+//                                         QVector2D(0,0),
+//                                         QColor(n%255, (n*2)%255, (n*3)%255),
+//                                         {QPoint(size.value(QString("y")).toInt(), 0)}
+//                                         ));
+//    // right wall
+//    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
+//                                         QVector2D(size.value(QString("x")).toInt(),0),
+//                                         QColor(n%255, (n*2)%255, (n*3)%255),
+//                                         {QPoint(0, size.value(QString("y")).toInt())}
+//                                         ));
+//    // bottom wall
+//    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
+//                                         QVector2D(0, size.value(QString("y")).toInt()),
+//                                         QColor(n%255, (n*2)%255, (n*3)%255),
+//                                         {QPoint(size.value(QString("x")).toInt(), 0)}
+//                                         ));
 
 }
 
