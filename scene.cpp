@@ -7,8 +7,6 @@ Scene::Scene(QPoint size,std::shared_ptr<ObjectsPool> pool) :
     m_size(size),
     m_pool(pool)
 {
-    qDebug() << "Scene count" << m_pool.use_count();
-
     m_arrow = {QPoint(0, 0), QPoint(2, -2), QPoint(2, -1), QPoint(4, -1), QPoint(4, 1), QPoint(2, 1), QPoint(2, 2)};
 }
 

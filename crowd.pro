@@ -27,8 +27,10 @@ SOURCES += main.cpp\
     entry.cpp \
     plan_builder.cpp \
     spawn_zone.cpp \
+    crowd_parameters.cpp \
+    statistics.cpp \
     general_builder.cpp \
-    json_manager.cpp
+    json_manager.cpp \
 
 HEADERS  += mainwindow.h \
     paint_widget.h \
@@ -43,7 +45,10 @@ HEADERS  += mainwindow.h \
     entry.h \
     plan_builder.h \
     spawn_zone.h \
+    crowd_parameters.h \
+    statistics.h \
     general_builder.h \
-    json_manager.h
+    json_manager.h \
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    crowdparameters.ui \

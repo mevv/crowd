@@ -27,7 +27,7 @@ bool PlanBuilder::buildObjectsPool(const QJsonObject& plan, ObjectsPool& pool)
 
 bool PlanBuilder::buildObstacles(const QJsonArray& obstacles, ObjectsPool& pool)
 {
-    qDebug() << obstacles;
+//    qDebug() << obstacles;
     int id = 0;
     for(auto i : obstacles)
     {

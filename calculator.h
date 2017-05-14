@@ -27,16 +27,20 @@ struct MathParams
     double Kwall = 24;
 };
 
-class Calculator
+class Calculator: public QObject
 {
+    Q_OBJECT
 public:
 
     Calculator(QPoint sceneSize, std::shared_ptr<ObjectsPool> pool);
 
     std::vector<QVector2D> update(double delta);
 
+signals:
+    void agentStat(const Agent &agent);
+    void removeAgentSignal();
     void setMathParams(const MathParams& param) { m_param = param; }
-
+    
 private:
 
     QPoint m_sceneSize;//meters

@@ -35,63 +35,11 @@
      </property>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>900</x>
-      <y>440</y>
-      <width>85</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Write to file</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="widgetStat" native="true">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>820</x>
-      <y>350</y>
-      <width>161</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>131</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Симуляція проведена</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_2">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>40</y>
-       <width>85</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Статистика</string>
-     </property>
-    </widget>
-   </widget>
    <widget class="QGroupBox" name="simulationControlGroupBox">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>469</y>
+      <x>610</x>
+      <y>20</y>
       <width>361</width>
       <height>121</height>
      </rect>
@@ -104,7 +52,7 @@
       <rect>
        <x>0</x>
        <y>80</y>
-       <width>41</width>
+       <width>101</width>
        <height>27</height>
       </rect>
      </property>
@@ -115,7 +63,7 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>Start</string>
+      <string>Почати</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="totalTimeLineEdit">
@@ -278,6 +226,48 @@
       <string>Маштаб</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="clearButton">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>80</y>
+       <width>101</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="text">
+      <string>Очистити</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="stat_groupBox">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>160</y>
+      <width>371</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Статистика симуляції</string>
+    </property>
+    <widget class="QTextEdit" name="textEdit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>351</width>
+       <height>201</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -293,31 +283,49 @@
     <property name="title">
      <string>Файл</string>
     </property>
-    <addaction name="action"/>
-    <addaction name="action_2"/>
-    <addaction name="action_4"/>
-    <addaction name="action_3"/>
+    <addaction name="open_shcheme_menu"/>
+    <addaction name="open_simulation_menu"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Налаштування</string>
+    </property>
+    <addaction name="path_to_crowd_params_file_menu"/>
+    <addaction name="path_to_simulations_menu"/>
+    <addaction name="change_crowd_params"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>Про програму</string>
+    </property>
    </widget>
    <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
   </widget>
-  <action name="action">
-   <property name="text">
-    <string>Створити</string>
-   </property>
-  </action>
-  <action name="action_2">
+  <action name="open_shcheme_menu">
    <property name="text">
     <string>Відкрити креслення</string>
    </property>
   </action>
-  <action name="action_3">
-   <property name="text">
-    <string>Зберегти</string>
-   </property>
-  </action>
-  <action name="action_4">
+  <action name="open_simulation_menu">
    <property name="text">
     <string>Відкрити симуляцію</string>
+   </property>
+  </action>
+  <action name="path_to_crowd_params_file_menu">
+   <property name="text">
+    <string>Шлях до файлу характеристик натовпу</string>
+   </property>
+  </action>
+  <action name="path_to_simulations_menu">
+   <property name="text">
+    <string>Директорія для запису симуляцій</string>
+   </property>
+  </action>
+  <action name="change_crowd_params">
+   <property name="text">
+    <string>Характеристики натовпу</string>
    </property>
   </action>
  </widget>

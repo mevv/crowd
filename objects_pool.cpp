@@ -8,7 +8,6 @@ ObjectsPool::ObjectsPool()
 
 ObjectsPool::~ObjectsPool()
 {
-    qDebug() << "~ObjectsPool()";
     m_agents.clear();
 }
 
@@ -22,4 +21,13 @@ std::vector<Agent>::iterator ObjectsPool::removeAgent(const Agent &agent)
         emit endOfSimulation();
 
     return it;
+}
+
+void ObjectsPool::clear()
+{
+    m_agents.clear();
+    m_obstacles.clear();
+    m_exits.clear();
+    m_entries.clear();
+    m_spawnZones.clear();
 }

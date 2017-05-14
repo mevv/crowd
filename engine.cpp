@@ -32,9 +32,23 @@ Engine::Engine()
     connect(m_objects_pool.get(), &ObjectsPool::endOfSimulation, this, &Engine::finishSimulation);
 
     m_timer->setInterval(m_timerTick);
+
+    m_stat_thread.reset(new QThread());
+    m_stat.reset(new Statistics());
+    m_stat->moveToThread(m_stat_thread.get());
+    m_stat_thread->start();
+    connect(this, &Engine::startSimulation, m_stat.get(), &Statistics::simulationStart);
+//    connect(m_calculator, &Calculator::agentStat, m_stat.get(), &Statistics::gather_info);
+    connect(m_calculator.get(), &Calculator::removeAgentSignal, m_stat.get(), &Statistics::agent_quit);
+
 }
 
-void Engine::update()
+Engine::~Engine()
+{
+
+}
+
+void Engine::update(bool isTimeRun)
 {
     if (m_isMouseMove)
     {
@@ -42,7 +56,7 @@ void Engine::update()
         m_mousePrevPos = QCursor::pos();
     }
 
-    //if (m_timer->remainingTime() > 0)
+    if (isTimeRun && !m_isMouseMove )
     {
         m_simulationTime += m_timerTick;
         auto tmpMoveRecord = this->m_calculator->update(m_timerTick);
@@ -72,10 +86,10 @@ void Engine::resume()
 void Engine::scrollEvent(QWheelEvent * event)
 {
     m_scene->setScale(event->delta() / 10000.0);
-    m_timer->singleShot(0, [this]{ this->update(); });
+    m_timer->singleShot(0, [this]{ this->update(false); });
 }
 
-void Engine::mouseClickEvent(QMouseEvent * event)
+void Engine::mouseClickEvent(QMouseEvent *event)
 {
     m_isMouseMove = true;
     m_mousePrevPos = QCursor::pos();
@@ -156,6 +170,7 @@ void Engine::loadPlan(QString filename)
 //                                         {QPoint(size.value(QString("x")).toInt(), 0)}
 //                                         ));
 
+    m_timer->singleShot(0, [this]{ this->update(false); });
 }
 
 void Engine::finishSimulation()
@@ -167,28 +182,23 @@ void Engine::finishSimulation()
 
 void Engine::writeRecordToFile()
 {
-
-//     QJsonArray ** data = new QJsonArray*[m_moveRecord.size()];
-
-//     int i = 0;
-//     for(auto frame : m_moveRecord)
-//     {
-//         QVector2D * tmp = &frame[0];
-//         QVector2D tmp2 [frame.size()] = *tmp;
-//         data[i] = new QJsonArray(tmp2);
-//         i++;
-//     }
-
-
-
-
     QFile file;
     file.setFileName("");
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     QTextStream stream(&file);
 //    stream << js_data << endl;
     file.close();
+}
 
+void Engine::clear()
+{
+    m_timer->stop();
+    m_objects_pool->clear();
+    m_simulationTime = 0;
+    m_timer->singleShot(0, [this]{ this->update(false); });
+}
 
-
+void Engine::startSimulationSlot()
+{
+    emit startSimulation(m_objects_pool->getAgents().size());
 }
