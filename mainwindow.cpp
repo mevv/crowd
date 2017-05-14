@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "paint_widget.h"
+#include <QJsonObject>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     PaintWidget * paint_widget = new PaintWidget(this, m_engine);
 
-    ui->widgetStat->hide();
+    ui->stat_groupBox->hide();
 
     ui->gridLayout->addWidget(paint_widget);
 
@@ -22,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_engine.get(), &Engine::tick, this, &MainWindow::updateTime);
     connect(this, &MainWindow::openedSchemeFile, m_engine.get(), &Engine::loadPlan);
     //connect(this, &MainWindow::openedSaveFile, m_engine.get(), &Engine::setSaveFileName);
-    connect(m_engine.get(), &Engine::enableStatButton, this, [this](){ ui->widgetStat->show();});
+    connect(m_engine.get(), &Engine::enableStatButton, this, [this](){ ui->stat_groupBox->show();});
 
 }
 
@@ -55,22 +56,36 @@ void MainWindow::updateTime()
     ui->totalTimeLineEdit->setText(QString::number(m_engine->getSimulationTime() / 1000.0));
 }
 
-void MainWindow::on_action_2_triggered()
+void MainWindow::on_change_crowd_params_triggered()
 {
-    auto file_name = QFileDialog::getOpenFileName(this, tr("Open draft"), "/home/peter", tr("JSON Files (*.json)"));
+    // TODO: norm JSON
+    QJsonObject tmp;
+    CrowdParameters * a = new CrowdParameters(tmp);
+    a->show();
+
+    // TODO: fix memory leak - store pointer to form and catch Save button signal
+}
+
+void MainWindow::on_open_shcheme_menu_triggered()
+{
+    auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити креслення"), "/home/peter", tr("JSON Files (*.json)"));
     emit openedSchemeFile(file_name);
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_open_simulation_menu_triggered()
 {
-    auto file_name = QFileDialog::getSaveFileName(this, tr("Save simualtion to..."), "/home/peter", tr("JSON File (*.json)"));
-
-    ui->playButton->setText("Pause");
-    m_engine->resume();
+    auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити файл симуляції"), "/home/peter", tr("JSON Files (*.sim)"));
+    emit openedSaveFile(file_name);
 }
 
-void MainWindow::on_action_4_triggered()
+void MainWindow::on_path_to_crowd_params_file_menu_triggered()
 {
-    auto file_name = QFileDialog::getOpenFileName(this, tr("Open simulation"), "/home/peter", tr("JSON Files (*.json)"));
-    emit openedSaveFile(file_name);
+    auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити файл характеристики натовпу"), "/home/peter", tr("JSON Files (*.json)"));
+    emit openedCrowdParamsFile(file_name);
+}
+
+void MainWindow::on_path_to_simulations_menu_triggered()
+{
+    auto path = QFileDialog::getExistingDirectory( this, tr("Зберегти симуляції до..."), "/home/peter", QFileDialog::ShowDirsOnly);
+    emit changedPathToSimulations(path);
 }

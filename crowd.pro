@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     exit.cpp \
     entry.cpp \
     plan_builder.cpp \
-    spawn_zone.cpp
+    spawn_zone.cpp \
+    crowd_parameters.cpp
 
 HEADERS  += mainwindow.h \
     paint_widget.h \
@@ -40,6 +41,8 @@ HEADERS  += mainwindow.h \
     exit.h \
     entry.h \
     plan_builder.h \
-    spawn_zone.h
+    spawn_zone.h \
+    crowd_parameters.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    crowdparameters.ui
