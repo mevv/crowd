@@ -7,6 +7,7 @@
 #include <QTextStream>
 
 #include "plan_builder.h"
+#include "general_builder.h"
 
 Engine::Engine()
 {
@@ -97,11 +98,11 @@ void Engine::loadPlan(QString filename)
     /* DUMMY INIT*/
     for (size_t i = 0; i < 10; i++)
     {
-        m_objects_pool->addAgent(Agent(i, 5, 1,
-                             QVector2D(10+i*20, 50),
-                             QVector2D(0, 0),
-                             QVector2D(),
-                             QColor(i%255, (i*2)%255, (i*3)%255)));
+//        m_objects_pool->addAgent(Agent(i, 5, 1,
+//                             QVector2D(10+i*20, 50),
+//                             QVector2D(0, 0),
+//                             QVector2D(),
+//                             QColor(i%255, (i*2)%255, (i*3)%255)));
      }
 
 
@@ -125,7 +126,8 @@ void Engine::loadPlan(QString filename)
 
     QJsonObject size = mainData.value(QString("size")).toObject();
 
-    PlanBuilder::buildObjectsPool(mainData, *m_objects_pool);
+    //PlanBuilder::buildObjectsPool(mainData, *m_objects_pool);
+    GeneralBuilder::buildAgents(mainData, *m_objects_pool);
 
     int n = 10;
 

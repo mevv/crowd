@@ -3,10 +3,15 @@
 
 #include "scene_object.h"
 
+#include <QPair>
+
 class Entry : public SceneObject
 {
 public:
     Entry(int id, QVector2D pos, QColor color, QVector2D end);
+
+
+    void setFreq(const QPair<double, double>& freq) { m_freq = freq; }
 
 
     QPoint getCenter() const { return QPoint((getPos().x() + m_end.x()) / 2.0, (getPos().y() + m_end.y()) / 2.0); }
@@ -17,6 +22,7 @@ public:
 
 private:
     QVector2D m_end;
+    QPair<double, double> m_freq;
 
 };
 

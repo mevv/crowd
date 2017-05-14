@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     exit.cpp \
     entry.cpp \
     plan_builder.cpp \
-    spawn_zone.cpp
+    spawn_zone.cpp \
+    general_builder.cpp
 
 HEADERS  += mainwindow.h \
     paint_widget.h \
@@ -40,6 +41,7 @@ HEADERS  += mainwindow.h \
     exit.h \
     entry.h \
     plan_builder.h \
-    spawn_zone.h
+    spawn_zone.h \
+    general_builder.h
 
 FORMS    += mainwindow.ui
