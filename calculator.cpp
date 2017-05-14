@@ -1,5 +1,4 @@
 #include "calculator.h"
-#include <QPainter>
 
 Calculator::Calculator(QPoint sceneSize, std::shared_ptr<ObjectsPool> pool) :
     m_sceneSize(sceneSize),

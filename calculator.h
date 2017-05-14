@@ -36,10 +36,12 @@ public:
 
     std::vector<QVector2D> update(double delta);
 
+    void setMathParams(const MathParams& param) { m_param = param; }
+
 signals:
     void agentStat(const Agent &agent);
     void removeAgentSignal();
-    void setMathParams(const MathParams& param) { m_param = param; }
+
     
 private:
 
