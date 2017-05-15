@@ -24,12 +24,12 @@ void Scene::draw(QPainter&  painter)
     painter.drawRect(m_pos.x(), m_pos.y(), m_size.x() * m_scale, m_size.y() * m_scale);
 
     //draw agents
-    auto brush = new QBrush();
-    brush->setStyle(Qt::SolidPattern);
+    painter.setBrush(Qt::black);
     for (auto i : m_pool->getAgents())
     {
-        brush->setColor(i.getColor());
-        painter.setBrush(*brush);
+        //qDebug() << i.getID() << i.getPos() << i.getPos().x() * m_scale + m_pos.x() << i.getPos().y() * m_scale + m_pos.y() << i.getSize() * m_scale;
+        //brush->setColor(i.getColor());
+        //painter.setBrush(*brush);
         painter.drawEllipse(i.getPos().x() * m_scale + m_pos.x(), i.getPos().y() * m_scale + m_pos.y(), i.getSize() * m_scale, i.getSize() * m_scale);
     }
 
@@ -41,7 +41,10 @@ void Scene::draw(QPainter&  painter)
         path.moveTo(i.getPos().x() * m_scale + m_pos.x(), i.getPos().y() * m_scale + m_pos.y());
 
         for (auto j : i.getPoints())
+        {
+            //qDebug() << j;
             path.lineTo((j.x() + i.getPos().x()) * m_scale + m_pos.x(), (j.y() + i.getPos().y()) * m_scale + m_pos.y());
+        }
 
         path.closeSubpath();
 
@@ -51,22 +54,23 @@ void Scene::draw(QPainter&  painter)
     //draw exits
     for (auto i : m_pool->getExits())
     {
-        auto curArrow = this->scalePolygon(m_arrow, 5);
+        //qDebug() << (i.getEnd() - i.getPos()).length();
+        auto curArrow = this->scalePolygon(m_arrow, (i.getEnd() - i.getPos()).length() / 4.0 );
         curArrow = this->movePolygonTo(curArrow, i.getCenter());
 
 
-        QPainterPath path;
+//        QPainterPath path;
 
-        path.moveTo(curArrow[0].x() * m_scale + m_pos.x(), curArrow[0].y() * m_scale + m_pos.y());
+//        path.moveTo(curArrow[0].x() * m_scale + m_pos.x(), curArrow[0].y() * m_scale + m_pos.y());
 
-        for (auto j : curArrow)
-        {
-            path.lineTo(j.x() * m_scale + m_pos.x(), j.y() * m_scale + m_pos.y());
-        }
+//        for (auto j : curArrow)
+//        {
+//            path.lineTo(j.x() * m_scale + m_pos.x(), j.y() * m_scale + m_pos.y());
+//        }
 
-        path.closeSubpath();
+//        path.closeSubpath();
 
-        painter.drawPath(path);
+//        painter.drawPath(path);
 
         QPen pen;
         pen.setColor(Qt::black);

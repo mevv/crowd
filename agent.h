@@ -40,7 +40,7 @@ public:
 
 
 private:
-    int m_size;
+    double m_size;
     double m_mass;
     QVector2D m_speed;
     QVector2D m_prevPos;

@@ -18,6 +18,8 @@ public:
 
     void setScale(double delta) { m_scale += delta; }
 
+    void setSize(const QPoint& size) { m_size = size; }
+
     void moveBy(QPoint delta) { m_pos += delta; }
 
     QPoint getSize() {return this->m_size; }

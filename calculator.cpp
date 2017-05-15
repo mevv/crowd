@@ -116,6 +116,7 @@ QVector2D Calculator::calcWallForce(const Agent &agent)
         QVector2D tau(n.y(), -n.x());
 
         wallForce += m_param.Awall*n*exp(D/m_param.Bwall) + m_param.Kwall*Heaviside(D)*D*n  - m_param.Kwall*Heaviside(D)*D*agent.getSpeed()*tau*tau;
+        qDebug() << "Near" << nearestPoint;
     }
     return wallForce;
 }
@@ -210,6 +211,8 @@ void Calculator::calcForce(Agent &agent)
     QVector2D crossAgentForce = calcCrossAgentForce(agent);
     QVector2D wallForce = calcWallForce(agent);
     QVector2D totalForce = panicForce + crossAgentForce + wallForce;
+
+    qDebug() << "PF:" << panicForce << "CF:" << crossAgentForce << "WF:" << wallForce;
 
     QVector2D speed = agent.getSpeed() + m_time*totalForce/agent.getMass();
 

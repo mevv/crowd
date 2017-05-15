@@ -113,13 +113,14 @@ void Engine::loadPlan(QString filename)
     this->clear();
 
     /* DUMMY INIT*/
-    for (size_t i = 0; i < 10; i++)
+    for (size_t i = 0; i < 3; i++)
     {
-        m_objects_pool->addAgent(Agent(i, 5, 50,
-                             QVector2D(10+i*20, 50+i*1),
+        m_objects_pool->addAgent(Agent(i, 0.1, 80,
+                             QVector2D(1.0 + i, 0.5),
                              QVector2D(0, 0),
-                             QColor(i%255, (i*2)%255, (i*3)%255),
+                             QColor(0, 0, 0),
                              5));
+        qDebug() << "agent";
      }
 
 
@@ -136,6 +137,8 @@ void Engine::loadPlan(QString filename)
     QJsonObject configData = JsonManager::parseJsonFile(PATH_TO_CONF);
 
     QJsonObject size = planData.value(QString("size")).toObject();
+    m_scene->setSize(QPoint(size.value("x").toDouble(), size.value("y").toDouble()));
+    m_scene->setScale(50);
 
     PlanBuilder::buildObjectsPool(planData, *m_objects_pool);
     GeneralBuilder::buildCalculator(configData, *m_calculator);
