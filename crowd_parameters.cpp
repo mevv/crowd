@@ -18,13 +18,18 @@ CrowdParameters::~CrowdParameters()
 void CrowdParameters::on_saveParamsButton_clicked()
 {
     QJsonObject data = createJson();
-    emit sendCorwdParamsJson(data);
+
+    JsonManager::serializeJson(data, PATH_TO_CONF);
+
+    emit sendCrowdParamsJson(data);
+
     this->close();
 }
 
 void CrowdParameters::readJson(const QJsonObject &file)
 {
-    QJsonObject data = file["agents"].toObject();
+    qDebug() << file;
+    QJsonObject data = file["agent"].toObject();
     QJsonObject children = data.value(QString("children")).toObject();
     QJsonObject women = data.value(QString("women")).toObject();
     QJsonObject men = data.value(QString("men")).toObject();

@@ -4,6 +4,8 @@
 #include <QString>
 #include <QJsonObject>
 
+#define PATH_TO_CONF "/home/valera/source/crowd/config.json"
+
 class JsonManager
 {
 public:

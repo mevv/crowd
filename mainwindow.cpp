@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "paint_widget.h"
+#include "json_manager.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -64,10 +65,11 @@ void MainWindow::updateTime()
 
 void MainWindow::on_change_crowd_params_triggered()
 {
-    // TODO: norm JSON
-    QJsonObject tmp;
-    CrowdParameters * a = new CrowdParameters(tmp);
-    a->show();
+    QJsonObject curParam = JsonManager::parseJsonFile(PATH_TO_CONF);
+    qDebug() << curParam;
+    m_crowdParameters.reset(new CrowdParameters(curParam));
+
+    m_crowdParameters->show();
 
     // TODO: fix memory leak - store pointer to form and catch Save button signal
 }

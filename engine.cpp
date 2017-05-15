@@ -40,7 +40,6 @@ Engine::Engine()
     connect(this, &Engine::startSimulation, m_stat.get(), &Statistics::simulationStart);
 //    connect(m_calculator, &Calculator::agentStat, m_stat.get(), &Statistics::gather_info);
     connect(m_calculator.get(), &Calculator::removeAgentSignal, m_stat.get(), &Statistics::agent_quit);
-
 }
 
 Engine::~Engine()
@@ -111,6 +110,8 @@ void Engine::mouseReleaseEvent(QMouseEvent * event)
 
 void Engine::loadPlan(QString filename)
 {
+    this->clear();
+
     /* DUMMY INIT*/
     for (size_t i = 0; i < 10; i++)
     {
@@ -132,7 +133,7 @@ void Engine::loadPlan(QString filename)
 
 
     QJsonObject planData = JsonManager::parseJsonFile(filename);
-    QJsonObject configData = JsonManager::parseJsonFile("/home/valera/source/crowd/config.json");
+    QJsonObject configData = JsonManager::parseJsonFile(PATH_TO_CONF);
 
     QJsonObject size = planData.value(QString("size")).toObject();
 

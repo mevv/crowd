@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QJsonObject>
 
+#include "json_manager.h"
+
 namespace Ui {
 class CrowdParameters;
 }
@@ -20,7 +22,7 @@ private slots:
     void on_saveParamsButton_clicked();
 
 signals:
-    void sendCorwdParamsJson(QJsonObject data);
+    void sendCrowdParamsJson(QJsonObject data);
 
 private:
     Ui::CrowdParameters *ui;

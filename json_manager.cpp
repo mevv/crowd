@@ -26,7 +26,7 @@ QJsonObject JsonManager::parseJsonFile(QString filename)
     return document.object();
 }
 
-bool serializeJson(const QJsonObject& json, QString filename)
+bool JsonManager::serializeJson(const QJsonObject& json, QString filename)
 {
     auto fileJson = JsonManager::parseJsonFile(filename);
 

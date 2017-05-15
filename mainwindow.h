@@ -49,7 +49,7 @@ private:
 
     std::shared_ptr<Engine> m_engine;
 
-    QString configFileName = "./config.json";
+    std::unique_ptr<CrowdParameters> m_crowdParameters;
 
 signals:
     void openedSchemeFile(QString file_name);
