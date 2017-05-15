@@ -39,17 +39,17 @@ bool Calculator::isInExit(const Agent &agent)
     return false;
 }
 
-QPoint Calculator::getNearestExit(const Agent &agent)
+QVector2D Calculator::getNearestExit(const Agent &agent)
 {
     auto exits = m_pool->getExits();
-    QPoint coord(0,0);
+    QVector2D coord(0,0);
     double distance = INFINITY;
 
     for(auto i : exits)
     {
-        QPoint point(0, 0);
+        QVector2D point(0, 0);
 
-        double tmp = getDistanceToSide(i.getBegin().toPoint(), i.getEnd().toPoint(), agent, point);
+        double tmp = getDistanceToSide(i.getBegin(), i.getEnd(), agent, point);
 
         if(tmp < distance)
         {
@@ -63,12 +63,12 @@ QPoint Calculator::getNearestExit(const Agent &agent)
 
 QVector2D Calculator::calcPanicForce(const Agent &agent)
 {
-    QPoint coord = getNearestExit(agent);
+    QVector2D coord = getNearestExit(agent);
 
-    if(agent.getPos().toPoint() == coord)
+    if(agent.getPos() == coord)
         return QVector2D(0, 0);
 
-    QVector2D desiredSpeed = calcNormal(agent.getPos().toPoint(), coord);
+    QVector2D desiredSpeed = calcNormal(agent.getPos(), coord);
 
     double a = sqrt(pow(agent.getWishSpeed(),2)/desiredSpeed.lengthSquared());
     desiredSpeed *= a;
@@ -76,7 +76,7 @@ QVector2D Calculator::calcPanicForce(const Agent &agent)
     return panicForce;
 }
 
-QVector2D Calculator::calcNormal(QPoint a, QPoint b)
+QVector2D Calculator::calcNormal(QVector2D a, QVector2D b)
 {
     return QVector2D(b.x() -  a.x(), b.y() - a.y()).normalized();
 }
@@ -93,7 +93,7 @@ QVector2D Calculator::calcCrossAgentForce(const Agent &agent)
 
         double D = agent.getSize() + i.getSize() - (i.getCenter() - agent.getCenter()).length();
 
-        QVector2D n = calcNormal( i.getCenter().toPoint(), agent.getCenter().toPoint());
+        QVector2D n = calcNormal( i.getCenter(), agent.getCenter());
         QVector2D deltaV = i.getSpeed() - agent.getSpeed();
         QVector2D tau(n.y(), -n.x());//normal rotated on 90 degrees
         crossAgentForce += m_param.A*n*exp(D/m_param.B) + m_param.K*Heaviside(D)*D*n + m_param.K*Heaviside(D)*D*deltaV*tau*tau;
@@ -112,27 +112,28 @@ QVector2D Calculator::calcWallForce(const Agent &agent)
 
         double D = agent.getSize() - (agent.getCenter() - nearestPoint).length();
 
-        QVector2D n = calcNormal(nearestPoint.toPoint(), agent.getCenter().toPoint());
+        QVector2D n = calcNormal(nearestPoint, agent.getCenter());
         QVector2D tau(n.y(), -n.x());
 
         wallForce += m_param.Awall*n*exp(D/m_param.Bwall) + m_param.Kwall*Heaviside(D)*D*n  - m_param.Kwall*Heaviside(D)*D*agent.getSpeed()*tau*tau;
-        qDebug() << "Near" << nearestPoint;
+        qDebug() << "Wall param:" << nearestPoint << D << n << tau;
+        qDebug() << "Const:" << m_param.Awall << m_param.Bwall << m_param.Kwall;
     }
     return wallForce;
 }
 
-QPoint Calculator::getMinDistanceToObstalce(const Agent &agent, const Obstacle &obstacle)
+QVector2D Calculator::getMinDistanceToObstalce(const Agent &agent, const Obstacle &obstacle)
 {
-    QPoint nearestSide(0,0);
+    QVector2D nearestSide(0,0);
     double distanceToSide = INFINITY;
     auto apexes = obstacle.getAbsolutePoints();
 
-    QPoint prevApex(-1,-1);
+    QVector2D prevApex(-1,-1);
 
     for(auto i : apexes)
     {
-        QPoint nearestPoint;
-        if(prevApex == QPoint(-1,-1))
+        QVector2D nearestPoint;
+        if(prevApex == QVector2D(-1,-1))
         {
             prevApex = i;
             continue;
@@ -162,10 +163,10 @@ QPoint Calculator::getMinDistanceToObstalce(const Agent &agent, const Obstacle &
 //          Pb = P0 + bv
 //          return d(P, Pb)
 //          }
-double Calculator::getDistanceToSide(const QPoint &a,const QPoint &b, const Agent &agent, QPoint &result)
+double Calculator::getDistanceToSide(const QVector2D &a,const QVector2D &b, const Agent &agent, QVector2D &result)
 {
     QVector2D v(b - a);
-    QVector2D w(agent.getCenter().toPoint() - a);
+    QVector2D w(agent.getCenter() - a);
 
     double c1 = scalarMultiplication(w, v);
     double c2 = scalarMultiplication(v, v);
@@ -173,13 +174,13 @@ double Calculator::getDistanceToSide(const QPoint &a,const QPoint &b, const Agen
     if(c1 <= 0)
     {
         result = a;
-        return distanceBetweenPoints(agent.getCenter().toPoint(), a);
+        return distanceBetweenPoints(agent.getCenter(), a);
     }
 
     if(c2 <= c1)
     {
         result = b;
-        return distanceBetweenPoints(agent.getCenter().toPoint(), b);
+        return distanceBetweenPoints(agent.getCenter(), b);
     }
 
     double k = c1/c2;
@@ -187,10 +188,10 @@ double Calculator::getDistanceToSide(const QPoint &a,const QPoint &b, const Agen
     result.setX(a.x() + k*v.x());
     result.setY(a.y() + k*v.y());
 
-    return distanceBetweenPoints(agent.getCenter().toPoint(), result);
+    return distanceBetweenPoints(agent.getCenter(), result);
 }
 
-double Calculator::distanceBetweenPoints(const QPoint &a, const QPoint &b)
+double Calculator::distanceBetweenPoints(const QVector2D &a, const QVector2D &b)
 {
     return sqrt(pow(b.x() - a.x(), 2) + pow( b.y() - a.y(), 2) );
 }

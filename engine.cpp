@@ -139,7 +139,7 @@ void Engine::loadPlan(QString filename)
     QJsonObject size = planData.value(QString("size")).toObject();
     m_scene->setSize(QPoint(size.value("x").toDouble(), size.value("y").toDouble()));
     m_scene->setScale(50);
-
+    qDebug() << configData;
     PlanBuilder::buildObjectsPool(planData, *m_objects_pool);
     GeneralBuilder::buildCalculator(configData, *m_calculator);
     GeneralBuilder::buildAgents(configData, *m_objects_pool);

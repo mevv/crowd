@@ -39,12 +39,12 @@ bool GeneralBuilder::buildCalculator(const QJsonObject& settings, Calculator& ca
     param.A = tmp.value("A").toDouble();
     param.B = tmp.value("B").toDouble();
     param.K = tmp.value("K").toDouble();
-    param.Awall = tmp.value("Awall").toDouble();
-    param.Bwall = tmp.value("Bwall").toDouble();
-    param.Kwall = tmp.value("Kwall").toDouble();
-    qDebug() << param.A;
+    param.Awall = tmp.value("A_wall").toDouble();
+    param.Bwall = tmp.value("B_wall").toDouble();
+    param.Kwall = tmp.value("K_wall").toDouble();
+    qDebug() << param.Awall;
     calculator.setMathParams(param);
-
+    qDebug() << "Calc test:" <<calculator.getMathParams().Awall;
     return true;
 }
 

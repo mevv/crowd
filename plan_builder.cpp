@@ -31,7 +31,7 @@ bool PlanBuilder::buildObstacles(const QJsonArray& obstacles, ObjectsPool& pool)
     int id = 0;
     for(auto i : obstacles)
     {
-        QVector<QPoint> vertexes;
+        QVector<QVector2D> vertexes;
         QJsonObject obstacle = i.toObject();
 
         QVector2D position(obstacle.value("position").toObject().value("x").toDouble(),
@@ -39,10 +39,10 @@ bool PlanBuilder::buildObstacles(const QJsonArray& obstacles, ObjectsPool& pool)
 
         QJsonArray jsonVertexes = obstacle.value("vertexes").toArray();
 
-        vertexes.push_back(QPoint(0, 0));
+        vertexes.push_back(QVector2D(0, 0));
 
         for (auto j : jsonVertexes)
-            vertexes.push_back(QPoint(j.toObject().value("x").toDouble(),
+            vertexes.push_back(QVector2D(j.toObject().value("x").toDouble(),
                                       j.toObject().value("y").toDouble()));
 
         pool.addObstacle(Obstacle(id, position, QColor(), vertexes));

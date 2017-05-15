@@ -38,6 +38,8 @@ public:
 
     void setMathParams(const MathParams& param) { m_param = param; }
 
+    inline MathParams getMathParams() { return m_param; }
+
 signals:
     void agentStat(const Agent &agent);
     void removeAgentSignal();
@@ -62,21 +64,21 @@ private:
 
     QVector2D calcPanicForce(const Agent &agent);
 
-    QPoint getNearestExit(const Agent &agent);
+    QVector2D getNearestExit(const Agent &agent);
 
-    QVector2D calcNormal(QPoint a, QPoint b);
+    QVector2D calcNormal(QVector2D a, QVector2D b);
 
     QVector2D calcCrossAgentForce(const Agent &agent);
 
     QVector2D calcWallForce(const Agent &agent);
 
-    QPoint getMinDistanceToObstalce(const Agent &agent, const Obstacle &obstacle);
+    QVector2D getMinDistanceToObstalce(const Agent &agent, const Obstacle &obstacle);
 
-    double getDistanceToSide(const QPoint &a, const QPoint &b, const Agent &agent, QPoint &result);
+    double getDistanceToSide(const QVector2D &a, const QVector2D &b, const Agent &agent, QVector2D &result);
 
     double scalarMultiplication(const QVector2D &a, QVector2D &b);
 
-    double distanceBetweenPoints(const QPoint &a, const QPoint &b);
+    double distanceBetweenPoints(const QVector2D &a, const QVector2D &b);
 
     int Heaviside(double n);
 
