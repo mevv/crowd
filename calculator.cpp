@@ -65,20 +65,31 @@ QVector2D Calculator::calcPanicForce(const Agent &agent)
 {
     QVector2D coord = getNearestExit(agent);
 
-    if(agent.getPos() == coord)
+    if(agent.getCenter() == coord)
         return QVector2D(0, 0);
 
-    QVector2D desiredSpeed = calcNormal(agent.getPos(), coord);
+    QVector2D desiredSpeed = calcNormal(agent.getCenter(), coord);
 
     double a = sqrt(pow(agent.getWishSpeed(),2)/desiredSpeed.lengthSquared());
     desiredSpeed *= a;
-    QVector2D panicForce = (desiredSpeed - agent.getSpeed())/m_param.deltaT;
+    QVector2D panicForce = (desiredSpeed - agent.getSpeed()) / m_param.deltaT * agent.getMass();
     return panicForce;
 }
 
 QVector2D Calculator::calcNormal(QVector2D a, QVector2D b)
 {
     return QVector2D(b.x() -  a.x(), b.y() - a.y()).normalized();
+}
+
+QVector2D Calculator::calcTau(QVector2D n, QVector2D speed)
+{
+    QVector2D tauContrClockWise(n.y(), -n.x());
+    QVector2D tauClockWise(-n.y(), n.x());
+
+    if (scalarMultiplication(tauClockWise, speed.normalized()) > 0)
+        return tauClockWise;
+    else
+        return tauContrClockWise;
 }
 
 QVector2D Calculator::calcCrossAgentForce(const Agent &agent)
@@ -95,7 +106,7 @@ QVector2D Calculator::calcCrossAgentForce(const Agent &agent)
 
         QVector2D n = calcNormal( i.getCenter(), agent.getCenter());
         QVector2D deltaV = i.getSpeed() - agent.getSpeed();
-        QVector2D tau(n.y(), -n.x());//normal rotated on 90 degrees
+        QVector2D tau = calcTau(n, agent.getSpeed());//normal rotated on 90 degrees
         crossAgentForce += m_param.A*n*exp(D/m_param.B) + m_param.K*Heaviside(D)*D*n + m_param.K*Heaviside(D)*D*deltaV*tau*tau;
     }
 
@@ -113,11 +124,11 @@ QVector2D Calculator::calcWallForce(const Agent &agent)
         double D = agent.getSize() - (agent.getCenter() - nearestPoint).length();
 
         QVector2D n = calcNormal(nearestPoint, agent.getCenter());
-        QVector2D tau(n.y(), -n.x());
+        QVector2D tau = calcTau(n, agent.getSpeed());
 
         wallForce += m_param.Awall*n*exp(D/m_param.Bwall) + m_param.Kwall*Heaviside(D)*D*n  - m_param.Kwall*Heaviside(D)*D*agent.getSpeed()*tau*tau;
-        qDebug() << "Wall param:" << nearestPoint << D << n << tau;
-        qDebug() << "Const:" << m_param.Awall << m_param.Bwall << m_param.Kwall;
+        //qDebug() << "Wall param:" << nearestPoint << D << n << tau;
+        //qDebug() << "Const:" << m_param.Awall << m_param.Bwall << m_param.Kwall;
     }
     return wallForce;
 }
@@ -196,7 +207,7 @@ double Calculator::distanceBetweenPoints(const QVector2D &a, const QVector2D &b)
     return sqrt(pow(b.x() - a.x(), 2) + pow( b.y() - a.y(), 2) );
 }
 
-double Calculator::scalarMultiplication(const QVector2D &a, QVector2D &b)
+double Calculator::scalarMultiplication(const QVector2D &a, const QVector2D &b)
 {
     return a.x()*b.x() + a.y()*b.y();
 }
@@ -213,7 +224,7 @@ void Calculator::calcForce(Agent &agent)
     QVector2D wallForce = calcWallForce(agent);
     QVector2D totalForce = panicForce + crossAgentForce + wallForce;
 
-    qDebug() << "PF:" << panicForce << "CF:" << crossAgentForce << "WF:" << wallForce;
+    //qDebug() << "PF:" << panicForce << "CF:" << crossAgentForce << "WF:" << wallForce;
 
     QVector2D speed = agent.getSpeed() + m_time*totalForce/agent.getMass();
 

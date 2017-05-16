@@ -22,11 +22,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->gridLayout->addWidget(paint_widget);
 
     connect(m_engine.get(), &Engine::tick, paint_widget, &PaintWidget::update);
-    connect(m_engine.get(), &Engine::tick, this, &MainWindow::updateTime);
+    connect(m_engine.get(), &Engine::tick, this, &MainWindow::updateTimeSlot);
     connect(this, &MainWindow::openedSchemeFile, m_engine.get(), &Engine::loadPlan);
     connect(m_engine.get(), &Engine::enableStatButton, this, [this](){ ui->stat_groupBox->show();});
     connect(this, &MainWindow::clearSimulation, m_engine.get(), &Engine::clear);
     connect(this, &MainWindow::startSimulation, m_engine.get(), &Engine::startSimulationSlot);
+
+    connect(m_engine.get(), &Engine::changeScaleSignal, this, &MainWindow::updateScale);
 
     //connect(this, &MainWindow::openedSaveFile, m_engine.get(), &Engine::setSaveFileName);
 }
@@ -58,9 +60,14 @@ void MainWindow::wheelEvent(QWheelEvent *event)
     m_engine->scrollEvent(event);
 }
 
-void MainWindow::updateTime()
+void MainWindow::updateTimeSlot()
 {
     ui->totalTimeLineEdit->setText(QString::number(m_engine->getSimulationTime() / 1000.0));
+}
+
+void MainWindow::updateScale(double scale)
+{
+    ui->scaleDoubleSpinBox->setValue(ui->scaleDoubleSpinBox->value() * scale);
 }
 
 void MainWindow::on_change_crowd_params_triggered()

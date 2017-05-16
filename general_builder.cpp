@@ -21,6 +21,9 @@ double GeneralBuilder::getRandomNumber(double a, double b)
 {
     //usleep(100);
 
+    if (a == b)
+        return a;
+
     double hack = 1000;
 
     a *= hack;
@@ -65,7 +68,7 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
     QVector<QJsonObject> agentTypes;
 
     agentTypes.push_back(settings.value("agent").toObject().value("children").toObject());
-    agentTypes.push_back(settings.value("agent").toObject().value("man").toObject());
+    agentTypes.push_back(settings.value("agent").toObject().value("men").toObject());
     agentTypes.push_back(settings.value("agent").toObject().value("women").toObject());
     agentTypes.push_back(settings.value("agent").toObject().value("old").toObject());
     agentTypes.push_back(settings.value("agent").toObject().value("custom").toObject());
@@ -81,78 +84,45 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
 
     for (auto i : pool.getSpawnZones())
     {
-        int curNum = (int)i.getSize().x() * i.getSize().y() / totalSpawnArea * totalNumber;
+        int curNum = i.getSize().x() * i.getSize().y() / totalSpawnArea * totalNumber;
 
-        for (auto agentType : agentTypes)
-        {
-            int typeNum = int(curNum * agentType.value("part").toDouble());
+        double x = i.getPos().x();
+        double y = i.getPos().y();
 
 
-            QVector2D pos;
-            int size;
-            int count = 0;
+                for (auto agentType : agentTypes)
+                {
+                    int typeNum = int(curNum * agentType.value("part").toDouble());
+                    double size;
 
-//            for (int count = 0 ; count < typeNum; count++)
-//            {
-//                bool flag = false;
+                    for (int count = 0; count < typeNum; count++)
+                    {
+                        size = getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
+                                               agentType.value("size").toObject().value("max").toDouble());
+                        //qDebug() << agentType.value("size").toObject().value("min").toDouble() << agentType.value("size").toObject().value("max").toDouble() << size;
+                        x += 2 * agentType.value("size").toObject().value("max").toDouble();
+                        if (x > i.getPos().x() + i.getSize().x())
+                        {
+                            x = i.getPos().x();
+                            y += 2 * agentType.value("size").toObject().value("max").toDouble();
+                            if (y > i.getPos().y() + i.getSize().y())
+                                break;
+                        }
 
-//                do
-//                {
-//                    pos.setX(getRandomNumber(i.getPos().x(), i.getPos().x() + i.getSize().x()));
-//                    pos.setY(getRandomNumber(i.getPos().y(), i.getPos().y() + i.getSize().y()));
+                        pool.addAgent(Agent(id,
+                                            size,
+                                            getRandomNumber(agentType.value("mass").toObject().value("min").toDouble(),
+                                                            agentType.value("mass").toObject().value("max").toDouble()),
+                                            QVector2D(x, y),
+                                            QVector2D(0, 0),
+                                            QColor(0, 0, 0),
+                                            getRandomNumber(agentType.value("wish_speed").toObject().value("min").toDouble(),
+                                                            agentType.value("wish_speed").toObject().value("max").toDouble())));
+                        id++;
+                    }
 
-//                    size = getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
-//                                               agentType.value("size").toObject().value("max").toDouble());
-
-//                    qDebug() << "__________";
-//                    for (auto j : pool.getAgents())
-//                    {
-
-//                        if (distanceBetweenPoints(pos.toPoint(), j.getCenter().toPoint()) < (j.getSize() + size + MIN_DISTANCE_BETWEEN_SPAWN_AGENTS))
-//                        {
-//                            qDebug() << pos << j.getCenter() << distanceBetweenPoints(pos.toPoint(), j.getCenter().toPoint()) << j.getSize() + size + MIN_DISTANCE_BETWEEN_SPAWN_AGENTS;
-//                            flag = true;
-//                            //break;
-//                        }
-//                    }
-//                }
-//                while(flag);
-
-//                for (int h = 20; h < i.getPos().x() + i.getSize().x(); h += 20)
-//                {
-//                    for (int w = 20; w < i.getPos().y() + i.getSize().y(); w += 20)
-//                    {
-//                        if (count > typeNum)
-//                            break;
-//                        pool.addAgent(Agent(id,
-//                                            5,
-//                                            50,
-//                                            QVector2D(h, w),
-//                                            QVector2D(0, 0),
-//                                            QColor(0, 0, 0),
-//                                            5));
-//                        count++;
-//                        id++;
-//                    }
-//                }
-
-//                pool.addAgent(Agent(id,
-//                                    5,
-//                                    getRandomNumber(agentType.value("mass").toObject().value("min").toDouble(),
-//                                                    agentType.value("mass").toObject().value("max").toDouble()),
-//                                    pos,
-//                                    QVector2D(0, 0),
-//                                    QColor(0, 0, 0),
-//                                    agentType.value("wish_speed").toObject().value("max").toDouble()));
-
-//                qDebug() << "GeneralBuilder::buildAgents()" << id;
-
-//                id++;
-//            }
+                }
         }
-
-
-    }
 
     return true;
 }

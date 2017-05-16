@@ -27,7 +27,8 @@ public:
     void wheelEvent(QWheelEvent *event);
 
 public slots:
-    void updateTime();
+    void updateTimeSlot();
+    void updateScale(double scale);
 
 private slots:
     void on_playButton_clicked();

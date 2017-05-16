@@ -11,3 +11,8 @@ Agent::Agent(int id, double size, double mass, QVector2D position, QVector2D spe
 
 }
 
+QVector2D Agent::getCenter() const
+{
+    return QVector2D(getPos().x() + m_size / 2.0, getPos().y() + m_size / 2.0);
+}
+

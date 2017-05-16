@@ -14,6 +14,8 @@
 
 #include <chrono>
 
+const double SCALE_SENSIVITY = 0.01;
+
 class Engine : public QObject
 {
     Q_OBJECT
@@ -47,6 +49,8 @@ signals:
     void enableStatButton();
     void startSimulation(int n);
 
+    void changeScaleSignal(double scale);
+
 public slots:
     void loadPlan(QString filename);
 
@@ -63,6 +67,8 @@ private:
     bool m_isMouseMove = false;
 
     QPoint m_mousePrevPos;
+
+    QString m_lastPlanFilePath;
 
     std::chrono::time_point<std::chrono::system_clock> m_timeFrame;
     std::unique_ptr<QTimer> m_timer;

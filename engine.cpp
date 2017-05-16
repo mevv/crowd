@@ -84,8 +84,14 @@ void Engine::resume()
 
 void Engine::scrollEvent(QWheelEvent * event)
 {
-    m_scene->setScale(event->delta() / 10000.0);
+    double scale = (event->delta() > 0) ? event->delta() * SCALE_SENSIVITY : 1.0 / abs(event->delta()) / SCALE_SENSIVITY;
+    double prevScale = m_scene->getScale();
+
+    m_scene->scale(scale);
+
     m_timer->singleShot(0, [this]{ this->update(false); });
+
+    emit changeScaleSignal(scale);
 }
 
 void Engine::mouseClickEvent(QMouseEvent *event)
@@ -110,18 +116,19 @@ void Engine::mouseReleaseEvent(QMouseEvent * event)
 
 void Engine::loadPlan(QString filename)
 {
-    this->clear();
+    //this->clear();
+    m_lastPlanFilePath = filename;
 
     /* DUMMY INIT*/
-    for (size_t i = 0; i < 3; i++)
-    {
-        m_objects_pool->addAgent(Agent(i, 0.1, 80,
-                             QVector2D(1.0 + i, 0.5),
-                             QVector2D(0, 0),
-                             QColor(0, 0, 0),
-                             5));
-        qDebug() << "agent";
-     }
+//    for (size_t i = 0; i < 10; i++)
+//    {
+//        m_objects_pool->addAgent(Agent(i, 0.1, 80,
+//                             QVector2D(1.0 + 0.4*i, 0.5),
+//                             QVector2D(0, 0),
+//                             QColor(0, 0, 0),
+//                             3));
+//        qDebug() << "agent";
+//     }
 
 
     //m_objects_pool->addObstacle(Obstacle(1, QVector2D(100, 100),QColor(), {QPoint(-90, 300), QPoint(300, 300), QPoint(300, 100)}));
@@ -200,6 +207,9 @@ void Engine::clear()
     m_objects_pool->clear();
     m_simulationTime = 0;
     m_timer->singleShot(0, [this]{ this->update(false); });
+qDebug() << m_lastPlanFilePath;
+    if (m_lastPlanFilePath.size() > 0)
+        loadPlan(m_lastPlanFilePath);
 }
 
 void Engine::startSimulationSlot()

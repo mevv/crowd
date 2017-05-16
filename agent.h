@@ -19,11 +19,11 @@ public:
 
     inline QVector2D getPrevPos() const { return m_prevPos; }
 
-    inline QColor getColor() const {return this->m_color; }
+    inline QColor getColor() const {return m_color; }
 
-    inline QVector2D getCenter() const {return QVector2D(this->getPos().x() +  this->getSize(), this->getPos().y() +  this->getSize());}
+    QVector2D getCenter() const;
 
-    inline double getWishSpeed() const { return this->m_wishSpeed; }
+    inline double getWishSpeed() const { return m_wishSpeed; }
 
 
     void setSpeed(const QVector2D speed) { m_speed = speed; }

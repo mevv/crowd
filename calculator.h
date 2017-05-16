@@ -68,6 +68,8 @@ private:
 
     QVector2D calcNormal(QVector2D a, QVector2D b);
 
+    QVector2D calcTau(QVector2D n, QVector2D speed);
+
     QVector2D calcCrossAgentForce(const Agent &agent);
 
     QVector2D calcWallForce(const Agent &agent);
@@ -76,7 +78,7 @@ private:
 
     double getDistanceToSide(const QVector2D &a, const QVector2D &b, const Agent &agent, QVector2D &result);
 
-    double scalarMultiplication(const QVector2D &a, QVector2D &b);
+    double scalarMultiplication(const QVector2D &a, const QVector2D &b);
 
     double distanceBetweenPoints(const QVector2D &a, const QVector2D &b);
 

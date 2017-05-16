@@ -16,7 +16,11 @@ public:
 
     void draw(QPainter& painter);
 
-    void setScale(double delta) { m_scale += delta; }
+    void setScale(double delta) { m_scale = delta; }
+
+    inline double getScale() const { return m_scale; }
+
+    void scale(double scale) { m_scale *= scale; }
 
     void setSize(const QPoint& size) { m_size = size; }
 
