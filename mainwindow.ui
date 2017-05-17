@@ -41,7 +41,7 @@
       <x>610</x>
       <y>20</y>
       <width>361</width>
-      <height>121</height>
+      <height>141</height>
      </rect>
     </property>
     <property name="title">
@@ -245,6 +245,25 @@
       <string>Очистити</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="endButton">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>110</y>
+       <width>101</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="text">
+      <string>Завершити</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="stat_groupBox">
     <property name="geometry">
@@ -258,7 +277,7 @@
     <property name="title">
      <string>Статистика симуляції</string>
     </property>
-    <widget class="QTextEdit" name="textEdit">
+    <widget class="QTextEdit" name="statTextEdit">
      <property name="geometry">
       <rect>
        <x>10</x>

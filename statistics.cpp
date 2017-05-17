@@ -5,59 +5,116 @@ Statistics::Statistics()
 
 }
 
-void Statistics::simulationStart(int number_of_agents)
+void Statistics::simulationStartSlot(int number_of_agents)
 {
-    m_number_of_agents = number_of_agents;
+
 }
 
 
-int Statistics::gather_info(const Agent & agent, QVector2D force, int time)
+void Statistics::gatherInfoSlot(const Agent & agent, QVector2D force, int iter)
 {
-    if(m_current_time != time)
+    for (auto& i : m_agentStat)
     {
-        m_current_time = time;
-        m_number_of_iterations++;
-        m_sum_of_forces += m_sum_of_forces_iter/(m_number_of_agents - m_agents_quit);
-        m_sum_of_speeds += m_sum_of_speeds_iter/(m_number_of_agents - m_agents_quit);
-
-        m_sum_of_forces_iter = 0;
-        m_sum_of_speeds_iter = 0;
-        m_sum_of_desired_speeds_iter = 0;
-    }
-
-    m_sum_of_forces_iter += force.length();
-    m_sum_of_speeds_iter += agent.getSpeed().length();
-    //    idk where to take it
-    //        m_sum_of_desired_speeds_iter =
-
-    if(force.length() > dead_force)
-    {
-        if(!m_dead_list.contains(agent.getID()))
+        if (i.id == agent.getID())
         {
-            m_dead_agents++;
-            m_dead_list.push_back(agent.getID());
-            return 1;
+            i.sumForces += force.length();
+            i.curForce += force.length();
+
+            if (iter > m_iterations)
+            {
+                i.iterations++;
+
+                if (i.curForce > i.maxForce)
+                    i.maxForce = i.curForce;
+
+                i.curForce = 0;
+            }
+
+            m_iterations++;
+
+            return ;
         }
     }
 
-    if(force.length() > injuring_force)
-    {
-        if(!m_injured_list.contains(agent.getID()))
-        {
-            m_injured_agents++;
-            m_injured_list.push_back(agent.getID());
-        }
-    }
-    return 0;
+    AgentStat stat;
+
+    stat.id = agent.getID();
+    stat.type = agent.getType();
+    stat.iterations = 1;
+    stat.curForce = force.length();
+    stat.sumForces = force.length();
+
+    m_agentStat.push_back(stat);
+
+    m_iterations++;
 }
 
-void Statistics::agent_quit()
+void Statistics::agentQuitSlot()
 {
-    m_agents_quit += 1;
+    m_agentQuitNum++;
 }
 
 void Statistics::finishSimulation()
 {
-    double totalForce = m_sum_of_forces/m_number_of_iterations;
-    double totalSpeed = m_sum_of_speeds/m_number_of_iterations;
+
+}
+
+void Statistics::updateAgentStat(const Agent& agent, double force)
+{
+
+}
+
+ResultStat Statistics::makeReport()
+{
+    ResultStat stat;
+
+    qDebug() << m_agentStat.size();
+
+    for (auto i : m_agentStat)
+    {
+        qDebug() << i.id << i.sumForces << i.maxForce << i.iterations;
+        stat.averageForce += (i.sumForces / i.iterations);
+
+        if (i.maxForce > INJURING_FORCE)
+            stat.injuringNum++;
+
+        if (i.maxForce > DEAD_FORCE)
+            stat.deadNum++;
+
+        m_typeRatio[i.type]++;
+    }
+
+    return stat;
+}
+
+QString Statistics::getReport()
+{
+    QString result;
+
+    ResultStat stat = makeReport();
+
+    result += "Час симуляції: " + QString::number(m_currentTime) + "\n";
+    result += "Середня сила: " + QString::number(stat.averageForce) + "\n";
+    result += "Кількість евакуйованих: " + QString::number(m_agentQuitNum) + "\n";
+    result += "Кількість травмованих: " + QString::number(stat.injuringNum) + "\n";
+    result += "Кількість мертвих: " + QString::number(stat.deadNum) + "\n";
+    if (m_agentQuitNum > 0)
+    {
+    result += "Співвідношення евакуйованих по группах: \n";
+    result += "    Чоловіки - " + QString::number(m_typeRatio[AgentType::Man] / m_agentQuitNum * 100.0) + "\n";
+    result += "    Жінки - " + QString::number(m_typeRatio[AgentType::Woman] / m_agentQuitNum * 100.0) + "\n";
+    result += "    Діти - " + QString::number(m_typeRatio[AgentType::Child] / m_agentQuitNum * 100.0) + "\n";
+    result += "    Старці - " + QString::number(m_typeRatio[AgentType::Old] / m_agentQuitNum * 100.0) + "\n";
+    result += "    Додаткова група - " + QString::number(m_typeRatio[AgentType::Custom] / m_agentQuitNum * 100.0) + "\n";
+    }
+
+    return result;
+}
+
+void Statistics::reset()
+{
+    m_currentTime = 0;
+    m_agentQuitNum = 0;
+    m_agentStat.clear();
+    m_typeRatio.clear();
 }

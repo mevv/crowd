@@ -5,10 +5,14 @@
 
 #include "scene_object.h"
 
+
+enum AgentType {Child = 0, Man, Woman, Old, Custom};
+
 class Agent : public SceneObject
 {
 public:
-    Agent(int id, double size, double mass, QVector2D position, QVector2D speed, QColor color, double wishSpeed);
+    Agent();
+    Agent(int id, double size, double mass, QVector2D position, QVector2D speed, QColor color, double wishSpeed, AgentType type = AgentType::Custom);
 
 
     inline double getSize() const { return m_size; }
@@ -25,8 +29,12 @@ public:
 
     inline double getWishSpeed() const { return m_wishSpeed; }
 
+    inline AgentType getType() const { return m_type; }
+
 
     void setSpeed(const QVector2D speed) { m_speed = speed; }
+
+    void setAgentType(AgentType type) { m_type = type; }
 
     void setPrevPos(){ m_prevPos = this->getCenter(); }
 
@@ -47,6 +55,8 @@ private:
     QVector2D m_acceleration;
     QColor m_color;
     double m_wishSpeed;
+
+    AgentType m_type = AgentType::Custom;
 };
 
 #endif // AGENT_H

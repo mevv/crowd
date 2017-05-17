@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     PaintWidget * paint_widget = new PaintWidget(this, m_engine);
 
-    ui->stat_groupBox->hide();
     ui->playButton->hide();
     ui->clearButton->hide();
 
@@ -29,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, &MainWindow::startSimulation, m_engine.get(), &Engine::startSimulationSlot);
 
     connect(m_engine.get(), &Engine::changeScaleSignal, this, &MainWindow::updateScale);
+    connect(m_engine.get(), &Engine::sendStatReportSignal, this, &MainWindow::updateStatSlot);
 
     //connect(this, &MainWindow::openedSaveFile, m_engine.get(), &Engine::setSaveFileName);
 }
@@ -68,6 +68,11 @@ void MainWindow::updateTimeSlot()
 void MainWindow::updateScale(double scale)
 {
     ui->scaleDoubleSpinBox->setValue(ui->scaleDoubleSpinBox->value() * scale);
+}
+
+void MainWindow::updateStatSlot(QString report)
+{
+    ui->statTextEdit->setText(report);
 }
 
 void MainWindow::on_change_crowd_params_triggered()
@@ -113,4 +118,9 @@ void MainWindow::on_clearButton_clicked()
 {
     ui->playButton->setText("Почати");
     emit clearSimulation();
+}
+
+void MainWindow::on_endButton_clicked()
+{
+    m_engine->finishSimulation();
 }

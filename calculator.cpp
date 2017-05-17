@@ -224,9 +224,11 @@ void Calculator::calcForce(Agent &agent)
     QVector2D wallForce = calcWallForce(agent);
     QVector2D totalForce = panicForce + crossAgentForce + wallForce;
 
+    emit sendStatSignal(agent, totalForce, m_iterations);
+
     //qDebug() << "PF:" << panicForce << "CF:" << crossAgentForce << "WF:" << wallForce;
 
-    QVector2D speed = agent.getSpeed() + m_time*totalForce/agent.getMass();
+    QVector2D speed = agent.getSpeed() + m_time * totalForce / agent.getMass();
 
     agent.setSpeed(speed);
 }
@@ -236,6 +238,7 @@ std::vector<QVector2D> Calculator::update(double delta)
     m_time = delta / 1000;
     std::vector<QVector2D> moveRecord;
 
+    m_iterations++;
 
     for (auto i = m_pool->getAgents().begin(); i != m_pool->getAgents().end();)
     {

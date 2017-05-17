@@ -49,6 +49,7 @@ signals:
     void enableStatButton();
     void startSimulation(int n);
 
+    void sendStatReportSignal(QString report);
     void changeScaleSignal(double scale);
 
 public slots:

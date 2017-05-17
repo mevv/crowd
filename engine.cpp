@@ -5,11 +5,15 @@
 #include <QJsonArray>
 #include <QFile>
 #include <QTextStream>
+#include <QMetaType>
 
 
 #include "plan_builder.h"
 #include "general_builder.h"
 #include "json_manager.h"
+#include "agent.h"
+
+//Q_DECLARE_METATYPE(Agent)
 
 Engine::Engine()
 {
@@ -37,9 +41,12 @@ Engine::Engine()
     m_stat.reset(new Statistics());
     m_stat->moveToThread(m_stat_thread.get());
     m_stat_thread->start();
-    connect(this, &Engine::startSimulation, m_stat.get(), &Statistics::simulationStart);
-//    connect(m_calculator, &Calculator::agentStat, m_stat.get(), &Statistics::gather_info);
-    connect(m_calculator.get(), &Calculator::removeAgentSignal, m_stat.get(), &Statistics::agent_quit);
+
+    connect(this, &Engine::startSimulation, m_stat.get(), &Statistics::simulationStartSlot);
+    connect(m_calculator.get(), &Calculator::removeAgentSignal, m_stat.get(), &Statistics::agentQuitSlot);
+
+    qRegisterMetaType<Agent>("Agent");
+    connect(m_calculator.get(), &Calculator::sendStatSignal, m_stat.get(), &Statistics::gatherInfoSlot);
 }
 
 Engine::~Engine()
@@ -187,8 +194,11 @@ void Engine::loadPlan(QString filename)
 void Engine::finishSimulation()
 {
     this->pause();
+    this->clear();
     emit enableStatButton();
     writeRecordToFile();
+
+    emit sendStatReportSignal(m_stat->getReport());
 }
 
 void Engine::writeRecordToFile()
@@ -205,9 +215,10 @@ void Engine::clear()
 {
     m_timer->stop();
     m_objects_pool->clear();
+    m_stat->reset();
     m_simulationTime = 0;
     m_timer->singleShot(0, [this]{ this->update(false); });
-qDebug() << m_lastPlanFilePath;
+
     if (m_lastPlanFilePath.size() > 0)
         loadPlan(m_lastPlanFilePath);
 }

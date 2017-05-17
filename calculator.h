@@ -41,7 +41,7 @@ public:
     inline MathParams getMathParams() { return m_param; }
 
 signals:
-    void agentStat(const Agent &agent);
+    void sendStatSignal(const Agent & agent, QVector2D force, int iter);
     void removeAgentSignal();
 
     
@@ -52,6 +52,8 @@ private:
     std::shared_ptr<ObjectsPool> m_pool;
 
     double m_time;
+
+    int m_iterations = 0;
 
     MathParams m_param;
 

@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "engine.h"
+#include "agent.h"
 
 int main(int argc, char *argv[])
 {

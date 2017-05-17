@@ -92,6 +92,7 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
 
                 for (auto agentType : agentTypes)
                 {
+                    int type = 0;
                     int typeNum = int(curNum * agentType.value("part").toDouble());
                     double size;
 
@@ -117,7 +118,8 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
                                             QVector2D(0, 0),
                                             QColor(0, 0, 0),
                                             getRandomNumber(agentType.value("wish_speed").toObject().value("min").toDouble(),
-                                                            agentType.value("wish_speed").toObject().value("max").toDouble())));
+                                                            agentType.value("wish_speed").toObject().value("max").toDouble()),
+                                            static_cast<AgentType>(type++)));
                         id++;
                     }
 

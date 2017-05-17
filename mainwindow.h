@@ -29,6 +29,7 @@ public:
 public slots:
     void updateTimeSlot();
     void updateScale(double scale);
+    void updateStatSlot(QString report);
 
 private slots:
     void on_playButton_clicked();
@@ -44,6 +45,8 @@ private slots:
     void on_path_to_simulations_menu_triggered();
 
     void on_clearButton_clicked();
+
+    void on_endButton_clicked();
 
 private:
     Ui::MainWindow *ui;

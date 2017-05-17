@@ -7,6 +7,7 @@
 class SceneObject
 {
 public:
+    SceneObject();
     SceneObject(int id, QVector2D pos, QColor color);
 
     inline QVector2D getPos() const { return m_position; }
