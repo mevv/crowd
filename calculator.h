@@ -38,11 +38,15 @@ public:
 
     void setMathParams(const MathParams& param) { m_param = param; }
 
+    void setCollectStat(bool collectStat = true) { m_iscollectStat = collectStat; }
+
+    bool isCollectStat() const { return m_iscollectStat; }
+
     inline MathParams getMathParams() { return m_param; }
 
 signals:
-    void sendStatSignal(const Agent & agent, QVector2D force, int iter);
-    void removeAgentSignal();
+    void sendStatSignal(const Agent & agent, double force);
+    void removeAgentSignal(const Agent& agent);
 
     
 private:
@@ -52,11 +56,13 @@ private:
     std::shared_ptr<ObjectsPool> m_pool;
 
     double m_time;
+    double m_physicalForcesAgentSum = 0;
 
     int m_iterations = 0;
 
     MathParams m_param;
 
+    bool m_iscollectStat = true;
 
     void move(Agent &agent);
 

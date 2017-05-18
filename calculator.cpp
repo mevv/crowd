@@ -107,7 +107,14 @@ QVector2D Calculator::calcCrossAgentForce(const Agent &agent)
         QVector2D n = calcNormal( i.getCenter(), agent.getCenter());
         QVector2D deltaV = i.getSpeed() - agent.getSpeed();
         QVector2D tau = calcTau(n, agent.getSpeed());//normal rotated on 90 degrees
-        crossAgentForce += m_param.A*n*exp(D/m_param.B) + m_param.K*Heaviside(D)*D*n + m_param.K*Heaviside(D)*D*deltaV*tau*tau;
+
+        QVector2D repulsionForce = m_param.K*Heaviside(D)*D*n;
+        QVector2D frictionForce = m_param.K*Heaviside(D)*D*deltaV*tau*tau;
+
+        m_physicalForcesAgentSum += repulsionForce.length();
+        m_physicalForcesAgentSum += frictionForce.length();
+
+        crossAgentForce += m_param.A*n*exp(D/m_param.B) + repulsionForce + frictionForce;
     }
 
     return crossAgentForce;
@@ -126,9 +133,13 @@ QVector2D Calculator::calcWallForce(const Agent &agent)
         QVector2D n = calcNormal(nearestPoint, agent.getCenter());
         QVector2D tau = calcTau(n, agent.getSpeed());
 
-        wallForce += m_param.Awall*n*exp(D/m_param.Bwall) + m_param.Kwall*Heaviside(D)*D*n  - m_param.Kwall*Heaviside(D)*D*agent.getSpeed()*tau*tau;
-        //qDebug() << "Wall param:" << nearestPoint << D << n << tau;
-        //qDebug() << "Const:" << m_param.Awall << m_param.Bwall << m_param.Kwall;
+        QVector2D repulsionForce = m_param.Kwall*Heaviside(D)*D*n;
+        QVector2D frictionForce = m_param.Kwall*Heaviside(D)*D*agent.getSpeed()*tau*tau;
+
+        m_physicalForcesAgentSum += repulsionForce.length();
+        m_physicalForcesAgentSum += frictionForce.length();
+
+        wallForce += m_param.Awall*n*exp(D/m_param.Bwall) + repulsionForce - frictionForce;
     }
     return wallForce;
 }
@@ -224,12 +235,14 @@ void Calculator::calcForce(Agent &agent)
     QVector2D wallForce = calcWallForce(agent);
     QVector2D totalForce = panicForce + crossAgentForce + wallForce;
 
-    emit sendStatSignal(agent, totalForce, m_iterations);
+    if (m_iscollectStat)
+        emit sendStatSignal(agent, m_physicalForcesAgentSum);
 
-    //qDebug() << "PF:" << panicForce << "CF:" << crossAgentForce << "WF:" << wallForce;
+    //qDebug() << m_physicalForcesAgentSum;
+    m_physicalForcesAgentSum = 0;
 
     QVector2D speed = agent.getSpeed() + m_time * totalForce / agent.getMass();
-
+    //qDebug() << "id" << agent.getID() << "Speed" << speed;
     agent.setSpeed(speed);
 }
 
@@ -249,7 +262,9 @@ std::vector<QVector2D> Calculator::update(double delta)
 
         if (isInExit(*i))
         {
-            emit removeAgentSignal();
+            if (m_iscollectStat)
+                emit removeAgentSignal(*i);
+
             i =  m_pool->removeAgent(*i);
         }
         else

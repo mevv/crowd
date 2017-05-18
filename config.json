@@ -15,7 +15,7 @@
     },
     "agent":
     {
-        "number": 200,
+        "number": 100,
         "panic_level": 1 ,
         "entry_period": 
         {

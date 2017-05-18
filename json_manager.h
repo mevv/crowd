@@ -5,6 +5,7 @@
 #include <QJsonObject>
 
 #define PATH_TO_CONF "/home/valera/source/crowd/config.json"
+#define PATH_TO_STAT "/home/valera/source/stat/"
 
 class JsonManager
 {

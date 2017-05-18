@@ -11,7 +11,6 @@
 #include "engine.h"
 #include "crowd_parameters.h"
 
-
 namespace Ui {
 class MainWindow;
 }
@@ -47,6 +46,12 @@ private slots:
     void on_clearButton_clicked();
 
     void on_endButton_clicked();
+
+    void on_statCleanPushButton_clicked();
+
+    void on_statToFilePushButton_clicked();
+
+    void on_checkBox_2_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;

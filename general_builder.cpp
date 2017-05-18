@@ -65,13 +65,20 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
     QPair<double, double> entryFreq(settings.value("agent").toObject().value("entry_period").toObject().value("min").toDouble(),
                                     settings.value("agent").toObject().value("entry_period").toObject().value("max").toDouble());
 
-    QVector<QJsonObject> agentTypes;
+    QVector<QJsonObject> agentTypesConfig;
+    QVector<AgentType> agentTypes;
 
-    agentTypes.push_back(settings.value("agent").toObject().value("children").toObject());
-    agentTypes.push_back(settings.value("agent").toObject().value("men").toObject());
-    agentTypes.push_back(settings.value("agent").toObject().value("women").toObject());
-    agentTypes.push_back(settings.value("agent").toObject().value("old").toObject());
-    agentTypes.push_back(settings.value("agent").toObject().value("custom").toObject());
+    agentTypesConfig.push_back(settings.value("agent").toObject().value("children").toObject());
+    agentTypesConfig.push_back(settings.value("agent").toObject().value("men").toObject());
+    agentTypesConfig.push_back(settings.value("agent").toObject().value("women").toObject());
+    agentTypesConfig.push_back(settings.value("agent").toObject().value("old").toObject());
+    agentTypesConfig.push_back(settings.value("agent").toObject().value("custom").toObject());
+
+    agentTypes.push_back(AgentType::Child);
+    agentTypes.push_back(AgentType::Man);
+    agentTypes.push_back(AgentType::Woman);
+    agentTypes.push_back(AgentType::Old);
+    agentTypes.push_back(AgentType::Custom);
 
     for (auto i : pool.getEntries())
     {
@@ -89,42 +96,43 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
         double x = i.getPos().x();
         double y = i.getPos().y();
 
+        int type = 0;
 
-                for (auto agentType : agentTypes)
+        for (auto agentType : agentTypesConfig)
+        {
+
+            int typeNum = int(curNum * agentType.value("part").toDouble());
+            double size;
+
+            for (int count = 0; count < typeNum; count++)
+            {
+                size = getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
+                                       agentType.value("size").toObject().value("max").toDouble());
+                //qDebug() << agentType.value("size").toObject().value("min").toDouble() << agentType.value("size").toObject().value("max").toDouble() << size;
+                x += 2 * agentType.value("size").toObject().value("max").toDouble();
+                if (x > i.getPos().x() + i.getSize().x())
                 {
-                    int type = 0;
-                    int typeNum = int(curNum * agentType.value("part").toDouble());
-                    double size;
-
-                    for (int count = 0; count < typeNum; count++)
-                    {
-                        size = getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
-                                               agentType.value("size").toObject().value("max").toDouble());
-                        //qDebug() << agentType.value("size").toObject().value("min").toDouble() << agentType.value("size").toObject().value("max").toDouble() << size;
-                        x += 2 * agentType.value("size").toObject().value("max").toDouble();
-                        if (x > i.getPos().x() + i.getSize().x())
-                        {
-                            x = i.getPos().x();
-                            y += 2 * agentType.value("size").toObject().value("max").toDouble();
-                            if (y > i.getPos().y() + i.getSize().y())
-                                break;
-                        }
-
-                        pool.addAgent(Agent(id,
-                                            size,
-                                            getRandomNumber(agentType.value("mass").toObject().value("min").toDouble(),
-                                                            agentType.value("mass").toObject().value("max").toDouble()),
-                                            QVector2D(x, y),
-                                            QVector2D(0, 0),
-                                            QColor(0, 0, 0),
-                                            getRandomNumber(agentType.value("wish_speed").toObject().value("min").toDouble(),
-                                                            agentType.value("wish_speed").toObject().value("max").toDouble()),
-                                            static_cast<AgentType>(type++)));
-                        id++;
-                    }
-
+                    x = i.getPos().x();
+                    y += 2 * agentType.value("size").toObject().value("max").toDouble();
+                    if (y > i.getPos().y() + i.getSize().y())
+                        break;
                 }
+
+                pool.addAgent(Agent(id,
+                                    size,
+                                    getRandomNumber(agentType.value("mass").toObject().value("min").toDouble(),
+                                                    agentType.value("mass").toObject().value("max").toDouble()),
+                                    QVector2D(x, y),
+                                    QVector2D(0, 0),
+                                    QColor(0, 0, 0),
+                                    getRandomNumber(agentType.value("wish_speed").toObject().value("min").toDouble(),
+                                                    agentType.value("wish_speed").toObject().value("max").toDouble()),
+                                    agentTypes[type]));
+                id++;
+            }
+            type++;
         }
+    }
 
     return true;
 }

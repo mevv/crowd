@@ -194,11 +194,9 @@ void Engine::loadPlan(QString filename)
 void Engine::finishSimulation()
 {
     this->pause();
-    this->clear();
-    emit enableStatButton();
-    writeRecordToFile();
 
-    emit sendStatReportSignal(m_stat->getReport());
+    if (m_calculator->isCollectStat())
+        emit sendStatReportSignal(m_stat->getReport());
 }
 
 void Engine::writeRecordToFile()

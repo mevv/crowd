@@ -24,6 +24,8 @@ public:
 
     ~Engine();
 
+    void setCollectStat(bool collectStat = true) { m_calculator->setCollectStat(collectStat); }
+
     bool isStarted() const { return m_timer->isActive(); }
 
     int getSimulationTime() const { return m_simulationTime; }

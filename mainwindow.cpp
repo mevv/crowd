@@ -78,12 +78,9 @@ void MainWindow::updateStatSlot(QString report)
 void MainWindow::on_change_crowd_params_triggered()
 {
     QJsonObject curParam = JsonManager::parseJsonFile(PATH_TO_CONF);
-    qDebug() << curParam;
+
     m_crowdParameters.reset(new CrowdParameters(curParam));
-
     m_crowdParameters->show();
-
-    // TODO: fix memory leak - store pointer to form and catch Save button signal
 }
 
 void MainWindow::on_open_shcheme_menu_triggered()
@@ -104,13 +101,13 @@ void MainWindow::on_open_simulation_menu_triggered()
 
 void MainWindow::on_path_to_crowd_params_file_menu_triggered()
 {
-    auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити файл характеристики натовпу"), "/home/peter", tr("JSON Files (*.json)"));
+    auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити файл характеристики натовпу"), "/home", tr("JSON Files (*.json)"));
     emit openedCrowdParamsFile(file_name);
 }
 
 void MainWindow::on_path_to_simulations_menu_triggered()
 {
-    auto path = QFileDialog::getExistingDirectory( this, tr("Зберегти симуляції до..."), "/home/peter", QFileDialog::ShowDirsOnly);
+    auto path = QFileDialog::getExistingDirectory( this, tr("Зберегти симуляції до..."), "/home", QFileDialog::ShowDirsOnly);
     emit changedPathToSimulations(path);
 }
 
@@ -123,4 +120,27 @@ void MainWindow::on_clearButton_clicked()
 void MainWindow::on_endButton_clicked()
 {
     m_engine->finishSimulation();
+}
+
+void MainWindow::on_statCleanPushButton_clicked()
+{
+    ui->statTextEdit->clear();
+}
+
+void MainWindow::on_statToFilePushButton_clicked()
+{
+    QFile file(QString(PATH_TO_STAT) + QDateTime::currentDateTime().toString(Qt::ISODate) + ".stat");
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        qDebug() << "MainWindow::on_statToFilePushButton_clicked() - can't open stat file";
+    else
+    {
+        QTextStream out(&file);
+        out << ui->statTextEdit->toPlainText();
+    }
+}
+
+void MainWindow::on_checkBox_2_clicked(bool checked)
+{
+    m_engine->setCollectStat(checked);
 }

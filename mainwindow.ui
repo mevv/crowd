@@ -193,6 +193,9 @@
      <property name="text">
       <string>Статистика</string>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
     <widget class="QDoubleSpinBox" name="scaleDoubleSpinBox">
      <property name="geometry">
@@ -242,7 +245,7 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>Очистити</string>
+      <string>Перезапустити</string>
      </property>
     </widget>
     <widget class="QPushButton" name="endButton">
@@ -271,7 +274,7 @@
       <x>610</x>
       <y>160</y>
       <width>371</width>
-      <height>251</height>
+      <height>261</height>
      </rect>
     </property>
     <property name="title">
@@ -282,9 +285,35 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>351</width>
+       <width>361</width>
        <height>201</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="statToFilePushButton">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>230</y>
+       <width>85</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>До файлу</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="statCleanPushButton">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>230</y>
+       <width>85</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Очистити</string>
      </property>
     </widget>
    </widget>
