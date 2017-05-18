@@ -26,6 +26,8 @@ public:
 
     void setCollectStat(bool collectStat = true) { m_calculator->setCollectStat(collectStat); }
 
+    void setTimerTick(double tick) { m_timerTick = tick; }
+
     bool isStarted() const { return m_timer->isActive(); }
 
     int getSimulationTime() const { return m_simulationTime; }
@@ -64,7 +66,7 @@ public slots:
     void startSimulationSlot();
 
 private:
-    int m_timerTick = 10;//milliseconds
+    int m_timerTick = 100;//milliseconds
     int m_simulationTime = 0;
 
     bool m_isMouseMove = false;

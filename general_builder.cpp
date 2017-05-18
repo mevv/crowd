@@ -62,9 +62,9 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
 
     int totalNumber = settings.value("agent").toObject().value("number").toInt();
     double panic = settings.value("agent").toObject().value("number").toDouble();
-    QPair<double, double> entryFreq(settings.value("agent").toObject().value("entry_period").toObject().value("min").toDouble(),
+    QPair<double, double> entryPeriod(settings.value("agent").toObject().value("entry_period").toObject().value("min").toDouble(),
                                     settings.value("agent").toObject().value("entry_period").toObject().value("max").toDouble());
-
+    qDebug() << "fron conf" << entryPeriod;
     QVector<QJsonObject> agentTypesConfig;
     QVector<AgentType> agentTypes;
 
@@ -80,9 +80,9 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
     agentTypes.push_back(AgentType::Old);
     agentTypes.push_back(AgentType::Custom);
 
-    for (auto i : pool.getEntries())
+    for (auto& i : pool.getEntries())
     {
-        i.setFreq(entryFreq);
+        i.setPeriod(entryPeriod);
     }
 
     double totalSpawnArea = 0;

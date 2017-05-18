@@ -11,8 +11,15 @@ public:
     Entry(int id, QVector2D pos, QColor color, QVector2D end);
 
 
-    void setFreq(const QPair<double, double>& freq) { m_freq = freq; }
+    void setPeriod(const QPair<double, double>& period) { m_period = period; }
 
+    inline double getTimeFromLastGenerate() const { return m_timeFromLastGenerate; }
+
+    void resetTimeFromLastGenerate() { m_timeFromLastGenerate = 0; }
+
+    void setTimeFromLastGenerate(double time) { m_timeFromLastGenerate = time; }
+
+    inline QPair<double, double> getPeriodRange() const { return m_period; }
 
     QPoint getCenter() const { return QPoint((getPos().x() + m_end.x()) / 2.0, (getPos().y() + m_end.y()) / 2.0); }
 
@@ -22,7 +29,8 @@ public:
 
 private:
     QVector2D m_end;
-    QPair<double, double> m_freq;
+    QPair<double, double> m_period;
+    double m_timeFromLastGenerate = 0;
 
 };
 

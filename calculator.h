@@ -59,12 +59,15 @@ private:
     double m_physicalForcesAgentSum = 0;
 
     int m_iterations = 0;
+    int m_newId = 1000000;
 
     MathParams m_param;
 
     bool m_iscollectStat = true;
 
     void move(Agent &agent);
+
+    void entryProcess();
 
     bool isInExit(const Agent &agent);
 
@@ -86,9 +89,13 @@ private:
 
     double getDistanceToSide(const QVector2D &a, const QVector2D &b, const Agent &agent, QVector2D &result);
 
+    QVector2D getPointOnLine(QVector2D a, QVector2D b);
+
     double scalarMultiplication(const QVector2D &a, const QVector2D &b);
 
     double distanceBetweenPoints(const QVector2D &a, const QVector2D &b);
+
+    double getRandomNumber(double a, double b);
 
     int Heaviside(double n);
 

@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->playButton->hide();
     ui->clearButton->hide();
 
+    ui->doubleSpinBox->setValue(10);
+
     ui->gridLayout->addWidget(paint_widget);
 
     connect(m_engine.get(), &Engine::tick, paint_widget, &PaintWidget::update);
@@ -143,4 +145,9 @@ void MainWindow::on_statToFilePushButton_clicked()
 void MainWindow::on_checkBox_2_clicked(bool checked)
 {
     m_engine->setCollectStat(checked);
+}
+
+void MainWindow::on_doubleSpinBox_valueChanged(double arg1)
+{
+    m_engine->setTimerTick(arg1);
 }

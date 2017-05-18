@@ -4,8 +4,8 @@
 #include <QString>
 #include <QJsonObject>
 
-#define PATH_TO_CONF "/home/valera/source/crowd/config.json"
-#define PATH_TO_STAT "/home/valera/source/stat/"
+#define PATH_TO_CONF "/home/peter/programming/diploma/config.json"
+#define PATH_TO_STAT "/home/peter/programming/stat/"
 
 class JsonManager
 {

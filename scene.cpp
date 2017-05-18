@@ -80,6 +80,18 @@ void Scene::draw(QPainter&  painter)
 
         painter.drawLine(i.getPos().toPointF() * m_scale + m_pos, i.getEnd().toPointF() * m_scale  + m_pos);
     }
+
+    //draw entries
+    for (auto i : m_pool->getEntries())
+    {
+        QPen pen;
+        pen.setColor(Qt::blue);
+        pen.setWidth(3);
+
+        painter.setPen(pen);
+
+        painter.drawLine(i.getPos().toPointF() * m_scale + m_pos, i.getEnd().toPointF() * m_scale  + m_pos);
+    }
 }
 
 //get out this methods from here, need another entity for it

@@ -1,10 +1,18 @@
 #include "calculator.h"
 
+#include <QTime>
+
+#include <algorithm>
+
+#include "json_manager.h"
+
+
 Calculator::Calculator(QPoint sceneSize, std::shared_ptr<ObjectsPool> pool) :
     m_sceneSize(sceneSize),
     m_pool(pool)
 {
-
+    QTime t = QTime::currentTime();
+    qsrand((uint)t.msec());
 }
 
 void Calculator::move(Agent &agent)
@@ -37,6 +45,21 @@ bool Calculator::isInExit(const Agent &agent)
             return true;
     }
     return false;
+}
+
+double Calculator::getRandomNumber(double a, double b)
+{
+    //usleep(100);
+
+    if (a == b)
+        return a;
+
+    double hack = 1000;
+
+    a *= hack;
+    b *= hack;
+
+    return (qrand() % ((int)b - (int)a) + (int)a) / hack;
 }
 
 QVector2D Calculator::getNearestExit(const Agent &agent)
@@ -246,12 +269,74 @@ void Calculator::calcForce(Agent &agent)
     agent.setSpeed(speed);
 }
 
+QVector2D Calculator::getPointOnLine(QVector2D a, QVector2D b)
+{
+    double k = (b.y() - a.y()) / (b.x() - a.x());
+    double c = a.y() - k * a.x();
+    double x = getRandomNumber(std::min(a.x(), b.x()), std::max(a.x(), b.x()));
+
+    return QVector2D(x, k * x + c);
+}
+
+void Calculator::entryProcess()
+{
+    for (auto& i : m_pool->getEntries())
+    {
+
+        double curPeriod = getRandomNumber(i.getPeriodRange().first, i.getPeriodRange().second);
+        qDebug() << i.getPeriodRange() << curPeriod << i.getTimeFromLastGenerate() << m_time;
+
+        QJsonObject configData = JsonManager::parseJsonFile(PATH_TO_CONF);
+
+        QVector<QJsonObject> agentTypesConfig;
+        QVector<AgentType> agentTypes;
+
+        agentTypesConfig.push_back(configData.value("agent").toObject().value("children").toObject());
+        agentTypesConfig.push_back(configData.value("agent").toObject().value("men").toObject());
+        agentTypesConfig.push_back(configData.value("agent").toObject().value("women").toObject());
+        agentTypesConfig.push_back(configData.value("agent").toObject().value("old").toObject());
+        agentTypesConfig.push_back(configData.value("agent").toObject().value("custom").toObject());
+
+        QJsonObject agentType = agentTypesConfig[1];
+
+        if (i.getTimeFromLastGenerate() >= curPeriod)
+        {
+            QVector2D entry(i.getEnd() - i.getPos());
+            entry.normalize();
+            QVector2D entryDir(entry.y(), -entry.x());
+
+            double wishSpeed = getRandomNumber(agentType.value("wish_speed").toObject().value("min").toDouble(),
+                                               agentType.value("wish_speed").toObject().value("max").toDouble());
+
+            entry *= wishSpeed;
+
+            m_pool->addAgent(Agent(m_newId++,
+                            getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
+                                              agentType.value("size").toObject().value("max").toDouble()),
+                            getRandomNumber(agentType.value("mass").toObject().value("min").toDouble(),
+                                            agentType.value("mass").toObject().value("max").toDouble()),
+                            getPointOnLine(i.getPos(), i.getEnd()),
+                            entryDir,
+                            QColor(0, 0, 0),
+                            wishSpeed,
+                            AgentType::Man));
+            i.resetTimeFromLastGenerate();
+        }
+        else
+        {
+            i.setTimeFromLastGenerate(i.getTimeFromLastGenerate() + m_time);
+        }
+    }
+}
+
 std::vector<QVector2D> Calculator::update(double delta)
 {
     m_time = delta / 1000;
     std::vector<QVector2D> moveRecord;
 
     m_iterations++;
+
+    entryProcess();
 
     for (auto i = m_pool->getAgents().begin(); i != m_pool->getAgents().end();)
     {
