@@ -13,6 +13,8 @@ public:
 
     inline QVector<QVector2D> getPoints() const { return m_points; }
 
+    //QColor getColor() const { return this->get; }
+
     QVector<QVector2D> getAbsolutePoints() const;
 
 private:

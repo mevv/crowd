@@ -34,6 +34,8 @@ public:
 
     int getTimerTick() const { return m_timerTick; }
 
+    QString getPlanFilePath() const { return m_lastPlanFilePath; }
+
     void update(bool isTimeRun = true);
 
     void draw(QPainter& painter);

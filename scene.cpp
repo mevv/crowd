@@ -27,13 +27,12 @@ void Scene::draw(QPainter&  painter)
     painter.setBrush(Qt::black);
     for (auto i : m_pool->getAgents())
     {
-        //qDebug() << i.getID() << i.getPos() << i.getPos().x() * m_scale + m_pos.x() << i.getPos().y() * m_scale + m_pos.y() << i.getSize() * m_scale;
-        //brush->setColor(i.getColor());
-        //painter.setBrush(*brush);
+        painter.setBrush(QBrush(i.getColor(),Qt::BrushStyle::SolidPattern));
         painter.drawEllipse(i.getPos().x() * m_scale + m_pos.x(), i.getPos().y() * m_scale + m_pos.y(), i.getSize() * m_scale, i.getSize() * m_scale);
     }
 
     //draw obstacles
+    //painter.setBrush(Qt::black);
     for (auto i : m_pool->getObstacles())
     {
         QPainterPath path;
@@ -47,6 +46,8 @@ void Scene::draw(QPainter&  painter)
         }
 
         path.closeSubpath();
+
+        painter.setBrush(QBrush(i.getColor(), Qt::BrushStyle::SolidPattern));
 
         painter.drawPath(path);
     }
@@ -73,8 +74,8 @@ void Scene::draw(QPainter&  painter)
 //        painter.drawPath(path);
 
         QPen pen;
-        pen.setColor(Qt::black);
-        pen.setWidth(3);
+        pen.setColor(i.getColor());
+        pen.setWidth(5);
 
         painter.setPen(pen);
 
@@ -85,8 +86,8 @@ void Scene::draw(QPainter&  painter)
     for (auto i : m_pool->getEntries())
     {
         QPen pen;
-        pen.setColor(Qt::blue);
-        pen.setWidth(3);
+        pen.setColor(i.getColor());
+        pen.setWidth(5);
 
         painter.setPen(pen);
 

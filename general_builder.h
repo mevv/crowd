@@ -14,6 +14,8 @@ public:
 
     static bool buildAgents(const QJsonObject& settings, ObjectsPool& pool);
 
+    static Agent buildSingleAgent(const QJsonObject& settings, QVector2D pos, QVector2D speedDir);
+
 private:
     static double getRandomNumber(double a, double b);
 

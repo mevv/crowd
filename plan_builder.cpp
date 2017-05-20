@@ -45,8 +45,11 @@ bool PlanBuilder::buildObstacles(const QJsonArray& obstacles, ObjectsPool& pool)
             vertexes.push_back(QVector2D(j.toObject().value("x").toDouble(),
                                       j.toObject().value("y").toDouble()));
 
-        pool.addObstacle(Obstacle(id, position, QColor(), vertexes));
-
+        pool.addObstacle(Obstacle(id, position, QColor(obstacle.value("color").toObject().value("R").toInt(),
+                                                       obstacle.value("color").toObject().value("G").toInt(),
+                                                       obstacle.value("color").toObject().value("B").toInt(),
+                                                       obstacle.value("color").toObject().value("A").toInt()), vertexes));
+        qDebug() << obstacle.value("color");
         id++;
     }
 
@@ -64,7 +67,10 @@ bool PlanBuilder::buildExits(const QJsonArray& exits, ObjectsPool& pool)
         QJsonObject b = tmp.value(QString("end")).toObject();
 
         pool.addExit(Exit(id, QVector2D(a.value("x").toDouble(), a.value("y").toDouble()),
-                             QColor(),
+                             QColor(tmp.value("color").toObject().value("R").toInt(),
+                                    tmp.value("color").toObject().value("G").toInt(),
+                                    tmp.value("color").toObject().value("B").toInt(),
+                                    tmp.value("color").toObject().value("A").toInt()),
                              QVector2D(b.value("x").toDouble(), b.value("y").toDouble())));
         id++;
     }
@@ -81,7 +87,10 @@ bool PlanBuilder::buildEntries(const QJsonArray& entries, ObjectsPool& pool)
         pool.addEntry(Entry(id,
                             QVector2D(tmp.value("begin").toObject().value("x").toDouble(),
                                       tmp.value("begin").toObject().value("y").toDouble()),
-                            QColor(),
+                            QColor(tmp.value("color").toObject().value("R").toInt(),
+                                   tmp.value("color").toObject().value("G").toInt(),
+                                   tmp.value("color").toObject().value("B").toInt(),
+                                   tmp.value("color").toObject().value("A").toInt()),
                             QVector2D(tmp.value("end").toObject().value("x").toDouble(),
                                       tmp.value("end").toObject().value("y").toDouble())
                        ));

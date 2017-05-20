@@ -3,9 +3,8 @@
 
 #include <QString>
 #include <QJsonObject>
+#include <QDir>
 
-#define PATH_TO_CONF "/home/peter/programming/diploma/config.json"
-#define PATH_TO_STAT "/home/peter/programming/stat/"
 
 class JsonManager
 {
@@ -15,6 +14,11 @@ public:
     static QJsonObject parseJsonFile(QString filename);
 
     static bool serializeJson(const QJsonObject& json, QString filename);
+
+
+    static QString getConfPath() { return QDir::current().absolutePath() + "/config.json"; }
+
+    static QString getStatPath() { return QDir::current().absolutePath() + "/stat/"; }
 };
 
 #endif // JSONMANAGER_H

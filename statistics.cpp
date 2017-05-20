@@ -48,7 +48,7 @@ void Statistics::gatherInfoSlot(const Agent & agent, double force)
     stat.sumForces = force;
     stat.sumSpeeds = agent.getSpeed().length();
     stat.sumWishedSpeeds = agent.getWishSpeed();
-    qDebug() << "Added";
+    //qDebug() << "Added";
     m_agentStat.push_back(stat);
 
     m_iterations++;

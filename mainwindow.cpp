@@ -79,7 +79,7 @@ void MainWindow::updateStatSlot(QString report)
 
 void MainWindow::on_change_crowd_params_triggered()
 {
-    QJsonObject curParam = JsonManager::parseJsonFile(PATH_TO_CONF);
+    QJsonObject curParam = JsonManager::parseJsonFile(JsonManager::getConfPath());
 
     m_crowdParameters.reset(new CrowdParameters(curParam));
     m_crowdParameters->show();
@@ -87,7 +87,7 @@ void MainWindow::on_change_crowd_params_triggered()
 
 void MainWindow::on_open_shcheme_menu_triggered()
 {
-    auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити креслення"), "/home/peter", tr("JSON Files (*.json)"));
+    auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити креслення"), "/home", tr("JSON Files (*.json)"));
     ui->clearButton->show();
     ui->playButton->show();
     emit openedSchemeFile(file_name);
@@ -95,7 +95,7 @@ void MainWindow::on_open_shcheme_menu_triggered()
 
 void MainWindow::on_open_simulation_menu_triggered()
 {
-    auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити файл симуляції"), "/home/peter", tr("JSON Files (*.sim)"));
+    auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити файл симуляції"), "/home", tr("JSON Files (*.sim)"));
     ui->clearButton->show();
     ui->playButton->show();
     emit openedSaveFile(file_name);
@@ -131,7 +131,8 @@ void MainWindow::on_statCleanPushButton_clicked()
 
 void MainWindow::on_statToFilePushButton_clicked()
 {
-    QFile file(QString(PATH_TO_STAT) + QDateTime::currentDateTime().toString(Qt::ISODate) + ".stat");
+    qDebug() << QString(JsonManager::getStatPath()) + QDateTime::currentDateTime().toString(Qt::ISODate) + ".stat";
+    QFile file(QString(JsonManager::getStatPath()) + QDateTime::currentDateTime().toString(Qt::ISODate) + ".stat");
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         qDebug() << "MainWindow::on_statToFilePushButton_clicked() - can't open stat file";

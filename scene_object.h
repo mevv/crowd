@@ -14,6 +14,8 @@ public:
 
     inline int getID() const { return m_id; }
 
+    inline QColor getColor() const { return m_color; }
+
     void setPos(const QVector2D& pos) { m_position = pos; }
 
 private:

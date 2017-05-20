@@ -45,9 +45,9 @@ bool GeneralBuilder::buildCalculator(const QJsonObject& settings, Calculator& ca
     param.Awall = tmp.value("A_wall").toDouble();
     param.Bwall = tmp.value("B_wall").toDouble();
     param.Kwall = tmp.value("K_wall").toDouble();
-    qDebug() << param.Awall;
+
     calculator.setMathParams(param);
-    qDebug() << "Calc test:" <<calculator.getMathParams().Awall;
+
     return true;
 }
 
@@ -124,7 +124,10 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
                                                     agentType.value("mass").toObject().value("max").toDouble()),
                                     QVector2D(x, y),
                                     QVector2D(0, 0),
-                                    QColor(0, 0, 0),
+                                    QColor(agentType.value("color").toObject().value("R").toInt(),
+                                           agentType.value("color").toObject().value("G").toInt(),
+                                           agentType.value("color").toObject().value("B").toInt(),
+                                           agentType.value("color").toObject().value("A").toDouble()),
                                     getRandomNumber(agentType.value("wish_speed").toObject().value("min").toDouble(),
                                                     agentType.value("wish_speed").toObject().value("max").toDouble()),
                                     agentTypes[type]));
@@ -135,4 +138,61 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
     }
 
     return true;
+}
+
+Agent GeneralBuilder::buildSingleAgent(const QJsonObject& settings, QVector2D pos, QVector2D speedDir)
+{
+    QVector<QJsonObject> agentTypesConfig;
+    QVector<AgentType> agentTypes;
+
+    agentTypesConfig.push_back(settings.value("agent").toObject().value("children").toObject());
+    agentTypesConfig.push_back(settings.value("agent").toObject().value("men").toObject());
+    agentTypesConfig.push_back(settings.value("agent").toObject().value("women").toObject());
+    agentTypesConfig.push_back(settings.value("agent").toObject().value("old").toObject());
+    agentTypesConfig.push_back(settings.value("agent").toObject().value("custom").toObject());
+
+    agentTypes.push_back(AgentType::Child);
+    agentTypes.push_back(AgentType::Man);
+    agentTypes.push_back(AgentType::Woman);
+    agentTypes.push_back(AgentType::Old);
+    agentTypes.push_back(AgentType::Custom);
+
+    QJsonObject agentType = agentTypesConfig[1];
+    AgentType type;
+    int count = 0;
+    double random;
+    double sum = 0;
+
+    random = getRandomNumber(0, 1);
+    qDebug() <<  random;
+    for (auto i : agentTypesConfig)
+    {
+        if (random >= sum && random < sum + i.value("part").toDouble())
+        {
+            type = agentTypes[count];
+            agentType = i;
+            break;
+        }
+
+        sum += i.value("part").toDouble();
+        count++;
+    }
+
+    double wishSpeed = getRandomNumber(agentType.value("wish_speed").toObject().value("min").toDouble(),
+                                       agentType.value("wish_speed").toObject().value("max").toDouble());
+    QVector2D speed = speedDir * wishSpeed;
+
+    return Agent(getRandomNumber(1000000, 10000000),
+                    getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
+                                      agentType.value("size").toObject().value("max").toDouble()),
+                    getRandomNumber(agentType.value("mass").toObject().value("min").toDouble(),
+                                    agentType.value("mass").toObject().value("max").toDouble()),
+                    pos,
+                    speed,
+                    QColor(agentType.value("color").toObject().value("R").toInt(),
+                           agentType.value("color").toObject().value("G").toInt(),
+                           agentType.value("color").toObject().value("B").toInt(),
+                           agentType.value("color").toObject().value("A").toDouble()),
+                    wishSpeed,
+                    type);
 }

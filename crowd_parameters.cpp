@@ -19,7 +19,7 @@ void CrowdParameters::on_saveParamsButton_clicked()
 {
     QJsonObject data = createJson();
 
-    JsonManager::serializeJson(data, PATH_TO_CONF);
+    JsonManager::serializeJson(data, JsonManager::getConfPath());
 
     emit sendCrowdParamsJson(data);
 

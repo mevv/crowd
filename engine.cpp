@@ -148,7 +148,7 @@ void Engine::loadPlan(QString filename)
 
 
     QJsonObject planData = JsonManager::parseJsonFile(filename);
-    QJsonObject configData = JsonManager::parseJsonFile(PATH_TO_CONF);
+    QJsonObject configData = JsonManager::parseJsonFile(JsonManager::getConfPath());
 
     QJsonObject size = planData.value(QString("size")).toObject();
     m_scene->setSize(QPoint(size.value("x").toDouble(), size.value("y").toDouble()));
