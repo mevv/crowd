@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <time.h>
 
+
 #include <QTime>
 
 #include "spawn_zone.h"
@@ -195,4 +196,22 @@ Agent GeneralBuilder::buildSingleAgent(const QJsonObject& settings, QVector2D po
                            agentType.value("color").toObject().value("A").toDouble()),
                     wishSpeed,
                     type);
+}
+
+
+bool GeneralBuilder::buildCheckPoints(ObjectsPool& pool, Calculator& calculator)
+{
+    int height, width;
+
+    auto matrix = calculator.buildAStarMatrix(height, width);
+
+    for (auto agent : pool.getAgents())
+    {
+        QVector2D nearestExit = calculator.getNearestExit(agent);
+
+//        auto path = MapSearchNode::Astar(matrix.toStdVector(), width, height, std::make_pair(agent.getCenter().x(), agent.getCenter().y()),
+//                                                                std::make_pair(nearestExit.x(), nearestExit.y()));
+
+        //qDebug() << path;
+    }
 }

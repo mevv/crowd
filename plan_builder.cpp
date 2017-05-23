@@ -25,6 +25,14 @@ bool PlanBuilder::buildObjectsPool(const QJsonObject& plan, ObjectsPool& pool)
     return result;
 }
 
+bool PlanBuilder::buildCalculator(const QJsonObject& plan, Calculator& calculator)
+{
+    calculator.setSceneSize(QVector2D(plan.value("size").toObject().value("x").toDouble(),
+                                      plan.value("size").toObject().value("y").toDouble()));
+
+    return true;
+}
+
 bool PlanBuilder::buildObstacles(const QJsonArray& obstacles, ObjectsPool& pool)
 {
 //    qDebug() << obstacles;

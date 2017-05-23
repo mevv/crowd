@@ -15,11 +15,12 @@
 class MapSearchNode
 {
 public:
-
-
     static int MAP_WIDTH;
     static int MAP_HEIGHT;
     static std::vector<double> world_map;
+
+    double x;	 // the (x,y) positions of the node
+    double y;
 
     // map helper functions
     static int GetMap( int x, int y )
@@ -31,10 +32,6 @@ public:
 
         return world_map[(y*MAP_WIDTH)+x];
     }
-
-
-    double x;	 // the (x,y) positions of the node
-    double y;
 
     MapSearchNode() { x = y = 0; }
     MapSearchNode( int px, int py ) { x=px; y=py; }

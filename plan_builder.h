@@ -5,6 +5,7 @@
 #include <QJsonArray>
 
 #include "objects_pool.h"
+#include "calculator.h"
 
 class PlanBuilder
 {
@@ -12,6 +13,8 @@ public:
     PlanBuilder();
 
     static bool buildObjectsPool(const QJsonObject& plan, ObjectsPool& pool);
+
+    static bool buildCalculator(const QJsonObject& plan, Calculator& calculator);
 
 private:
     static bool buildObstacles(const QJsonArray& obstacles, ObjectsPool& pool);

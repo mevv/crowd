@@ -4,7 +4,7 @@
 #include <memory>
 #include <QDebug>
 
-#include "a_star.h"
+//#include "a_star.h"
 #include "objects_pool.h"
 
 //const double defaultSpeedModule = 5;
@@ -32,7 +32,7 @@ class Calculator: public QObject
     Q_OBJECT
 public:
 
-    Calculator(QPoint sceneSize, std::shared_ptr<ObjectsPool> pool);
+    Calculator(QVector2D sceneSize, std::shared_ptr<ObjectsPool> pool);
 
     std::vector<QVector2D> update(double delta);
 
@@ -40,9 +40,16 @@ public:
 
     void setCollectStat(bool collectStat = true) { m_iscollectStat = collectStat; }
 
+    void setSceneSize(QVector2D size) { m_sceneSize = size; }
+
     bool isCollectStat() const { return m_iscollectStat; }
 
     inline MathParams getMathParams() { return m_param; }
+
+
+    QVector<double> buildAStarMatrix(int & height, int & width);
+
+    QVector2D getNearestExit(const Agent &agent);
 
 signals:
     void sendStatSignal(const Agent & agent, double force);
@@ -53,7 +60,7 @@ private:
 
     double gridStep = 1;
 
-    QPoint m_sceneSize;//meters
+    QVector2D m_sceneSize;//meters
 
     std::shared_ptr<ObjectsPool> m_pool;
 
@@ -65,7 +72,7 @@ private:
 
     MathParams m_param;
 
-    QVector<int> buildAStarMatrix(int & height, int & width);
+
 
     int isInObstacle(double x, double y);
 
@@ -81,7 +88,7 @@ private:
 
     QVector2D calcPanicForce(const Agent &agent);
 
-    QVector2D getNearestExit(const Agent &agent);
+
 
     QVector2D calcNormal(QVector2D a, QVector2D b);
 

@@ -6,9 +6,9 @@
 
 #include "json_manager.h"
 #include "general_builder.h"
+#include "is_in_polygon.h"
 
-
-Calculator::Calculator(QPoint sceneSize, std::shared_ptr<ObjectsPool> pool) :
+Calculator::Calculator(QVector2D sceneSize, std::shared_ptr<ObjectsPool> pool) :
     m_sceneSize(sceneSize),
     m_pool(pool)
 {
@@ -311,6 +311,14 @@ void Calculator::entryProcess()
 
 std::vector<QVector2D> Calculator::update(double delta)
 {
+//    int h, w;
+//    buildAStarMatrix(h, w);
+
+// test isInObstacle
+//    for (int i = 0; i < 10; i++)
+//        for (int j = 0; j < 10; j++)
+//            qDebug() << i << " " << j << " " << isInObstacle(i, j);
+
     m_time = delta / 1000;
     std::vector<QVector2D> moveRecord;
 
@@ -339,36 +347,49 @@ std::vector<QVector2D> Calculator::update(double delta)
     return moveRecord;
 }
 
-QVector<int> Calculator::buildAStarMatrix(int & height, int & width)
+QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
 {
-    QVector<int> res;
-    height  = m_sceneSize.x()/gridStep;
-    width = m_sceneSize.y()/gridStep;
+    QVector<double> res;
+
+    height  = (int)m_sceneSize.x() / gridStep;
+    width = (int)m_sceneSize.y() / gridStep;
+
+    //qDebug() << "wh" << width << " " << height;
+
     for(int i = 0; i < width; i++)
     {
-        for(int j = 0; i < height; i++)
+        for(int j = 0; j < height; j++)
         {
-            res.push_back(isInObstacle(gridStep*i + gridStep/2, gridStep*j + gridStep/2));
+            //qDebug() << "point" << gridStep * i + gridStep / 2.0 << " " << gridStep * j + gridStep / 2.0;
+            res.push_back(((isInObstacle(gridStep * i + gridStep / 2.0, gridStep * j + gridStep / 2.0)) ? 9.0 : 1.0));
         }
     }
+    //qDebug() << res;
+    return res;
 }
 
 int Calculator::isInObstacle(double x, double y)
 {
     for(auto i : m_pool->getObstacles())
     {
-        auto points =  i.getAbsolutePoints();
-        bool result = false;
-        int j = points.size() - 1;
-        for (int i = 0; i < points.size(); i++) {
-            if ( (points[i].x() < y && points[j].y() >= y || points[j].y() < y && points[i].y() >= y) &&
-                 (points[i].x() + (y - points[i].y()) / (points[j].y() - points[i].y()) * (points[j].x() - points[i].x()) < x) )
-                result = !result;
-            j = i;
+        std::vector<Point> polygon;
+
+        for (auto j : i.getAbsolutePoints())
+        {
+            Point point;
+            point.x = j.x();
+            point.y = j.y();
+            polygon.push_back(point);
         }
-        if(result)
+
+        Point point;
+        point.x = x;
+        point.y = y;
+
+        if (InPolygon(polygon, point))
             return true;
     }
+
     return false;
 }
 

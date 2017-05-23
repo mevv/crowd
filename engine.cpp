@@ -25,7 +25,7 @@ Engine::Engine()
 
     //readSchemeFromFile(m_schemeFileName);
 
-    QPoint sceneRealSize(500, 500);
+    QVector2D sceneRealSize(0, 0);
 
     m_scene.reset(new Scene(sceneRealSize, m_objects_pool));
     m_calculator.reset(new Calculator(sceneRealSize ,m_objects_pool));
@@ -126,37 +126,21 @@ void Engine::loadPlan(QString filename)
     //this->clear();
     m_lastPlanFilePath = filename;
 
-    /* DUMMY INIT*/
-//    for (size_t i = 0; i < 10; i++)
-//    {
-//        m_objects_pool->addAgent(Agent(i, 0.1, 80,
-//                             QVector2D(1.0 + 0.4*i, 0.5),
-//                             QVector2D(0, 0),
-//                             QColor(0, 0, 0),
-//                             3));
-//        qDebug() << "agent";
-//     }
-
-
-    //m_objects_pool->addObstacle(Obstacle(1, QVector2D(100, 100),QColor(), {QPoint(-90, 300), QPoint(300, 300), QPoint(300, 100)}));
-
-//    m_objects_pool->addExit(Exit(1, QVector2D(0, 500), QColor(), QVector2D(50, 500)));
-//    m_objects_pool->addExit(Exit(1, QVector2D(400, 200), QColor(), QVector2D(400, 300)));
-
-
-    /* INIT FROM FILE*/
-
-
     QJsonObject planData = JsonManager::parseJsonFile(filename);
     QJsonObject configData = JsonManager::parseJsonFile(JsonManager::getConfPath());
 
     QJsonObject size = planData.value(QString("size")).toObject();
-    m_scene->setSize(QPoint(size.value("x").toDouble(), size.value("y").toDouble()));
+    m_scene->setSize(QVector2D(size.value("x").toDouble(), size.value("y").toDouble()));
     m_scene->setScale(50);
+
     qDebug() << configData;
+
     PlanBuilder::buildObjectsPool(planData, *m_objects_pool);
+    PlanBuilder::buildCalculator(planData, *m_calculator);
     GeneralBuilder::buildCalculator(configData, *m_calculator);
     GeneralBuilder::buildAgents(configData, *m_objects_pool);
+
+    GeneralBuilder::buildCheckPoints(*m_objects_pool, *m_calculator);
 
     int n = 10;
 

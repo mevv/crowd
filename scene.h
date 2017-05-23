@@ -12,7 +12,7 @@
 class Scene
 {
 public:
-    Scene(QPoint size,std::shared_ptr<ObjectsPool> pool);
+    Scene(QVector2D size,std::shared_ptr<ObjectsPool> pool);
 
     void draw(QPainter& painter);
 
@@ -22,11 +22,11 @@ public:
 
     void scale(double scale) { m_scale *= scale; }
 
-    void setSize(const QPoint& size) { m_size = size; }
+    void setSize(const QVector2D& size) { m_size = size; }
 
     void moveBy(QPoint delta) { m_pos += delta; }
 
-    QPoint getSize() {return this->m_size; }
+    QVector2D getSize() {return this->m_size; }
 
     //get out this methods from here, need another entity for it
     std::vector<QPoint> movePolygonTo(const std::vector<QPoint>& polygon, QPoint place);
@@ -34,7 +34,7 @@ public:
     std::vector<QPoint> scalePolygon(const std::vector<QPoint>& polygon, double scale);
 
 private:
-    QPoint m_size;//meters
+    QVector2D m_size;//meters
     QPoint m_pos;//position of building on widget in pixels
 
     double m_scale = 1;//number of screen pixels in real meter

@@ -3,7 +3,11 @@
 
 #include <QJsonObject>
 
+#include <utility>
+
 #include "calculator.h"
+# include "a_star.h"
+
 
 class GeneralBuilder
 {
@@ -15,6 +19,8 @@ public:
     static bool buildAgents(const QJsonObject& settings, ObjectsPool& pool);
 
     static Agent buildSingleAgent(const QJsonObject& settings, QVector2D pos, QVector2D speedDir);
+
+    static bool buildCheckPoints(ObjectsPool& pool, Calculator& calculator);
 
 private:
     static double getRandomNumber(double a, double b);

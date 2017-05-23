@@ -3,7 +3,7 @@
 #include <QDebug>
 
 
-Scene::Scene(QPoint size,std::shared_ptr<ObjectsPool> pool) :
+Scene::Scene(QVector2D size,std::shared_ptr<ObjectsPool> pool) :
     m_size(size),
     m_pool(pool)
 {

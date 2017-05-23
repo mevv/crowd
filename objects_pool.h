@@ -8,6 +8,7 @@
 #include "exit.h"
 #include "entry.h"
 #include "spawn_zone.h"
+#include "checkpoint.h"
 
 #include <QFile>
 #include <QJsonDocument>
@@ -33,6 +34,8 @@ public:
 
     inline std::vector<SpawnZone>& getSpawnZones() { return m_spawnZones; }
 
+    inline std::vector<Checkpoint>& getCheckpoints() { return m_checkpoints; }
+
 
     void addAgent(Agent agent) { m_agents.push_back(agent); }
 
@@ -43,6 +46,8 @@ public:
     void addEntry(const Entry& entry) { m_entries.push_back(entry); }
 
     void addSpawnZone(const SpawnZone& spawnZone) { m_spawnZones.push_back(spawnZone); }
+
+    void addCheckpoint(const Checkpoint& checkpoint) { m_checkpoints.push_back(checkpoint); }
 
     void clear();
 
@@ -57,6 +62,8 @@ private:
     std::vector<Exit> m_exits;
     std::vector<Entry> m_entries;
     std::vector<SpawnZone> m_spawnZones;
+
+    std::vector<Checkpoint> m_checkpoints;
 
     int deleted = 0;
 };

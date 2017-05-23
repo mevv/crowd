@@ -31,6 +31,7 @@ SOURCES += main.cpp\
     statistics.cpp \
     general_builder.cpp \
     json_manager.cpp \
+    checkpoint.cpp
 
 HEADERS  += mainwindow.h \
     paint_widget.h \
@@ -52,6 +53,8 @@ HEADERS  += mainwindow.h \
     a_star.h \
     stlastar.h \
     fsa.h \
+    is_in_polygon.h \
+    checkpoint.h
 
 FORMS    += mainwindow.ui \
     crowdparameters.ui \
