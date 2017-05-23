@@ -6,7 +6,7 @@
 #include <utility>
 
 #include "calculator.h"
-# include "a_star.h"
+#include "a_star.h"
 
 
 class GeneralBuilder

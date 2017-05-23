@@ -205,13 +205,15 @@ bool GeneralBuilder::buildCheckPoints(ObjectsPool& pool, Calculator& calculator)
 
     auto matrix = calculator.buildAStarMatrix(height, width);
 
-    for (auto agent : pool.getAgents())
+    qDebug() << matrix;
+
+    //for (auto agent : pool.getAgents())
     {
-        QVector2D nearestExit = calculator.getNearestExit(agent);
+        //QVector2D nearestExit = calculator.getNearestExit(agent);
 
-//        auto path = MapSearchNode::Astar(matrix.toStdVector(), width, height, std::make_pair(agent.getCenter().x(), agent.getCenter().y()),
-//                                                                std::make_pair(nearestExit.x(), nearestExit.y()));
-
-        //qDebug() << path;
+        auto path = Astar(matrix.toStdVector(), width, height, std::make_pair(1, 1),
+                                                                std::make_pair(5, 5));
+        for(auto i : path)
+            qDebug() << i.first << ", " << i.second;
     }
 }

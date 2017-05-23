@@ -31,7 +31,9 @@ SOURCES += main.cpp\
     statistics.cpp \
     general_builder.cpp \
     json_manager.cpp \
-    checkpoint.cpp
+    checkpoint.cpp \
+    map_search_node.cpp \
+    a_star.cpp
 
 HEADERS  += mainwindow.h \
     paint_widget.h \
@@ -54,7 +56,9 @@ HEADERS  += mainwindow.h \
     stlastar.h \
     fsa.h \
     is_in_polygon.h \
-    checkpoint.h
+    checkpoint.h \
+    map_search_node.h \
+    map_container.h
 
 FORMS    += mainwindow.ui \
     crowdparameters.ui \

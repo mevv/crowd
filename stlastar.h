@@ -29,7 +29,7 @@ given where due.
 #include <iostream>
 #include <stdio.h>
 //#include <conio.h>
-#include <assert.h>
+//#include <assert.h>
 
 // stl includes
 #include <algorithm>
@@ -37,20 +37,11 @@ given where due.
 #include <vector>
 #include <cfloat>
 
-using namespace std;
-
-// fast fixed size memory allocator, used for fast node memory management
 #include "fsa.h"
 
-// Fixed size memory allocator can be disabled to compare performance
-// Uses std new and delete instead if you turn it off
-#define USE_FSA_MEMORY 1
+using namespace std;
 
-// disable warning that debugging information has lines that are truncated
-// occurs in stl headers
-#if defined(WIN32) && defined(_WINDOWS)
-#pragma warning( disable : 4786 )
-#endif
+#define USE_FSA_MEMORY 1
 
 template <class T> class AStarState;
 
@@ -154,7 +145,7 @@ public: // methods
 		m_Start = AllocateNode();
 		m_Goal = AllocateNode();
 
-		assert((m_Start != NULL && m_Goal != NULL));
+        //assert((m_Start != NULL && m_Goal != NULL));
 		
 		m_Start->m_UserState = Start;
 		m_Goal->m_UserState = Goal;
@@ -184,8 +175,8 @@ public: // methods
 	unsigned int SearchStep()
 	{
 		// Firstly break if the user has not initialised the search
-		assert( (m_State > SEARCH_STATE_NOT_INITIALISED) &&
-				(m_State < SEARCH_STATE_INVALID) );
+//		assert( (m_State > SEARCH_STATE_NOT_INITIALISED) &&
+//				(m_State < SEARCH_STATE_INVALID) );
 
 		// Next I want it to be safe to do a searchstep once the search has succeeded...
 		if( (m_State == SEARCH_STATE_SUCCEEDED) ||
@@ -625,7 +616,7 @@ public: // methods
 	void EnsureMemoryFreed()
 	{
 #if USE_FSA_MEMORY
-		assert(m_AllocateNodeCount == 0);
+        //assert(m_AllocateNodeCount == 0);
 #endif
 
 	}

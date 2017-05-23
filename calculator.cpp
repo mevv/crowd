@@ -356,12 +356,13 @@ QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
 
     //qDebug() << "wh" << width << " " << height;
 
+    // TODO: maybe here ERROR - change width and height
     for(int i = 0; i < width; i++)
     {
         for(int j = 0; j < height; j++)
         {
             //qDebug() << "point" << gridStep * i + gridStep / 2.0 << " " << gridStep * j + gridStep / 2.0;
-            res.push_back(((isInObstacle(gridStep * i + gridStep / 2.0, gridStep * j + gridStep / 2.0)) ? 9.0 : 1.0));
+            res.push_back(((isInObstacle(gridStep * j + gridStep / 2.0, gridStep * i + gridStep / 2.0)) ? 9.0 : 1.0));
         }
     }
     //qDebug() << res;
