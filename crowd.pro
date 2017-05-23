@@ -49,6 +49,9 @@ HEADERS  += mainwindow.h \
     statistics.h \
     general_builder.h \
     json_manager.h \
+    a_star.h \
+    stlastar.h \
+    fsa.h \
 
 FORMS    += mainwindow.ui \
     crowdparameters.ui \

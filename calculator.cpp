@@ -338,3 +338,37 @@ std::vector<QVector2D> Calculator::update(double delta)
 
     return moveRecord;
 }
+
+QVector<int> Calculator::buildAStarMatrix(int & height, int & width)
+{
+    QVector<int> res;
+    height  = m_sceneSize.x()/gridStep;
+    width = m_sceneSize.y()/gridStep;
+    for(int i = 0; i < width; i++)
+    {
+        for(int j = 0; i < height; i++)
+        {
+            res.push_back(isInObstacle(gridStep*i + gridStep/2, gridStep*j + gridStep/2));
+        }
+    }
+}
+
+int Calculator::isInObstacle(double x, double y)
+{
+    for(auto i : m_pool->getObstacles())
+    {
+        auto points =  i.getAbsolutePoints();
+        bool result = false;
+        int j = points.size() - 1;
+        for (int i = 0; i < points.size(); i++) {
+            if ( (points[i].x() < y && points[j].y() >= y || points[j].y() < y && points[i].y() >= y) &&
+                 (points[i].x() + (y - points[i].y()) / (points[j].y() - points[i].y()) * (points[j].x() - points[i].x()) < x) )
+                result = !result;
+            j = i;
+        }
+        if(result)
+            return true;
+    }
+    return false;
+}
+

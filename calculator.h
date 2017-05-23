@@ -2,9 +2,9 @@
 #define CALCULATOR_H
 
 #include <memory>
-
 #include <QDebug>
 
+#include "a_star.h"
 #include "objects_pool.h"
 
 //const double defaultSpeedModule = 5;
@@ -51,6 +51,8 @@ signals:
     
 private:
 
+    double gridStep = 1;
+
     QPoint m_sceneSize;//meters
 
     std::shared_ptr<ObjectsPool> m_pool;
@@ -62,6 +64,10 @@ private:
     int m_newId = 1000000;
 
     MathParams m_param;
+
+    QVector<int> buildAStarMatrix(int & height, int & width);
+
+    int isInObstacle(double x, double y);
 
     bool m_iscollectStat = true;
 
