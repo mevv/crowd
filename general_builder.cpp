@@ -206,14 +206,37 @@ bool GeneralBuilder::buildCheckPoints(ObjectsPool& pool, Calculator& calculator)
     auto matrix = calculator.buildAStarMatrix(height, width);
 
     qDebug() << matrix;
+    //qDebug() << pool.getAgents().size();
 
-    //for (auto agent : pool.getAgents())
+    for (auto agent : pool.getAgents())
     {
-        //QVector2D nearestExit = calculator.getNearestExit(agent);
+        QVector2D nearestExit = calculator.getNearestExit(agent);
 
-        auto path = Astar(matrix.toStdVector(), width, height, std::make_pair(1, 1),
-                                                                std::make_pair(5, 5));
+        qDebug() << floor(agent.getCenter().x() / calculator.getGridStep());
+        qDebug() << floor(agent.getCenter().y() / calculator.getGridStep());
+        qDebug() << floor(nearestExit.x() / calculator.getGridStep());
+        qDebug() << floor(nearestExit.y() / calculator.getGridStep());
+        qDebug() << "_____________________________________________";
+
+        std::vector<std::pair<double, double> > path = Astar(matrix.toStdVector(),
+                                                             width,
+                                                             height,
+                                                             std::make_pair(floor(agent.getCenter().x() / calculator.getGridStep()),
+                                                                            floor(agent.getCenter().y() / calculator.getGridStep())),
+                                                             std::make_pair(floor(nearestExit.x() / calculator.getGridStep()),
+                                                                            floor(nearestExit.y() / calculator.getGridStep())));
         for(auto i : path)
             qDebug() << i.first << ", " << i.second;
+        std::vector<Checkpoint> checkpoints;
+        for (auto i : path)
+            checkpoints.push_back(Checkpoint(0,
+                                             QVector2D(i.first * calculator.getGridStep() + calculator.getGridStep() / 2.0,
+                                                       i.second * calculator.getGridStep() + calculator.getGridStep() / 2.0),
+                                             QColor(),
+                                             calculator.getGridStep()));
+
+        pool.getCheckpoints()[agent.getID()] = checkpoints;
     }
+
+    //qDebug() << pool.getCheckpoints().size();
 }

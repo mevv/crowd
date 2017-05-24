@@ -92,7 +92,25 @@ QVector2D Calculator::calcPanicForce(const Agent &agent)
     if(agent.getCenter() == coord)
         return QVector2D(0, 0);
 
-    QVector2D desiredSpeed = calcNormal(agent.getCenter(), coord);
+    QVector2D desiredSpeed;
+
+    if (m_usePathFinding)
+    {
+        if (m_pool->getCheckpoints().find(agent.getID()) != m_pool->getCheckpoints().end())
+        {
+            if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) < m_pool->getCheckpoints()[agent.getID()][0].getRadius())
+                m_pool->getCheckpoints()[agent.getID()].erase(m_pool->getCheckpoints()[agent.getID()].begin());
+
+            if (m_pool->getCheckpoints()[agent.getID()].size() > 0)
+            {
+                desiredSpeed = calcNormal(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos());
+            }
+            else
+                m_pool->getCheckpoints().erase(agent.getID());
+        }
+    }
+
+    desiredSpeed = calcNormal(agent.getCenter(), coord);
 
     double a = sqrt(pow(agent.getWishSpeed(),2)/desiredSpeed.lengthSquared());
     desiredSpeed *= a;
@@ -351,8 +369,8 @@ QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
 {
     QVector<double> res;
 
-    height  = (int)m_sceneSize.x() / gridStep;
-    width = (int)m_sceneSize.y() / gridStep;
+    height  = (int)m_sceneSize.x() / m_gridStep + 1;
+    width = (int)m_sceneSize.y() / m_gridStep + 1;
 
     //qDebug() << "wh" << width << " " << height;
 
@@ -362,7 +380,7 @@ QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
         for(int j = 0; j < height; j++)
         {
             //qDebug() << "point" << gridStep * i + gridStep / 2.0 << " " << gridStep * j + gridStep / 2.0;
-            res.push_back(((isInObstacle(gridStep * j + gridStep / 2.0, gridStep * i + gridStep / 2.0)) ? 9.0 : 1.0));
+            res.push_back(((isInObstacle(m_gridStep * j + m_gridStep / 2.0, m_gridStep * i + m_gridStep / 2.0)) ? 9.0 : 1.0));
         }
     }
     //qDebug() << res;

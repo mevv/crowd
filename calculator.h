@@ -51,6 +51,8 @@ public:
 
     QVector2D getNearestExit(const Agent &agent);
 
+    double getGridStep() const { return m_gridStep; }
+
 signals:
     void sendStatSignal(const Agent & agent, double force);
     void removeAgentSignal(const Agent& agent);
@@ -58,7 +60,7 @@ signals:
     
 private:
 
-    double gridStep = 1;
+    double m_gridStep = 1;
 
     QVector2D m_sceneSize;//meters
 
@@ -77,6 +79,8 @@ private:
     int isInObstacle(double x, double y);
 
     bool m_iscollectStat = true;
+    bool m_usePathFinding = true;
+
 
     void move(Agent &agent);
 

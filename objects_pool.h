@@ -2,6 +2,7 @@
 #define OBJECTSPOOL_H
 
 #include <vector>
+#include <map>
 
 #include "agent.h"
 #include "obstacle.h"
@@ -34,7 +35,7 @@ public:
 
     inline std::vector<SpawnZone>& getSpawnZones() { return m_spawnZones; }
 
-    inline std::vector<Checkpoint>& getCheckpoints() { return m_checkpoints; }
+    inline std::map<int,std::vector<Checkpoint> >& getCheckpoints() { return m_checkpoints; }
 
 
     void addAgent(Agent agent) { m_agents.push_back(agent); }
@@ -47,7 +48,7 @@ public:
 
     void addSpawnZone(const SpawnZone& spawnZone) { m_spawnZones.push_back(spawnZone); }
 
-    void addCheckpoint(const Checkpoint& checkpoint) { m_checkpoints.push_back(checkpoint); }
+    //void addCheckpoint(const Checkpoint& checkpoint) { m_checkpoints.push_back(checkpoint); }
 
     void clear();
 
@@ -63,7 +64,7 @@ private:
     std::vector<Entry> m_entries;
     std::vector<SpawnZone> m_spawnZones;
 
-    std::vector<Checkpoint> m_checkpoints;
+    std::map<int, std::vector<Checkpoint>> m_checkpoints;
 
     int deleted = 0;
 };
