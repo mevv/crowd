@@ -93,6 +93,14 @@ void Scene::draw(QPainter&  painter)
 
         painter.drawLine(i.getPos().toPointF() * m_scale + m_pos, i.getEnd().toPointF() * m_scale  + m_pos);
     }
+
+    //draw checkpoints
+    painter.setBrush(Qt::white);
+    for (auto i : m_pool->getAgents())
+    {
+        for (auto j : m_pool->getCheckpoints()[i.getID()])
+            painter.drawEllipse(j.getPos().x() * m_scale + m_pos.x(), j.getPos().y() * m_scale + m_pos.y(), 5, 5);
+    }
 }
 
 //get out this methods from here, need another entity for it

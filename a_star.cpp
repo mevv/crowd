@@ -1,5 +1,6 @@
 #include "a_star.h"
 
+
 std::vector< std::pair<double, double> > Astar(std::vector<double> map, int width, int height ,std::pair<double, double> start, std::pair<double, double> end)
 {
     AStarSearch<MapSearchNode> astarsearch;
@@ -40,13 +41,13 @@ std::vector< std::pair<double, double> > Astar(std::vector<double> map, int widt
 
         if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED )
         {
-            cout << "Search found goal state\n";
+//            cout << "Search found goal state\n";
 
             MapSearchNode *node = astarsearch.GetSolutionStart();
 
             int steps = 0;
 
-            node->PrintNodeInfo();
+//            node->PrintNodeInfo();
             for( ;; )
             {
                 node = astarsearch.GetSolutionNext();
@@ -60,11 +61,11 @@ std::vector< std::pair<double, double> > Astar(std::vector<double> map, int widt
 
                 result.push_back(std::make_pair(node->x, node->y));
 
-                node->PrintNodeInfo();
+//                node->PrintNodeInfo();
                 steps ++;
             };
 
-            cout << "Solution steps " << steps << endl;
+//            cout << "Solution steps " << steps << endl;
 
             // Once you're done with the solution you can free the nodes up
             astarsearch.FreeSolutionNodes();
@@ -76,7 +77,7 @@ std::vector< std::pair<double, double> > Astar(std::vector<double> map, int widt
         }
 
         // Display the number of loops the search went through
-        cout << "SearchSteps : " << SearchSteps << "\n";
+//        cout << "SearchSteps : " << SearchSteps << "\n";
 
         SearchCount ++;
 

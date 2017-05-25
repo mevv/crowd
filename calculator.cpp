@@ -92,32 +92,32 @@ QVector2D Calculator::calcPanicForce(const Agent &agent)
     if(agent.getCenter() == coord)
         return QVector2D(0, 0);
 
-    QVector2D desiredSpeed;
+    QVector2D desiredSpeed(0, 0);
+
+    desiredSpeed = calcNormal(agent.getCenter(), coord);
 
     if (m_usePathFinding)
     {
         if (m_pool->getCheckpoints().find(agent.getID()) != m_pool->getCheckpoints().end())
         {
-            if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) < m_pool->getCheckpoints()[agent.getID()][0].getRadius())
-                m_pool->getCheckpoints()[agent.getID()].erase(m_pool->getCheckpoints()[agent.getID()].begin());
-
             if (m_pool->getCheckpoints()[agent.getID()].size() > 0)
             {
-                desiredSpeed = calcNormal(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos());
-                qDebug() << "Desires speed:" << desiredSpeed;
-                qDebug() << "Checkpoint pos:" << m_pool->getCheckpoints()[agent.getID()][0].getPos();
+                if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) < m_pool->getCheckpoints()[agent.getID()][0].getRadius())
+                {
+                    m_pool->getCheckpoints()[agent.getID()].erase(m_pool->getCheckpoints()[agent.getID()].begin());
+                }
+                else
+                {
+                    desiredSpeed = calcNormal(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos());
+                }
             }
             else
             {
                 m_pool->getCheckpoints().erase(agent.getID());
-                desiredSpeed = calcNormal(agent.getCenter(), coord);
             }
         }
-        else
-            desiredSpeed = calcNormal(agent.getCenter(), coord);
+
     }
-    else
-        desiredSpeed = calcNormal(agent.getCenter(), coord);
 
     double a = sqrt(pow(agent.getWishSpeed(),2)/desiredSpeed.lengthSquared());
     desiredSpeed *= a;
@@ -291,7 +291,7 @@ void Calculator::calcForce(Agent &agent)
     m_physicalForcesAgentSum = 0;
 
     QVector2D speed = agent.getSpeed() + m_time * totalForce / agent.getMass();
-    //qDebug() << "id" << agent.getID() << "Speed" << speed;
+//    qDebug() << "id" << agent.getID() << "Speed" << speed;
     agent.setSpeed(speed);
 }
 
@@ -351,8 +351,10 @@ std::vector<QVector2D> Calculator::update(double delta)
 
     entryProcess();
 
+
     for (auto i = m_pool->getAgents().begin(); i != m_pool->getAgents().end();)
     {
+        //qDebug() << "coord: " << i->getCenter();
         calcForce(*i);
         move(*i);
 
@@ -369,6 +371,8 @@ std::vector<QVector2D> Calculator::update(double delta)
             i++;
     }
 
+    //qDebug() << "_____________________";
+
     return moveRecord;
 }
 
@@ -376,21 +380,20 @@ QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
 {
     QVector<double> res;
 
-    height  = (int)m_sceneSize.x() / m_gridStep + 1;
-    width = (int)m_sceneSize.y() / m_gridStep + 1;
+    height  = (int)m_sceneSize.y() / m_gridStep;
+    width = (int)m_sceneSize.x() / m_gridStep;
 
-    //qDebug() << "wh" << width << " " << height;
+    qDebug() << "wh" << width << " " << height;
 
     // TODO: maybe here ERROR - change width and height
     for(int i = 0; i < width; i++)
     {
         for(int j = 0; j < height; j++)
         {
-            //qDebug() << "point" << gridStep * i + gridStep / 2.0 << " " << gridStep * j + gridStep / 2.0;
-            res.push_back(((isInObstacle(m_gridStep * j + m_gridStep / 2.0, m_gridStep * i + m_gridStep / 2.0)) ? 9.0 : 1.0));
+            //qDebug() << "point" << m_gridStep * i + m_gridStep / 2.0 << " " << m_gridStep * j + m_gridStep / 2.0;
+            res.push_back(((isInObstacle(m_gridStep * i + m_gridStep / 2.0, m_gridStep * j + m_gridStep / 2.0)) ? 9.0 : 1.0));
         }
     }
-    //qDebug() << res;
     return res;
 }
 
