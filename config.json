@@ -11,7 +11,9 @@
         "K": 1200,
         "A_wall": 20,
         "B_wall": 0.8,
-        "K_wall": 240000
+        "K_wall": 240000,
+        "grid_step": 1,
+        "checkpoint_radius": 1
     },
     "agent":
     {

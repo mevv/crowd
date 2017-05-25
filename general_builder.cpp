@@ -49,6 +49,8 @@ bool GeneralBuilder::buildCalculator(const QJsonObject& settings, Calculator& ca
 
     calculator.setMathParams(param);
 
+    calculator.setGridStep(tmp.value("grid_step").toDouble());
+
     return true;
 }
 
@@ -199,7 +201,7 @@ Agent GeneralBuilder::buildSingleAgent(const QJsonObject& settings, QVector2D po
 }
 
 
-bool GeneralBuilder::buildCheckPoints(ObjectsPool& pool, Calculator& calculator)
+bool GeneralBuilder::buildCheckPoints(QJsonObject& settings, ObjectsPool& pool, Calculator& calculator)
 {
     int height, width;
 
@@ -233,7 +235,7 @@ bool GeneralBuilder::buildCheckPoints(ObjectsPool& pool, Calculator& calculator)
                                              QVector2D(i.first * calculator.getGridStep() + calculator.getGridStep() / 2.0,
                                                        i.second * calculator.getGridStep() + calculator.getGridStep() / 2.0),
                                              QColor(),
-                                             calculator.getGridStep()));
+                                             settings.value("calculator").toObject().value("checkpoint_radius").toDouble()));
 
         pool.getCheckpoints()[agent.getID()] = checkpoints;
     }

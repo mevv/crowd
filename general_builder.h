@@ -20,7 +20,7 @@ public:
 
     static Agent buildSingleAgent(const QJsonObject& settings, QVector2D pos, QVector2D speedDir);
 
-    static bool buildCheckPoints(ObjectsPool& pool, Calculator& calculator);
+    static bool buildCheckPoints(QJsonObject& settings, ObjectsPool& pool, Calculator& calculator);
 
 private:
     static double getRandomNumber(double a, double b);

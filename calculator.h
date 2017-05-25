@@ -42,6 +42,9 @@ public:
 
     void setSceneSize(QVector2D size) { m_sceneSize = size; }
 
+    void setGridStep(double gridStep) { m_gridStep = gridStep; }
+
+
     bool isCollectStat() const { return m_iscollectStat; }
 
     inline MathParams getMathParams() { return m_param; }
