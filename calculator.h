@@ -60,7 +60,7 @@ signals:
     
 private:
 
-    double m_gridStep = 1;
+    double m_gridStep = 2;
 
     QVector2D m_sceneSize;//meters
 

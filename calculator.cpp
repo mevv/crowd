@@ -104,13 +104,20 @@ QVector2D Calculator::calcPanicForce(const Agent &agent)
             if (m_pool->getCheckpoints()[agent.getID()].size() > 0)
             {
                 desiredSpeed = calcNormal(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos());
+                qDebug() << "Desires speed:" << desiredSpeed;
+                qDebug() << "Checkpoint pos:" << m_pool->getCheckpoints()[agent.getID()][0].getPos();
             }
             else
+            {
                 m_pool->getCheckpoints().erase(agent.getID());
+                desiredSpeed = calcNormal(agent.getCenter(), coord);
+            }
         }
+        else
+            desiredSpeed = calcNormal(agent.getCenter(), coord);
     }
-
-    desiredSpeed = calcNormal(agent.getCenter(), coord);
+    else
+        desiredSpeed = calcNormal(agent.getCenter(), coord);
 
     double a = sqrt(pow(agent.getWishSpeed(),2)/desiredSpeed.lengthSquared());
     desiredSpeed *= a;

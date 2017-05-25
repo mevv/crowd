@@ -15,12 +15,12 @@
     },
     "agent":
     {
-        "number": 0,
+        "number": 50,
         "panic_level": 1 ,
         "entry_period": 
         {
-            "min": 0.1,
-            "max": 0.2
+            "min": 100,
+            "max": 200
         },
         "children":
         {
