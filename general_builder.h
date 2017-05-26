@@ -22,6 +22,8 @@ public:
 
     static bool buildCheckPoints(QJsonObject& settings, ObjectsPool& pool, Calculator& calculator);
 
+    static bool buildCheckPointsForSingleAgent(QJsonObject& settings, ObjectsPool& pool, Calculator& calculator, const Agent& agent);
+
 private:
     static double getRandomNumber(double a, double b);
 

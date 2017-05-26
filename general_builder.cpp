@@ -207,8 +207,15 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings, ObjectsPool& pool, 
 
     auto matrix = calculator.buildAStarMatrix(height, width);
 
-    qDebug() << matrix;
-    //qDebug() << pool.getAgents().size();
+    int count = 0;
+    for(int i = 0; i < width; i++)
+    {
+        for(int j = 0; j < height; j++)
+        {
+            std::cout << matrix[count++] << " ";
+        }
+        std::cout << std::endl;
+    }
 
     for (auto agent : pool.getAgents())
     {
@@ -242,7 +249,7 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings, ObjectsPool& pool, 
 
         for(auto i : path)
                     qDebug() << i.first << ", " << i.second;
-
+        qDebug() << "---------------------------------------";
 
 
         for (auto i : path)
@@ -256,4 +263,42 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings, ObjectsPool& pool, 
     }
 
     //qDebug() << pool.getCheckpoints().size();
+}
+
+bool GeneralBuilder::buildCheckPointsForSingleAgent(QJsonObject& settings, ObjectsPool& pool, Calculator& calculator, const Agent& agent)
+{
+    int height, width;
+
+    auto matrix = calculator.buildAStarMatrix(height, width);
+
+    QVector2D nearestExit = calculator.getNearestExit(agent);
+
+    int agentMatrixX = floor(agent.getCenter().x() / calculator.getGridStep());
+    if(agentMatrixX >= width)
+        agentMatrixX--;
+    int agentMatrixY = floor(agent.getCenter().y() / calculator.getGridStep());
+    if(agentMatrixY >= height)
+        agentMatrixY--;
+    int exitMatrixX = floor(nearestExit.x() / calculator.getGridStep());
+    if(exitMatrixX >= width)
+        exitMatrixX--;
+    int exitMatrixY = floor(nearestExit.y() / calculator.getGridStep());
+    if(exitMatrixY >= height)
+        exitMatrixY--;
+
+    std::vector<std::pair<double, double> > path = Astar(matrix.toStdVector(),
+                                                         width,
+                                                         height,
+                                                         std::make_pair(agentMatrixX, agentMatrixY),
+                                                         std::make_pair(exitMatrixX, exitMatrixY));
+    std::vector<Checkpoint> checkpoints;
+
+    for (auto i : path)
+        checkpoints.push_back(Checkpoint(0,
+                                         QVector2D(i.first * calculator.getGridStep() + calculator.getGridStep() / 2.0,
+                                                   i.second * calculator.getGridStep() + calculator.getGridStep() / 2.0),
+                                         QColor(),
+                                         settings.value("calculator").toObject().value("checkpoint_radius").toDouble()));
+
+    pool.getCheckpoints()[agent.getID()] = checkpoints;
 }

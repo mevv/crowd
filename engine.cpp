@@ -85,7 +85,9 @@ void Engine::pause()
 
 void Engine::resume()
 {
+    m_stat->reset();
     m_timer->setInterval(m_timerTick);
+    emit startSimulation(0);
     m_timer->start();
 }
 
@@ -123,7 +125,7 @@ void Engine::mouseReleaseEvent(QMouseEvent * event)
 
 void Engine::loadPlan(QString filename)
 {
-    //this->clear();
+    this->clear();
     m_lastPlanFilePath = filename;
 
     QJsonObject planData = JsonManager::parseJsonFile(filename);
@@ -200,6 +202,11 @@ void Engine::clear()
     m_stat->reset();
     m_simulationTime = 0;
     m_timer->singleShot(0, [this]{ this->update(false); });
+}
+
+void Engine::reset()
+{
+    this->clear();
 
     if (m_lastPlanFilePath.size() > 0)
         loadPlan(m_lastPlanFilePath);

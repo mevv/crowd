@@ -36,6 +36,10 @@ public:
 
     QString getPlanFilePath() const { return m_lastPlanFilePath; }
 
+    Calculator& getCalculator() const { return *m_calculator; }
+
+    Scene& getScene() const { return *m_scene; }
+
     void update(bool isTimeRun = true);
 
     void draw(QPainter& painter);
@@ -64,6 +68,8 @@ public slots:
     void finishSimulation();
 
     void clear();
+
+    void reset();
 
     void startSimulationSlot();
 

@@ -44,6 +44,8 @@ public:
 
     void setGridStep(double gridStep) { m_gridStep = gridStep; }
 
+    void setUsePathFinding(bool use = true) { m_usePathFinding = use; }
+
 
     bool isCollectStat() const { return m_iscollectStat; }
 

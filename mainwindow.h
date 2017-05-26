@@ -10,6 +10,7 @@
 
 #include "engine.h"
 #include "crowd_parameters.h"
+#include "paint_widget.h"
 
 namespace Ui {
 class MainWindow;
@@ -55,12 +56,20 @@ private slots:
 
     void on_doubleSpinBox_valueChanged(double arg1);
 
+    void on_pathfindingCheckBox_clicked(bool checked);
+
+    void on_showPathCheckBox_3_clicked(bool checked);
+
+    void on_horizontalSlider_sliderMoved(int position);
+
 private:
     Ui::MainWindow *ui;
 
     std::shared_ptr<Engine> m_engine;
 
     std::unique_ptr<CrowdParameters> m_crowdParameters;
+
+    std::unique_ptr<PaintWidget> m_paintWidget;
 
 signals:
     void openedSchemeFile(QString file_name);

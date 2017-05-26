@@ -63,6 +63,11 @@ double Calculator::getRandomNumber(double a, double b)
     return (qrand() % ((int)b - (int)a) + (int)a) / hack;
 }
 
+QVector2D getCenterOfLine(QVector2D begin, QVector2D end)
+{
+    return QVector2D((begin.x() + end.x()) / 2.0, (begin.y() + end.y()) / 2.0);
+}
+
 QVector2D Calculator::getNearestExit(const Agent &agent)
 {
     auto exits = m_pool->getExits();
@@ -74,6 +79,9 @@ QVector2D Calculator::getNearestExit(const Agent &agent)
         QVector2D point(0, 0);
 
         double tmp = getDistanceToSide(i.getBegin(), i.getEnd(), agent, point);
+
+        //small hack:)
+        point = getCenterOfLine(point, getCenterOfLine(i.getBegin(), i.getEnd()));
 
         if(tmp < distance)
         {
@@ -323,7 +331,11 @@ void Calculator::entryProcess()
             entry.normalize();
             QVector2D entryDir(entry.y(), -entry.x());
 
-            m_pool->addAgent(GeneralBuilder::buildSingleAgent(configData, getPointOnLine(i.getPos(), i.getEnd()), entryDir));
+            Agent newAgent = GeneralBuilder::buildSingleAgent(configData, getPointOnLine(i.getPos(), i.getEnd()), entryDir);
+
+            m_pool->addAgent(newAgent);
+
+            GeneralBuilder::buildCheckPointsForSingleAgent(configData, *m_pool, *this, newAgent);
 
             i.resetTimeFromLastGenerate();
         }
@@ -386,12 +398,12 @@ QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
     qDebug() << "wh" << width << " " << height;
 
     // TODO: maybe here ERROR - change width and height
-    for(int i = 0; i < width; i++)
+    for(int i = 0; i < height; i++)
     {
-        for(int j = 0; j < height; j++)
+        for(int j = 0; j < width; j++)
         {
             //qDebug() << "point" << m_gridStep * i + m_gridStep / 2.0 << " " << m_gridStep * j + m_gridStep / 2.0;
-            res.push_back(((isInObstacle(m_gridStep * i + m_gridStep / 2.0, m_gridStep * j + m_gridStep / 2.0)) ? 9.0 : 1.0));
+            res.push_back(((isInObstacle(m_gridStep * j + m_gridStep / 2.0, m_gridStep * i + m_gridStep / 2.0)) ? 9.0 : 1.0));
         }
     }
     return res;

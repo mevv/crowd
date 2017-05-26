@@ -24,6 +24,9 @@ public:
 
     void setSize(const QVector2D& size) { m_size = size; }
 
+    void setDrawPath(bool draw = true) { m_drawPath = draw; }
+
+
     void moveBy(QPoint delta) { m_pos += delta; }
 
     QVector2D getSize() {return this->m_size; }
@@ -38,6 +41,8 @@ private:
     QPoint m_pos;//position of building on widget in pixels
 
     double m_scale = 1;//number of screen pixels in real meter
+
+    bool m_drawPath = false;
 
     std::shared_ptr<ObjectsPool> m_pool;
 

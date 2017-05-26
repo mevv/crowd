@@ -40,7 +40,7 @@
      <rect>
       <x>610</x>
       <y>20</y>
-      <width>361</width>
+      <width>381</width>
       <height>141</height>
      </rect>
     </property>
@@ -126,7 +126,7 @@
       <rect>
        <x>180</x>
        <y>50</y>
-       <width>141</width>
+       <width>131</width>
        <height>31</height>
       </rect>
      </property>
@@ -171,7 +171,7 @@
     <widget class="QCheckBox" name="checkBox">
      <property name="geometry">
       <rect>
-       <x>270</x>
+       <x>290</x>
        <y>80</y>
        <width>71</width>
        <height>22</height>
@@ -184,7 +184,7 @@
     <widget class="QCheckBox" name="checkBox_2">
      <property name="geometry">
       <rect>
-       <x>270</x>
+       <x>290</x>
        <y>100</y>
        <width>91</width>
        <height>22</height>
@@ -208,6 +208,9 @@
      </property>
      <property name="suffix">
       <string>x</string>
+     </property>
+     <property name="decimals">
+      <number>5</number>
      </property>
      <property name="singleStep">
       <double>0.250000000000000</double>
@@ -267,12 +270,41 @@
       <string>Завершити</string>
      </property>
     </widget>
+    <widget class="QCheckBox" name="pathfindingCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>266</x>
+       <y>120</y>
+       <width>111</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Пошук шляху</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="showPathCheckBox_3">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>120</y>
+       <width>131</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Показувати шлях</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="stat_groupBox">
     <property name="geometry">
      <rect>
       <x>610</x>
-      <y>160</y>
+      <y>220</y>
       <width>371</width>
       <height>261</height>
      </rect>
@@ -316,6 +348,32 @@
       <string>Очистити</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QSlider" name="horizontalSlider">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>190</y>
+      <width>160</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>170</y>
+      <width>91</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Рівень паніки:</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
