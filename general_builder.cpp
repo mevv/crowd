@@ -286,11 +286,17 @@ bool GeneralBuilder::buildCheckPointsForSingleAgent(QJsonObject& settings, Objec
     if(exitMatrixY >= height)
         exitMatrixY--;
 
-    std::vector<std::pair<double, double> > path = Astar(matrix.toStdVector(),
+//    std::vector<std::pair<double, double> > path = Astar(matrix.toStdVector(),
+//                                                         width,
+//                                                         height,
+//                                                         std::make_pair(agentMatrixX, agentMatrixY),
+//                                                         std::make_pair(exitMatrixX, exitMatrixY));
+    std::vector<std::pair<double, double> > path = Lee(matrix.toStdVector(),
                                                          width,
                                                          height,
                                                          std::make_pair(agentMatrixX, agentMatrixY),
                                                          std::make_pair(exitMatrixX, exitMatrixY));
+
     std::vector<Checkpoint> checkpoints;
 
     for (auto i : path)

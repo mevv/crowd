@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     json_manager.cpp \
     checkpoint.cpp \
     map_search_node.cpp \
-    a_star.cpp
+    a_star.cpp \
+    lee.cpp
 
 HEADERS  += mainwindow.h \
     paint_widget.h \
@@ -58,7 +59,8 @@ HEADERS  += mainwindow.h \
     is_in_polygon.h \
     checkpoint.h \
     map_search_node.h \
-    map_container.h
+    map_container.h \
+    lee.h
 
 FORMS    += mainwindow.ui \
     crowdparameters.ui \

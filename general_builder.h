@@ -7,6 +7,7 @@
 
 #include "calculator.h"
 #include "a_star.h"
+#include "lee.h"
 
 
 class GeneralBuilder
