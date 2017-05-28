@@ -335,7 +335,7 @@ void Calculator::entryProcess()
 
             m_pool->addAgent(newAgent);
 
-            GeneralBuilder::buildCheckPointsForSingleAgent(configData, *m_pool, *this, newAgent);
+            GeneralBuilder::buildCheckPointsForSingleAgent(configData, *m_pool, *this, newAgent, pathAlgorithmIndex);
 
             i.resetTimeFromLastGenerate();
         }
@@ -432,5 +432,11 @@ int Calculator::isInObstacle(double x, double y)
     }
 
     return false;
+}
+
+void Calculator::pathAlgorithmChangedSlot(int index)
+{
+    pathAlgorithmIndex = index;
+    qDebug() << "index: " << index;
 }
 

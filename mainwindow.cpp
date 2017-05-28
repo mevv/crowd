@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_engine.get(), &Engine::changeScaleSignal, this, &MainWindow::updateScale);
     connect(m_engine.get(), &Engine::sendStatReportSignal, this, &MainWindow::updateStatSlot);
+    connect(this, &MainWindow::pathAlgorithmChangedSignal,&(m_engine.get()->getCalculator()), &Calculator::pathAlgorithmChangedSlot);
 
     //connect(this, &MainWindow::openedSaveFile, m_engine.get(), &Engine::setSaveFileName);
 }
@@ -186,4 +187,9 @@ void MainWindow::on_showPathCheckBox_3_clicked(bool checked)
 void MainWindow::on_horizontalSlider_sliderMoved(int position)
 {
     qDebug() << position;
+}
+
+void MainWindow::on_algorithmComboBox_currentIndexChanged(int index)
+{
+    emit pathAlgorithmChangedSignal(index);
 }

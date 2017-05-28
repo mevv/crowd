@@ -62,6 +62,8 @@ private slots:
 
     void on_horizontalSlider_sliderMoved(int position);
 
+    void on_algorithmComboBox_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
 
@@ -78,6 +80,7 @@ signals:
     void openedCrowdParamsFile(QString file_name);
     void clearSimulation();
     void startSimulation();
+    void pathAlgorithmChangedSignal(int index);
 
 };
 

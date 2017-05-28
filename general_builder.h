@@ -21,9 +21,16 @@ public:
 
     static Agent buildSingleAgent(const QJsonObject& settings, QVector2D pos, QVector2D speedDir);
 
-    static bool buildCheckPoints(QJsonObject& settings, ObjectsPool& pool, Calculator& calculator);
+    static bool buildCheckPoints(QJsonObject& settings,
+                                 ObjectsPool& pool,
+                                 Calculator& calculator,
+                                 const int pathAlgorithmIndex);
 
-    static bool buildCheckPointsForSingleAgent(QJsonObject& settings, ObjectsPool& pool, Calculator& calculator, const Agent& agent);
+    static bool buildCheckPointsForSingleAgent(QJsonObject& settings,
+                                               ObjectsPool& pool,
+                                               Calculator& calculator,
+                                               const Agent& agent,
+                                               const int pathAlgorithmIndex);
 
 private:
     static double getRandomNumber(double a, double b);

@@ -46,11 +46,9 @@ public:
 
     void setUsePathFinding(bool use = true) { m_usePathFinding = use; }
 
-
     bool isCollectStat() const { return m_iscollectStat; }
 
     inline MathParams getMathParams() { return m_param; }
-
 
     QVector<double> buildAStarMatrix(int & height, int & width);
 
@@ -58,10 +56,14 @@ public:
 
     double getGridStep() const { return m_gridStep; }
 
+    int getPathAlgorithmIndex() { return pathAlgorithmIndex; }
+
+public slots:
+    void pathAlgorithmChangedSlot(int index);
+
 signals:
     void sendStatSignal(const Agent & agent, double force);
     void removeAgentSignal(const Agent& agent);
-
     
 private:
 
@@ -72,20 +74,22 @@ private:
     std::shared_ptr<ObjectsPool> m_pool;
 
     double m_time;
+
     double m_physicalForcesAgentSum = 0;
 
     int m_iterations = 0;
+
     int m_newId = 1000000;
 
     MathParams m_param;
 
-
+    int pathAlgorithmIndex = 0;
 
     int isInObstacle(double x, double y);
 
     bool m_iscollectStat = true;
-    bool m_usePathFinding = true;
 
+    bool m_usePathFinding = true;
 
     void move(Agent &agent);
 
@@ -96,8 +100,6 @@ private:
     void calcForce(Agent &agent);
 
     QVector2D calcPanicForce(const Agent &agent);
-
-
 
     QVector2D calcNormal(QVector2D a, QVector2D b);
 

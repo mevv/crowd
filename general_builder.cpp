@@ -201,7 +201,10 @@ Agent GeneralBuilder::buildSingleAgent(const QJsonObject& settings, QVector2D po
 }
 
 
-bool GeneralBuilder::buildCheckPoints(QJsonObject& settings, ObjectsPool& pool, Calculator& calculator)
+bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
+                                      ObjectsPool& pool,
+                                      Calculator& calculator,
+                                      const int pathAlgorithmIndex)
 {
     int height, width;
 
@@ -240,11 +243,27 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings, ObjectsPool& pool, 
 //        qDebug() << exitMatrixY;
 //        qDebug() << "_____________________________________________";
 
-        std::vector<std::pair<double, double> > path = Astar(matrix.toStdVector(),
-                                                             width,
-                                                             height,
-                                                             std::make_pair(agentMatrixX, agentMatrixY),
-                                                             std::make_pair(exitMatrixX, exitMatrixY));
+        std::vector<std::pair<double, double> > path;
+
+        switch(pathAlgorithmIndex)
+        {
+            case 0:
+                path = Astar(matrix.toStdVector(),
+                                                                         width,
+                                                                         height,
+                                                                         std::make_pair(agentMatrixX, agentMatrixY),
+                                                                         std::make_pair(exitMatrixX, exitMatrixY));
+                break;
+            case 1:
+                path = Lee(matrix.toStdVector(),
+                                                                 width,
+                                                                 height,
+                                                                 std::make_pair(agentMatrixX, agentMatrixY),
+                                                                 std::make_pair(exitMatrixX, exitMatrixY));
+                break;
+
+        }
+
         std::vector<Checkpoint> checkpoints;
 
         for(auto i : path)
@@ -265,7 +284,11 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings, ObjectsPool& pool, 
     //qDebug() << pool.getCheckpoints().size();
 }
 
-bool GeneralBuilder::buildCheckPointsForSingleAgent(QJsonObject& settings, ObjectsPool& pool, Calculator& calculator, const Agent& agent)
+bool GeneralBuilder::buildCheckPointsForSingleAgent(QJsonObject& settings,
+                                                    ObjectsPool& pool,
+                                                    Calculator& calculator,
+                                                    const Agent& agent,
+                                                    const int pathAlgorithmIndex)
 {
     int height, width;
 
@@ -286,16 +309,27 @@ bool GeneralBuilder::buildCheckPointsForSingleAgent(QJsonObject& settings, Objec
     if(exitMatrixY >= height)
         exitMatrixY--;
 
-//    std::vector<std::pair<double, double> > path = Astar(matrix.toStdVector(),
-//                                                         width,
-//                                                         height,
-//                                                         std::make_pair(agentMatrixX, agentMatrixY),
-//                                                         std::make_pair(exitMatrixX, exitMatrixY));
-    std::vector<std::pair<double, double> > path = Lee(matrix.toStdVector(),
-                                                         width,
-                                                         height,
-                                                         std::make_pair(agentMatrixX, agentMatrixY),
-                                                         std::make_pair(exitMatrixX, exitMatrixY));
+    std::vector<std::pair<double, double> > path;
+
+    switch(pathAlgorithmIndex)
+    {
+        case 0:
+            path = Astar(matrix.toStdVector(),
+                                                                     width,
+                                                                     height,
+                                                                     std::make_pair(agentMatrixX, agentMatrixY),
+                                                                     std::make_pair(exitMatrixX, exitMatrixY));
+            break;
+
+        case 1:
+            path = Lee(matrix.toStdVector(),
+                                                             width,
+                                                             height,
+                                                             std::make_pair(agentMatrixX, agentMatrixY),
+                                                             std::make_pair(exitMatrixX, exitMatrixY));
+            break;
+
+    }
 
     std::vector<Checkpoint> checkpoints;
 

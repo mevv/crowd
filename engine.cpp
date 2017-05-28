@@ -142,7 +142,7 @@ void Engine::loadPlan(QString filename)
     GeneralBuilder::buildCalculator(configData, *m_calculator);
     GeneralBuilder::buildAgents(configData, *m_objects_pool);
 
-    GeneralBuilder::buildCheckPoints(configData, *m_objects_pool, *m_calculator);
+    GeneralBuilder::buildCheckPoints(configData, *m_objects_pool, *m_calculator, m_calculator->getPathAlgorithmIndex());
 
     int n = 10;
 
