@@ -17,9 +17,9 @@ public:
 
     static bool buildCalculator(const QJsonObject& settings, Calculator& calculator);
 
-    static bool buildAgents(const QJsonObject& settings, ObjectsPool& pool);
+    static bool buildAgents(const QJsonObject& settings, ObjectsPool& pool, double panicLevel);
 
-    static Agent buildSingleAgent(const QJsonObject& settings, QVector2D pos, QVector2D speedDir);
+    static Agent buildSingleAgent(const QJsonObject& settings, QVector2D pos, QVector2D speedDir, double panicLevel);
 
     static bool buildCheckPoints(QJsonObject& settings,
                                  ObjectsPool& pool,

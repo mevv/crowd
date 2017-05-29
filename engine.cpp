@@ -140,7 +140,7 @@ void Engine::loadPlan(QString filename)
     PlanBuilder::buildObjectsPool(planData, *m_objects_pool);
     PlanBuilder::buildCalculator(planData, *m_calculator);
     GeneralBuilder::buildCalculator(configData, *m_calculator);
-    GeneralBuilder::buildAgents(configData, *m_objects_pool);
+    GeneralBuilder::buildAgents(configData, *m_objects_pool, m_calculator->getPanicLevel());
 
     GeneralBuilder::buildCheckPoints(configData, *m_objects_pool, *m_calculator, m_calculator->getPathAlgorithmIndex());
 

@@ -331,7 +331,7 @@ void Calculator::entryProcess()
             entry.normalize();
             QVector2D entryDir(entry.y(), -entry.x());
 
-            Agent newAgent = GeneralBuilder::buildSingleAgent(configData, getPointOnLine(i.getPos(), i.getEnd()), entryDir);
+            Agent newAgent = GeneralBuilder::buildSingleAgent(configData, getPointOnLine(i.getPos(), i.getEnd()), entryDir, m_panicLevel);
 
             m_pool->addAgent(newAgent);
 
@@ -438,5 +438,10 @@ void Calculator::pathAlgorithmChangedSlot(int index)
 {
     pathAlgorithmIndex = index;
     qDebug() << "index: " << index;
+}
+
+void Calculator::changePanicLevelSlot(double panicLevel)
+{
+    m_panicLevel = panicLevel;
 }
 

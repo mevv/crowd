@@ -118,13 +118,16 @@
       </rect>
      </property>
      <property name="suffix">
-      <string>x</string>
+      <string/>
      </property>
      <property name="decimals">
-      <number>1</number>
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <double>100.000000000000000</double>
      </property>
      <property name="singleStep">
-      <double>0.100000000000000</double>
+      <double>1.000000000000000</double>
      </property>
      <property name="value">
       <double>1.000000000000000</double>

@@ -81,6 +81,7 @@ signals:
     void clearSimulation();
     void startSimulation();
     void pathAlgorithmChangedSignal(int index);
+    void changePanicLevelSignal(double panicLevel);
 
 };
 

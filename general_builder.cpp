@@ -54,7 +54,7 @@ bool GeneralBuilder::buildCalculator(const QJsonObject& settings, Calculator& ca
     return true;
 }
 
-bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
+bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool, double panicLevel)
 {
     int id = 0;
 
@@ -131,8 +131,9 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
                                            agentType.value("color").toObject().value("G").toInt(),
                                            agentType.value("color").toObject().value("B").toInt(),
                                            agentType.value("color").toObject().value("A").toDouble()),
-                                    getRandomNumber(agentType.value("wish_speed").toObject().value("min").toDouble(),
-                                                    agentType.value("wish_speed").toObject().value("max").toDouble()),
+                                    agentType.value("wish_speed").toObject().value("min").toDouble() +
+                                    (agentType.value("wish_speed").toObject().value("max").toDouble() -
+                                     agentType.value("wish_speed").toObject().value("min").toDouble()) * panicLevel,
                                     agentTypes[type]));
                 id++;
             }
@@ -143,7 +144,7 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool)
     return true;
 }
 
-Agent GeneralBuilder::buildSingleAgent(const QJsonObject& settings, QVector2D pos, QVector2D speedDir)
+Agent GeneralBuilder::buildSingleAgent(const QJsonObject& settings, QVector2D pos, QVector2D speedDir, double panicLevel)
 {
     QVector<QJsonObject> agentTypesConfig;
     QVector<AgentType> agentTypes;
@@ -181,8 +182,9 @@ Agent GeneralBuilder::buildSingleAgent(const QJsonObject& settings, QVector2D po
         count++;
     }
 
-    double wishSpeed = getRandomNumber(agentType.value("wish_speed").toObject().value("min").toDouble(),
-                                       agentType.value("wish_speed").toObject().value("max").toDouble());
+    double wishSpeed = agentType.value("wish_speed").toObject().value("min").toDouble() +
+                      (agentType.value("wish_speed").toObject().value("max").toDouble() -
+                       agentType.value("wish_speed").toObject().value("min").toDouble()) * panicLevel;
     QVector2D speed = speedDir * wishSpeed;
 
     return Agent(getRandomNumber(1000000, 10000000),
@@ -315,18 +317,18 @@ bool GeneralBuilder::buildCheckPointsForSingleAgent(QJsonObject& settings,
     {
         case 0:
             path = Astar(matrix.toStdVector(),
-                                                                     width,
-                                                                     height,
-                                                                     std::make_pair(agentMatrixX, agentMatrixY),
-                                                                     std::make_pair(exitMatrixX, exitMatrixY));
+                         width,
+                         height,
+                         std::make_pair(agentMatrixX, agentMatrixY),
+                         std::make_pair(exitMatrixX, exitMatrixY));
             break;
 
         case 1:
             path = Lee(matrix.toStdVector(),
-                                                             width,
-                                                             height,
-                                                             std::make_pair(agentMatrixX, agentMatrixY),
-                                                             std::make_pair(exitMatrixX, exitMatrixY));
+                       width,
+                       height,
+                       std::make_pair(agentMatrixX, agentMatrixY),
+                       std::make_pair(exitMatrixX, exitMatrixY));
             break;
 
     }

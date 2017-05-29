@@ -56,10 +56,13 @@ public:
 
     double getGridStep() const { return m_gridStep; }
 
+    double getPanicLevel() const { return m_panicLevel; }
+
     int getPathAlgorithmIndex() { return pathAlgorithmIndex; }
 
 public slots:
     void pathAlgorithmChangedSlot(int index);
+    void changePanicLevelSlot(double panicLevel);
 
 signals:
     void sendStatSignal(const Agent & agent, double force);
@@ -76,6 +79,8 @@ private:
     double m_time;
 
     double m_physicalForcesAgentSum = 0;
+
+    double m_panicLevel = 0;
 
     int m_iterations = 0;
 
