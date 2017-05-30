@@ -213,9 +213,9 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
     auto matrix = calculator.buildAStarMatrix(height, width);
 
     int count = 0;
-    for(int i = 0; i < width; i++)
+    for(int i = 0; i < height; i++)
     {
-        for(int j = 0; j < height; j++)
+        for(int j = 0; j < width; j++)
         {
             std::cout << matrix[count++] << " ";
         }
