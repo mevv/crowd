@@ -6,9 +6,9 @@ std::vector<std::pair<double, double> > Lee(std::vector<double> map,
                                             std::pair<double, double> end)
 {
     int * intMap = new int [max(width, height) * max(width, height)];
-    cout << "map: " << endl;
-    cout << "start:" << start.first << " " << start.second << endl;
-    cout << "end:" << end.first << " " << end.second << endl;
+//    cout << "map: " << endl;
+//    cout << "start:" << start.first << " " << start.second << endl;
+//    cout << "end:" << end.first << " " << end.second << endl;
     int count = 0;
     for(int i = 0; i < height; i++)
     {
@@ -48,16 +48,16 @@ std::vector<std::pair<double, double> > Lee(std::vector<double> map,
         height = width;
     }
 
-    count = 0;
-    for(int i = 0; i < height; i++)
-    {
-        for(int j = 0; j < width; j++)
-        {
-            cout << intMap[count] << " ";
-            count++;
-        }
-        cout << endl;
-    }
+//    count = 0;
+//    for(int i = 0; i < height; i++)
+//    {
+//        for(int j = 0; j < width; j++)
+//        {
+//            cout << intMap[count] << " ";
+//            count++;
+//        }
+//        cout << endl;
+//    }
 
     LeePathfinder c(intMap, width, height);
     auto intPath =  c.CalculatePath();

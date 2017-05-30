@@ -9,6 +9,8 @@ PaintWidget::PaintWidget(QWidget *parent, const std::shared_ptr<Engine>& engine)
     //m_engine.reset(new Engine());
 
     //connect(m_engine.get(), &Engine::tick, this, &PaintWidget::update);
+
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 
@@ -33,12 +35,7 @@ void PaintWidget::paintEvent(QPaintEvent * event)
 
 void PaintWidget::resizeEvent(QResizeEvent * event)
 {
-//    QPainter painter;
-
-//    painter.begin(this);
-//        painter.setBrush(Qt::black);
-//        painter.drawRect(0, 0, this->height(), this->width());
-//    painter.end();
+    //this->size(event->size());
 }
 
 void PaintWidget::mousePressEvent (QMouseEvent * event)

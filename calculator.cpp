@@ -443,5 +443,41 @@ void Calculator::pathAlgorithmChangedSlot(int index)
 void Calculator::changePanicLevelSlot(double panicLevel)
 {
     m_panicLevel = panicLevel;
+    updateWishSpeeds();
+}
+
+void Calculator::updateWishSpeeds()
+{
+    QJsonObject configData = JsonManager::parseJsonFile(JsonManager::getConfPath());
+
+    QJsonObject childWishSpeed = configData.value("agent").toObject().value("children").toObject().value("wish_speed").toObject();
+    QJsonObject manWishSpeed = configData.value("agent").toObject().value("children").toObject().value("wish_speed").toObject();
+    QJsonObject womanWishSpeed = configData.value("agent").toObject().value("children").toObject().value("wish_speed").toObject();
+    QJsonObject oldWishSpeed = configData.value("agent").toObject().value("children").toObject().value("wish_speed").toObject();
+    QJsonObject customWishSpeed = configData.value("agent").toObject().value("children").toObject().value("wish_speed").toObject();
+
+    for (auto& i : m_pool->getAgents())
+    {
+        if (i.getType() == AgentType::Child)
+            i.setWishSpeed(childWishSpeed.value("min").toDouble() +
+                          (childWishSpeed.value("max").toDouble() -
+                           childWishSpeed.value("min").toDouble()) * m_panicLevel);
+        else if (i.getType() == AgentType::Man)
+            i.setWishSpeed(manWishSpeed.value("min").toDouble() +
+                          (manWishSpeed.value("max").toDouble() -
+                           manWishSpeed.value("min").toDouble()) * m_panicLevel);
+        else if (i.getType() == AgentType::Woman)
+            i.setWishSpeed(womanWishSpeed.value("min").toDouble() +
+                          (womanWishSpeed.value("max").toDouble() -
+                           womanWishSpeed.value("min").toDouble()) * m_panicLevel);
+        else if (i.getType() == AgentType::Old)
+            i.setWishSpeed(oldWishSpeed.value("min").toDouble() +
+                          (oldWishSpeed.value("max").toDouble() -
+                           oldWishSpeed.value("min").toDouble()) * m_panicLevel);
+        else if (i.getType() == AgentType::Custom)
+            i.setWishSpeed(customWishSpeed.value("min").toDouble() +
+                          (customWishSpeed.value("max").toDouble() -
+                           customWishSpeed.value("min").toDouble()) * m_panicLevel);
+    }
 }
 

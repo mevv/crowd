@@ -128,6 +128,8 @@ private:
 
     int Heaviside(double n);
 
+
+    void updateWishSpeeds();
 };
 
 #endif // CALCULATOR_H

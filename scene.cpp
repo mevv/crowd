@@ -19,6 +19,10 @@ void Scene::draw(QPainter&  painter)
 
     //    painter.scale(m_scale, m_scale);
 
+    //filling
+    painter.setBrush(Qt::white);
+    painter.drawRect(m_pos.x(), m_pos.y(), m_size.x() * m_scale, m_size.y() * m_scale);
+
     //draw background
     painter.setBrush(Qt::gray);
     painter.drawRect(m_pos.x(), m_pos.y(), m_size.x() * m_scale, m_size.y() * m_scale);

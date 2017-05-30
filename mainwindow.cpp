@@ -15,12 +15,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_paintWidget.reset(new PaintWidget(this, m_engine));
 
-    ui->playButton->hide();
-    ui->clearButton->hide();
+    ui->playButton->setEnabled(false);
+    ui->clearButton->setEnabled(false);
+    ui->endButton->setEnabled(false);
 
     ui->doubleSpinBox->setValue(10);
 
     ui->gridLayout->addWidget(m_paintWidget.get());
+    qDebug() << ui->gridLayout->sizeHint();
+    qDebug() << m_paintWidget->size();
+    m_paintWidget->resize(500, 500);
+    qDebug() << m_paintWidget->size();
     m_paintWidget->setMouseTracking(true);
 
     connect(m_engine.get(), &Engine::tick, m_paintWidget.get(), &PaintWidget::update);
@@ -101,8 +106,11 @@ void MainWindow::on_change_crowd_params_triggered()
 void MainWindow::on_open_shcheme_menu_triggered()
 {
     auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити креслення"), "/home", tr("JSON Files (*.json)"));
-    ui->clearButton->show();
-    ui->playButton->show();
+
+    ui->clearButton->setEnabled(true);
+    ui->playButton->setEnabled(true);
+    ui->endButton->setEnabled(true);
+
     ui->scaleDoubleSpinBox->setValue(1);
     emit openedSchemeFile(file_name);
 }
@@ -161,6 +169,10 @@ void MainWindow::on_statToFilePushButton_clicked()
 
 void MainWindow::on_checkBox_2_clicked(bool checked)
 {
+    ui->statTextEdit->setEnabled(checked);
+    ui->statCleanPushButton->setEnabled(checked);
+    ui->statToFilePushButton->setEnabled(checked);
+
     m_engine->setCollectStat(checked);
 }
 
@@ -173,9 +185,17 @@ void MainWindow::on_doubleSpinBox_valueChanged(double arg1)
 void MainWindow::on_pathfindingCheckBox_clicked(bool checked)
 {
     if (checked)
+    {
+        ui->algorithmComboBox->setEnabled(true);
+
         m_engine->getCalculator().setUsePathFinding();
+    }
     else
+    {
+        ui->algorithmComboBox->setEnabled(false);
+
         m_engine->getCalculator().setUsePathFinding(false);
+    }
 }
 
 void MainWindow::on_showPathCheckBox_3_clicked(bool checked)

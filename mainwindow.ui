@@ -6,18 +6,30 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>625</height>
+    <width>1200</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>1200</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1200</width>
+    <height>700</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Crowd</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QWidget" name="gridLayoutWidget">
@@ -25,8 +37,8 @@
      <rect>
       <x>19</x>
       <y>19</y>
-      <width>581</width>
-      <height>561</height>
+      <width>791</width>
+      <height>641</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -38,10 +50,10 @@
    <widget class="QGroupBox" name="simulationControlGroupBox">
     <property name="geometry">
      <rect>
-      <x>610</x>
-      <y>20</y>
-      <width>381</width>
-      <height>141</height>
+      <x>820</x>
+      <y>10</y>
+      <width>301</width>
+      <height>111</height>
      </rect>
     </property>
     <property name="title">
@@ -52,7 +64,7 @@
       <rect>
        <x>0</x>
        <y>80</y>
-       <width>101</width>
+       <width>171</width>
        <height>27</height>
       </rect>
      </property>
@@ -133,22 +145,6 @@
       <double>1.000000000000000</double>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox_2">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>50</y>
-       <width>91</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Статистика</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QDoubleSpinBox" name="scaleDoubleSpinBox">
      <property name="geometry">
       <rect>
@@ -187,7 +183,7 @@
     <widget class="QPushButton" name="clearButton">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>190</x>
        <y>80</y>
        <width>101</width>
        <height>27</height>
@@ -206,8 +202,8 @@
     <widget class="QPushButton" name="endButton">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>110</y>
+       <x>190</x>
+       <y>50</y>
        <width>101</width>
        <height>27</height>
       </rect>
@@ -222,40 +218,73 @@
       <string>Завершити</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="pathfindingCheckBox">
+   </widget>
+   <widget class="QGroupBox" name="stat_groupBox">
+    <property name="geometry">
+     <rect>
+      <x>820</x>
+      <y>320</y>
+      <width>371</width>
+      <height>331</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Статистика симуляції</string>
+    </property>
+    <widget class="QTextEdit" name="statTextEdit">
      <property name="geometry">
       <rect>
-       <x>266</x>
-       <y>120</y>
-       <width>111</width>
-       <height>22</height>
+       <x>10</x>
+       <y>20</y>
+       <width>361</width>
+       <height>271</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="statToFilePushButton">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>300</y>
+       <width>85</width>
+       <height>27</height>
       </rect>
      </property>
      <property name="text">
-      <string>Пошук шляху</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
+      <string>До файлу</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="showPathCheckBox_3">
+    <widget class="QPushButton" name="statCleanPushButton">
      <property name="geometry">
       <rect>
-       <x>140</x>
-       <y>120</y>
-       <width>131</width>
-       <height>22</height>
+       <x>190</x>
+       <y>300</y>
+       <width>85</width>
+       <height>27</height>
       </rect>
      </property>
      <property name="text">
-      <string>Показувати шлях</string>
+      <string>Очистити</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>820</x>
+      <y>240</y>
+      <width>141</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Алгоритм</string>
+    </property>
     <widget class="QComboBox" name="algorithmComboBox">
      <property name="geometry">
       <rect>
-       <x>240</x>
-       <y>80</y>
+       <x>10</x>
+       <y>20</y>
        <width>131</width>
        <height>31</height>
       </rect>
@@ -272,80 +301,89 @@
      </item>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="stat_groupBox">
+   <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>610</x>
-      <y>280</y>
-      <width>371</width>
-      <height>261</height>
+      <x>820</x>
+      <y>140</y>
+      <width>271</width>
+      <height>91</height>
      </rect>
     </property>
     <property name="title">
-     <string>Статистика симуляції</string>
+     <string>Параметри</string>
     </property>
-    <widget class="QTextEdit" name="statTextEdit">
+    <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
-       <width>361</width>
-       <height>201</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="statToFilePushButton">
-     <property name="geometry">
-      <rect>
-       <x>280</x>
-       <y>230</y>
-       <width>85</width>
-       <height>27</height>
+       <y>30</y>
+       <width>91</width>
+       <height>17</height>
       </rect>
      </property>
      <property name="text">
-      <string>До файлу</string>
+      <string>Рівень паніки:</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="statCleanPushButton">
+    <widget class="QSlider" name="horizontalSlider">
      <property name="geometry">
       <rect>
-       <x>190</x>
-       <y>230</y>
-       <width>85</width>
-       <height>27</height>
+       <x>10</x>
+       <y>50</y>
+       <width>121</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_2">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>30</y>
+       <width>91</width>
+       <height>22</height>
       </rect>
      </property>
      <property name="text">
-      <string>Очистити</string>
+      <string>Статистика</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
-   </widget>
-   <widget class="QSlider" name="horizontalSlider">
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>250</y>
-      <width>160</width>
-      <height>18</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>230</y>
-      <width>91</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Рівень паніки:</string>
-    </property>
+    <widget class="QCheckBox" name="pathfindingCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>50</y>
+       <width>111</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Пошук шляху</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="showPathCheckBox_3">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>70</y>
+       <width>131</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Показувати шлях</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -353,7 +391,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
+     <width>1200</width>
      <height>27</height>
     </rect>
    </property>
