@@ -2,13 +2,28 @@
 <ui version="4.0">
  <class>CrowdParameters</class>
  <widget class="QWidget" name="CrowdParameters">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>485</width>
-    <height>592</height>
+    <height>600</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>485</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>485</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Характеристики натовпу</string>
@@ -16,7 +31,7 @@
   <widget class="QGroupBox" name="speed_groupBox">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>10</y>
      <width>451</width>
      <height>171</height>
@@ -389,7 +404,7 @@
   <widget class="QGroupBox" name="mass_groupBox">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>10</x>
      <y>190</y>
      <width>441</width>
      <height>171</height>
@@ -762,9 +777,9 @@
   <widget class="QGroupBox" name="composition_groupBox">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>10</x>
      <y>370</y>
-     <width>441</width>
+     <width>331</width>
      <height>171</height>
     </rect>
    </property>
@@ -839,7 +854,7 @@
    <widget class="QDoubleSpinBox" name="men_part">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>180</x>
       <y>80</y>
       <width>62</width>
       <height>27</height>
@@ -849,7 +864,7 @@
    <widget class="QDoubleSpinBox" name="child_part">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>180</x>
       <y>20</y>
       <width>62</width>
       <height>27</height>
@@ -859,7 +874,7 @@
    <widget class="QDoubleSpinBox" name="other_part">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>180</x>
       <y>140</y>
       <width>62</width>
       <height>27</height>
@@ -869,7 +884,7 @@
    <widget class="QDoubleSpinBox" name="women_part">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>180</x>
       <y>50</y>
       <width>62</width>
       <height>27</height>
@@ -879,7 +894,7 @@
    <widget class="QDoubleSpinBox" name="old_part">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>180</x>
       <y>110</y>
       <width>62</width>
       <height>27</height>
@@ -889,7 +904,7 @@
    <widget class="QLabel" name="label_46">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>250</x>
       <y>30</y>
       <width>21</width>
       <height>17</height>
@@ -902,7 +917,7 @@
    <widget class="QLabel" name="label_47">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>250</x>
       <y>60</y>
       <width>21</width>
       <height>17</height>
@@ -915,7 +930,7 @@
    <widget class="QLabel" name="label_48">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>250</x>
       <y>90</y>
       <width>21</width>
       <height>17</height>
@@ -928,7 +943,7 @@
    <widget class="QLabel" name="label_49">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>250</x>
       <y>120</y>
       <width>21</width>
       <height>17</height>
@@ -941,7 +956,7 @@
    <widget class="QLabel" name="label_50">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>250</x>
       <y>150</y>
       <width>21</width>
       <height>17</height>
@@ -951,6 +966,22 @@
      <string>%</string>
     </property>
    </widget>
+   <zorder>label_41</zorder>
+   <zorder>label_42</zorder>
+   <zorder>label_43</zorder>
+   <zorder>label_44</zorder>
+   <zorder>label_45</zorder>
+   <zorder>men_part</zorder>
+   <zorder>child_part</zorder>
+   <zorder>other_part</zorder>
+   <zorder>women_part</zorder>
+   <zorder>old_part</zorder>
+   <zorder>label_46</zorder>
+   <zorder>label_47</zorder>
+   <zorder>label_48</zorder>
+   <zorder>label_49</zorder>
+   <zorder>label_50</zorder>
+   <zorder>groupBox</zorder>
   </widget>
   <widget class="QPushButton" name="saveParamsButton">
    <property name="geometry">
@@ -964,6 +995,123 @@
    <property name="text">
     <string>Зберегти</string>
    </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>370</y>
+     <width>191</width>
+     <height>161</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Генерація агентів</string>
+   </property>
+   <widget class="QLabel" name="label_71">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>111</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Період генерації:</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="minEntryPeriodDoubleSpinBox">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>60</y>
+      <width>62</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <double>1000.000000000000000</double>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="maxEntryPeriodDoubleSpinBox_2">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>60</y>
+      <width>62</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <double>1000.000000000000000</double>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_72">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>40</y>
+      <width>31</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Макс</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_73">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>40</y>
+      <width>21</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Мін</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_74">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>141</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Кількість у приміщенні:</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="agentNumSpinBox">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>120</y>
+      <width>61</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>10000</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_75">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>70</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>с</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

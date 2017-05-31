@@ -35,10 +35,10 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>19</x>
-      <y>19</y>
-      <width>791</width>
-      <height>641</height>
+      <x>9</x>
+      <y>9</y>
+      <width>801</width>
+      <height>651</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -52,7 +52,7 @@
      <rect>
       <x>820</x>
       <y>10</y>
-      <width>301</width>
+      <width>371</width>
       <height>111</height>
      </rect>
     </property>
@@ -64,7 +64,7 @@
       <rect>
        <x>0</x>
        <y>80</y>
-       <width>171</width>
+       <width>111</width>
        <height>27</height>
       </rect>
      </property>
@@ -83,7 +83,7 @@
       <rect>
        <x>0</x>
        <y>50</y>
-       <width>41</width>
+       <width>51</width>
        <height>27</height>
       </rect>
      </property>
@@ -110,7 +110,7 @@
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>60</x>
        <y>30</y>
        <width>61</width>
        <height>17</height>
@@ -123,7 +123,7 @@
     <widget class="QDoubleSpinBox" name="doubleSpinBox">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>60</x>
        <y>50</y>
        <width>51</width>
        <height>27</height>
@@ -148,7 +148,7 @@
     <widget class="QDoubleSpinBox" name="scaleDoubleSpinBox">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>130</x>
        <y>50</y>
        <width>51</width>
        <height>27</height>
@@ -170,7 +170,7 @@
     <widget class="QLabel" name="label_5">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>130</x>
        <y>30</y>
        <width>54</width>
        <height>17</height>
@@ -183,7 +183,7 @@
     <widget class="QPushButton" name="clearButton">
      <property name="geometry">
       <rect>
-       <x>190</x>
+       <x>120</x>
        <y>80</y>
        <width>101</width>
        <height>27</height>
@@ -202,8 +202,8 @@
     <widget class="QPushButton" name="endButton">
      <property name="geometry">
       <rect>
-       <x>190</x>
-       <y>50</y>
+       <x>230</x>
+       <y>80</y>
        <width>101</width>
        <height>27</height>
       </rect>
@@ -216,6 +216,58 @@
      </property>
      <property name="text">
       <string>Завершити</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="inRoomLineEdit">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>50</y>
+       <width>51</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>30</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>В приміщенні</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="enteredLineEdit">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>50</y>
+       <width>51</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>30</y>
+       <width>54</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Увійшло</string>
      </property>
     </widget>
    </widget>
@@ -414,6 +466,9 @@
     <property name="title">
      <string>Про програму</string>
     </property>
+    <addaction name="action"/>
+    <addaction name="action_2"/>
+    <addaction name="actionQt"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -442,6 +497,21 @@
   <action name="change_crowd_params">
    <property name="text">
     <string>Характеристики натовпу</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Программа</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Автори</string>
+   </property>
+  </action>
+  <action name="actionQt">
+   <property name="text">
+    <string>Qt</string>
    </property>
   </action>
  </widget>

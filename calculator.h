@@ -67,6 +67,7 @@ public slots:
 signals:
     void sendStatSignal(const Agent & agent, double force);
     void removeAgentSignal(const Agent& agent);
+    void enterAgentSignal();
     
 private:
 

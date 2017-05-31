@@ -335,6 +335,8 @@ void Calculator::entryProcess()
 
             m_pool->addAgent(newAgent);
 
+            emit enterAgentSignal();
+
             GeneralBuilder::buildCheckPointsForSingleAgent(configData, *m_pool, *this, newAgent, pathAlgorithmIndex);
 
             i.resetTimeFromLastGenerate();

@@ -100,12 +100,14 @@ void Scene::draw(QPainter&  painter)
 
     //draw checkpoints
     if (m_drawPath)
-        {
-        painter.setBrush(Qt::white);
+    {
         for (auto i : m_pool->getAgents())
         {
             for (auto j : m_pool->getCheckpoints()[i.getID()])
-                painter.drawEllipse(j.getPos().x() * m_scale + m_pos.x(), j.getPos().y() * m_scale + m_pos.y(), 3, 3);
+            {
+                painter.setBrush(Qt::black);
+                painter.drawEllipse(j.getPos().x() * m_scale + m_pos.x(), j.getPos().y() * m_scale + m_pos.y(), 0.1 * m_scale, 0.1 * m_scale);
+            }
         }
     }
 }

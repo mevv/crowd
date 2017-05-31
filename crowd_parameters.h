@@ -26,7 +26,7 @@ signals:
 
 private:
     Ui::CrowdParameters *ui;
-    QJsonObject createJson();
+    QJsonObject createJson(QJsonObject data);
     void readJson(const QJsonObject &file);
 
 };

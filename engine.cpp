@@ -70,6 +70,8 @@ void Engine::update(bool isTimeRun)
 
     }
 
+    emit updateAgentInRoomSignal(m_objects_pool->getAgents().size());
+
     emit tick();
 }
 

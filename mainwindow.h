@@ -64,6 +64,17 @@ private slots:
 
     void on_algorithmComboBox_currentIndexChanged(int index);
 
+
+    void updateAgentsInRoomSlot(int num);
+
+    void updateEnterAgentSlot();
+
+    void on_actionQt_triggered();
+
+    void on_action_triggered();
+
+    void on_action_2_triggered();
+
 private:
     Ui::MainWindow *ui;
 

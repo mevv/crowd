@@ -28,16 +28,12 @@ QJsonObject JsonManager::parseJsonFile(QString filename)
 
 bool JsonManager::serializeJson(const QJsonObject& json, QString filename)
 {
-    auto fileJson = JsonManager::parseJsonFile(filename);
-
-    fileJson["agent"] = json;
-
     QFile file;
     file.setFileName(filename);
     file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
     QTextStream stream(&file);
 
-    QJsonDocument doc(fileJson);
+    QJsonDocument doc(json);
     QByteArray bytes = doc.toJson();
 
     stream << bytes;

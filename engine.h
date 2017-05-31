@@ -61,6 +61,7 @@ signals:
 
     void sendStatReportSignal(QString report);
     void changeScaleSignal(double scale);
+    void updateAgentInRoomSignal(int num);
 
 public slots:
     void loadPlan(QString filename);

@@ -5,12 +5,6 @@
 PaintWidget::PaintWidget(QWidget *parent, const std::shared_ptr<Engine>& engine) : QWidget(parent)
 {
     m_engine = engine;
-
-    //m_engine.reset(new Engine());
-
-    //connect(m_engine.get(), &Engine::tick, this, &PaintWidget::update);
-
-    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 
@@ -25,7 +19,10 @@ void PaintWidget::paintEvent(QPaintEvent * event)
 
     painter.begin(this);
         painter.setBrush(Qt::white);
-        painter.drawRect(0, 0, this->height(), this->width());
+
+        this->resize(QSize(800, 10000));
+
+        painter.drawRect(-1, -1, this->height(), this->width());
 
         m_engine->draw(painter);
 

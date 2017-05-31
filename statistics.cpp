@@ -114,31 +114,31 @@ QString Statistics::getReport()
 
     result += "Симуляція розпочата:" + m_startTime.toString(Qt::ISODate) + "\n";
     result += "Симуляція закінчена: " + QDateTime::currentDateTime().toString(Qt::ISODate) + "\n";
-    result += "Середня сила: " + QString::number(stat.averageForce) + "\n";
-    result += "Середня швидкість: " + QString::number(stat.averageSpeed) + "\n";
-    result += "Середня різниця бажаної та фактичної швидкостей: " + QString::number(stat.averageSpeedDelta) + "\n";
+    result += "Середня сила: " + QString::number(stat.averageForce) + " ,Н" + "\n";
+    result += "Середня швидкість: " + QString::number(stat.averageSpeed) + " ,м/с" + "\n";
+    result += "Середня різниця бажаної та фактичної швидкостей: " + QString::number(stat.averageSpeedDelta) + " ,м/с" + "\n";
     result += "Кількість евакуйованих: " + QString::number(m_agentQuitNum) + "\n";
     result += "Кількість травмованих: " + QString::number(stat.injuringNum) + "\n";
-    result += "Кількість мертвих: " + QString::number(stat.deadNum) + "\n";
+    //result += "Кількість мертвих: " + QString::number(stat.deadNum) + "\n";
 
     if (m_agentQuitNum > 0)
     {
         result += "Співвідношення евакуйованих по группах: \n";
-        result += "    Чоловіки - " + QString::number((double)m_quitTypeRatio[AgentType::Man] / m_agentQuitNum * 100.0) + "\n";
-        result += "    Жінки - " + QString::number((double)m_quitTypeRatio[AgentType::Woman] / m_agentQuitNum * 100.0) + "\n";
-        result += "    Діти - " + QString::number((double)m_quitTypeRatio[AgentType::Child] / m_agentQuitNum * 100.0) + "\n";
-        result += "    Старці - " + QString::number((double)m_quitTypeRatio[AgentType::Old] / m_agentQuitNum * 100.0) + "\n";
-        result += "    Додаткова група - " + QString::number((double)m_quitTypeRatio[AgentType::Custom] / m_agentQuitNum * 100.0) + "\n";
+        result += "    Чоловіки - " + QString::number((double)m_quitTypeRatio[AgentType::Man] / m_agentQuitNum * 100.0) + " %" + "\n";
+        result += "    Жінки - " + QString::number((double)m_quitTypeRatio[AgentType::Woman] / m_agentQuitNum * 100.0) + " %" + "\n";
+        result += "    Діти - " + QString::number((double)m_quitTypeRatio[AgentType::Child] / m_agentQuitNum * 100.0) +  " %" + "\n";
+        result += "    Старці - " + QString::number((double)m_quitTypeRatio[AgentType::Old] / m_agentQuitNum * 100.0) + " %" + "\n";
+        result += "    Додаткова група - " + QString::number((double)m_quitTypeRatio[AgentType::Custom] / m_agentQuitNum * 100.0) + " %" + "\n";
     }
 
     if (stat.injuringNum > 0)
     {
         result += "Співвідношення травмованих по группах: \n";
-        result += "    Чоловіки - " + QString::number((double)m_injuredTypeRatio[AgentType::Man] / stat.injuringNum * 100.0) + "\n";
-        result += "    Жінки - " + QString::number((double)m_injuredTypeRatio[AgentType::Woman] / stat.injuringNum * 100.0) + "\n";
-        result += "    Діти - " + QString::number((double)m_injuredTypeRatio[AgentType::Child] / stat.injuringNum * 100.0) + "\n";
-        result += "    Старці - " + QString::number((double)m_injuredTypeRatio[AgentType::Old] / stat.injuringNum * 100.0) + "\n";
-        result += "    Додаткова група - " + QString::number((double)m_injuredTypeRatio[AgentType::Custom] / stat.injuringNum * 100.0) + "\n";
+        result += "    Чоловіки - " + QString::number((double)m_injuredTypeRatio[AgentType::Man] / stat.injuringNum * 100.0) + " %" + "\n";
+        result += "    Жінки - " + QString::number((double)m_injuredTypeRatio[AgentType::Woman] / stat.injuringNum * 100.0) + " %" + "\n";
+        result += "    Діти - " + QString::number((double)m_injuredTypeRatio[AgentType::Child] / stat.injuringNum * 100.0) + " %" + "\n";
+        result += "    Старці - " + QString::number((double)m_injuredTypeRatio[AgentType::Old] / stat.injuringNum * 100.0) + " %" + "\n";
+        result += "    Додаткова група - " + QString::number((double)m_injuredTypeRatio[AgentType::Custom] / stat.injuringNum * 100.0) + " %" + "\n";
     }
     return result;
 }

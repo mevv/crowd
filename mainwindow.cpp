@@ -5,6 +5,8 @@
 
 #include "json_manager.h"
 
+#include <QMessageBox>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -22,10 +24,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->doubleSpinBox->setValue(10);
 
     ui->gridLayout->addWidget(m_paintWidget.get());
-    qDebug() << ui->gridLayout->sizeHint();
-    qDebug() << m_paintWidget->size();
-    m_paintWidget->resize(500, 500);
-    qDebug() << m_paintWidget->size();
+//    qDebug() << ui->gridLayout->sizeHint();
+//    qDebug() << m_paintWidget->size();
+//    m_paintWidget->resize(500, 500);
+//    qDebug() << m_paintWidget->size();
     m_paintWidget->setMouseTracking(true);
 
     connect(m_engine.get(), &Engine::tick, m_paintWidget.get(), &PaintWidget::update);
@@ -39,6 +41,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_engine.get(), &Engine::sendStatReportSignal, this, &MainWindow::updateStatSlot);
     connect(this, &MainWindow::pathAlgorithmChangedSignal,&(m_engine.get()->getCalculator()), &Calculator::pathAlgorithmChangedSlot);
     connect(this, &MainWindow::changePanicLevelSignal, &(m_engine->getCalculator()), &Calculator::changePanicLevelSlot);
+    connect(m_engine.get(), &Engine::updateAgentInRoomSignal, this, &MainWindow::updateAgentsInRoomSlot);
+    connect(&(m_engine->getCalculator()), &Calculator::enterAgentSignal, this, &MainWindow::updateEnterAgentSlot);
 
 
     //connect(this, &MainWindow::openedSaveFile, m_engine.get(), &Engine::setSaveFileName);
@@ -112,6 +116,8 @@ void MainWindow::on_open_shcheme_menu_triggered()
     ui->endButton->setEnabled(true);
 
     ui->scaleDoubleSpinBox->setValue(1);
+    ui->enteredLineEdit->setText(QString::number(0));
+
     emit openedSchemeFile(file_name);
 }
 
@@ -138,7 +144,10 @@ void MainWindow::on_path_to_simulations_menu_triggered()
 void MainWindow::on_clearButton_clicked()
 {
     ui->playButton->setText("Почати");
+
     ui->scaleDoubleSpinBox->setValue(1);
+    ui->enteredLineEdit->setText(QString::number(0));
+
     emit clearSimulation();
 }
 
@@ -215,4 +224,29 @@ void MainWindow::on_horizontalSlider_sliderMoved(int position)
 void MainWindow::on_algorithmComboBox_currentIndexChanged(int index)
 {
     emit pathAlgorithmChangedSignal(index);
+}
+
+void MainWindow::updateAgentsInRoomSlot(int num)
+{
+    ui->inRoomLineEdit->setText(QString::number(num));
+}
+
+void MainWindow::updateEnterAgentSlot()
+{
+    ui->enteredLineEdit->setText(QString::number(ui->enteredLineEdit->text().toInt() + 1));
+}
+
+void MainWindow::on_actionQt_triggered()
+{
+    QMessageBox::about(this, "Про Qt", QString("Qt ver. ") + QString(QT_VERSION_STR));
+}
+
+void MainWindow::on_action_triggered()
+{
+    QMessageBox::about(this, "Про програму", "Crowd Modeling Tool\nАвтоматизована система моделювання поведінки великої кількості людей в обмеженому просторі.\nДипломний проект. НТУУ \"КПІ\". ФІОТ. Київ - 2017.");
+}
+
+void MainWindow::on_action_2_triggered()
+{
+    QMessageBox::about(this, "Про авторів", "Мезеря Валерій Васильвич\nЩербатюк Петро Ігорович");
 }

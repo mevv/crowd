@@ -17,11 +17,9 @@ CrowdParameters::~CrowdParameters()
 
 void CrowdParameters::on_saveParamsButton_clicked()
 {
-    QJsonObject data = createJson();
+    QJsonObject data = createJson(JsonManager::parseJsonFile(JsonManager::getConfPath()));
 
     JsonManager::serializeJson(data, JsonManager::getConfPath());
-
-    emit sendCrowdParamsJson(data);
 
     this->close();
 }
@@ -78,18 +76,27 @@ void CrowdParameters::readJson(const QJsonObject &file)
     this->ui->other_min_mass->setValue(mass.value(QString("min")).toDouble());
     this->ui->other_max_mass->setValue(mass.value(QString("max")).toDouble());
     this->ui->other_part->setValue(other.value(QString("part")).toDouble()*100);
+
+    this->ui->agentNumSpinBox->setValue(data.value("number").toInt());
+
+    this->ui->minEntryPeriodDoubleSpinBox->setValue(data.value("entry_period").toObject().value("min").toDouble());
+    this->ui->maxEntryPeriodDoubleSpinBox_2->setValue(data.value("entry_period").toObject().value("max").toDouble());
 }
 
-QJsonObject CrowdParameters::createJson()
+QJsonObject CrowdParameters::createJson(QJsonObject data)
 {
-    QJsonObject data;
-    QJsonObject children;
-    QJsonObject women;
-    QJsonObject men;
-    QJsonObject old;
-    QJsonObject other;
+
     QJsonObject wish_speed;
     QJsonObject mass;
+    QJsonObject entry_period;
+
+    QJsonObject agent = data.value("agent").toObject();
+
+    QJsonObject children = agent.value("children").toObject();
+    QJsonObject men = agent.value("men").toObject();
+    QJsonObject women = agent.value("women").toObject();
+    QJsonObject old = agent.value("old").toObject();
+    QJsonObject custom = agent.value("custom").toObject();
 
     wish_speed["min"] = this->ui->child_min_speed->value();
     wish_speed["max"] = this->ui->child_max_speed->value();
@@ -127,16 +134,25 @@ QJsonObject CrowdParameters::createJson()
     wish_speed["max"] = this->ui->other_max_speed->value();
     mass["min"] = this->ui->other_min_mass->value();
     mass["max"] = this->ui->other_max_mass->value();
-    other["part"] = this->ui->other_part->value()/100;
-    other["wish_speed"] = wish_speed;
-    other["mass"] = mass;
+    custom["part"] = this->ui->other_part->value()/100;
+    custom["wish_speed"] = wish_speed;
+    custom["mass"] = mass;
+
+    entry_period["min"] = this->ui->minEntryPeriodDoubleSpinBox->value();
+    entry_period["max"] = this->ui->maxEntryPeriodDoubleSpinBox_2->value();
 
 
-    data["children"] = children;
-    data["women"] = women;
-    data["men"] = women;
-    data["old"] = women;
-    data["other"] = women;
+
+    agent["children"] = children;
+    agent["men"] = men;
+    agent["women"] = women;
+    agent["old"] = old;
+    agent["custom"] = custom;
+
+    agent["entry_period"] = entry_period;
+    agent["number"] = this->ui->agentNumSpinBox->value();
+
+    data["agent"] = agent;
 
     return data;
 }
