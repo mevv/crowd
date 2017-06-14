@@ -45,7 +45,6 @@ void Scene::draw(QPainter&  painter)
 
         for (auto j : i.getPoints())
         {
-            //qDebug() << j;
             path.lineTo((j.x() + i.getPos().x()) * m_scale + m_pos.x(), (j.y() + i.getPos().y()) * m_scale + m_pos.y());
         }
 
@@ -59,7 +58,7 @@ void Scene::draw(QPainter&  painter)
     //draw exits
     for (auto i : m_pool->getExits())
     {
-        //qDebug() << (i.getEnd() - i.getPos()).length();
+
         auto curArrow = this->scalePolygon(m_arrow, (i.getEnd() - i.getPos()).length() / 4.0 );
         curArrow = this->movePolygonTo(curArrow, i.getCenter());
 

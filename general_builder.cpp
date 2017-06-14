@@ -61,27 +61,32 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool,
     QTime t = QTime::currentTime();
     qsrand((uint)t.msec());
 
-    //qDebug() << "GeneralBuilder::buildAgents()" << settings;
-
     int totalNumber = settings.value("agent").toObject().value("number").toInt();
     double panic = settings.value("agent").toObject().value("number").toDouble();
     QPair<double, double> entryPeriod(settings.value("agent").toObject().value("entry_period").toObject().value("min").toDouble(),
                                     settings.value("agent").toObject().value("entry_period").toObject().value("max").toDouble());
-    qDebug() << "fron conf" << entryPeriod;
-    QVector<QJsonObject> agentTypesConfig;
-    QVector<AgentType> agentTypes;
 
-    agentTypesConfig.push_back(settings.value("agent").toObject().value("children").toObject());
-    agentTypesConfig.push_back(settings.value("agent").toObject().value("men").toObject());
-    agentTypesConfig.push_back(settings.value("agent").toObject().value("women").toObject());
-    agentTypesConfig.push_back(settings.value("agent").toObject().value("old").toObject());
-    agentTypesConfig.push_back(settings.value("agent").toObject().value("custom").toObject());
+    QMap<AgentType, QJsonObject> agentTypesConfig;
+    QVector<AgentType> agentTypes;
+    QMap<AgentType, int> numAgents;
+
+    agentTypesConfig[AgentType::Child] = settings.value("agent").toObject().value("children").toObject();
+    agentTypesConfig[AgentType::Man] = settings.value("agent").toObject().value("men").toObject();
+    agentTypesConfig[AgentType::Woman] = settings.value("agent").toObject().value("women").toObject();
+    agentTypesConfig[AgentType::Old] = settings.value("agent").toObject().value("old").toObject();
+    agentTypesConfig[AgentType::Custom] = settings.value("agent").toObject().value("custom").toObject();
 
     agentTypes.push_back(AgentType::Child);
     agentTypes.push_back(AgentType::Man);
     agentTypes.push_back(AgentType::Woman);
     agentTypes.push_back(AgentType::Old);
     agentTypes.push_back(AgentType::Custom);
+
+    numAgents[AgentType::Child] = totalNumber * agentTypesConfig[AgentType::Child].value("part").toDouble();
+    numAgents[AgentType::Man] = totalNumber * agentTypesConfig[AgentType::Man].value("part").toDouble();
+    numAgents[AgentType::Woman] = totalNumber * agentTypesConfig[AgentType::Woman].value("part").toDouble();
+    numAgents[AgentType::Old] = totalNumber * agentTypesConfig[AgentType::Old].value("part").toDouble();
+    numAgents[AgentType::Custom] = totalNumber * agentTypesConfig[AgentType::Custom].value("part").toDouble();
 
     for (auto& i : pool.getEntries())
     {
@@ -101,17 +106,30 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool,
 
         int type = 0;
 
-        for (auto agentType : agentTypesConfig)
-        {
 
-            int typeNum = int(curNum * agentType.value("part").toDouble());
             double size;
 
-            for (int count = 0; count < typeNum; count++)
+            for (int count = 0; count < curNum; count++)
             {
+                AgentType agentTypeID = static_cast<AgentType>((int)getRandomNumber(0, 4));
+
+                while (numAgents[static_cast<AgentType>(agentTypeID)] <= 0)
+                {
+                    if (curNum < 10)
+                    {
+                        agentTypeID = static_cast<AgentType>(count % 5);
+                        break;
+                    }
+
+                    agentTypeID = static_cast<AgentType>((int)getRandomNumber(0, 4));
+                }
+
+               numAgents[static_cast<AgentType>(agentTypeID)]--;
+
+               QJsonObject agentType = agentTypesConfig[static_cast<AgentType>(agentTypeID)];
+
                 size = getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
                                        agentType.value("size").toObject().value("max").toDouble());
-                //qDebug() << agentType.value("size").toObject().value("min").toDouble() << agentType.value("size").toObject().value("max").toDouble() << size;
                 x += 2 * agentType.value("size").toObject().value("max").toDouble();
                 if (x > i.getPos().x() + i.getSize().x())
                 {
@@ -137,8 +155,7 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool,
                                     agentTypes[type]));
                 id++;
             }
-            type++;
-        }
+
     }
 
     return true;
@@ -168,7 +185,7 @@ Agent GeneralBuilder::buildSingleAgent(const QJsonObject& settings, QVector2D po
     double sum = 0;
 
     random = getRandomNumber(0, 1);
-    qDebug() <<  random;
+
     for (auto i : agentTypesConfig)
     {
         if (random >= sum && random < sum + i.value("part").toDouble())
@@ -213,14 +230,14 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
     auto matrix = calculator.buildAStarMatrix(height, width);
 
     int count = 0;
-    for(int i = 0; i < height; i++)
-    {
-        for(int j = 0; j < width; j++)
-        {
-            std::cout << matrix[count++] << " ";
-        }
-        std::cout << std::endl;
-    }
+//    for(int i = 0; i < height; i++)
+//    {
+//        for(int j = 0; j < width; j++)
+//        {
+//            std::cout << matrix[count++] << " ";
+//        }
+//        std::cout << std::endl;
+//    }
 
     for (auto agent : pool.getAgents())
     {
@@ -238,12 +255,6 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
         int exitMatrixY = floor(nearestExit.y() / calculator.getGridStep());
         if(exitMatrixY >= height)
             exitMatrixY--;
-
-//        qDebug() << agentMatrixX;
-//        qDebug() << agentMatrixY;
-//        qDebug() << exitMatrixX;
-//        qDebug() << exitMatrixY;
-//        qDebug() << "_____________________________________________";
 
         std::vector<std::pair<double, double> > path;
 
@@ -268,11 +279,6 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
 
         std::vector<Checkpoint> checkpoints;
 
-        for(auto i : path)
-                    qDebug() << i.first << ", " << i.second;
-        qDebug() << "---------------------------------------";
-
-
         for (auto i : path)
             checkpoints.push_back(Checkpoint(0,
                                              QVector2D(i.first * calculator.getGridStep() + calculator.getGridStep() / 2.0,
@@ -282,8 +288,6 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
 
         pool.getCheckpoints()[agent.getID()] = checkpoints;
     }
-
-    //qDebug() << pool.getCheckpoints().size();
 }
 
 bool GeneralBuilder::buildCheckPointsForSingleAgent(QJsonObject& settings,

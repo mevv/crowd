@@ -29,20 +29,23 @@ bool Calculator::isInExit(const Agent &agent)
 
     for(auto i : exits)
     {
-        QVector2D c = i.getBegin();
-        QVector2D d = i.getEnd();
-        double common = (b.x() - a.x())*(d.y() - c.y()) - (b.y() - a.y())*(d.x() - c.x());
+//        QVector2D c = i.getBegin();
+//        QVector2D d = i.getEnd();
+//        double common = (b.x() - a.x())*(d.y() - c.y()) - (b.y() - a.y())*(d.x() - c.x());
 
-        if (common == 0)
-            continue;
+//        if (common == 0)
+//            continue;
 
-        double rH = (a.y() - c.y())*(d.x() - c.x()) - (a.x() - c.x())*(d.y() - c.y());
-        double sH = (a.y() - c.y())*(b.x() - a.x()) - (a.x() - c.x())*(b.y() - a.y());
+//        double rH = (a.y() - c.y())*(d.x() - c.x()) - (a.x() - c.x())*(d.y() - c.y());
+//        double sH = (a.y() - c.y())*(b.x() - a.x()) - (a.x() - c.x())*(b.y() - a.y());
 
-        double r = rH / common;
-        double s = sH / common;
+//        double r = rH / common;
+//        double s = sH / common;
 
-        if (r >= 0 && r <= 1 && s >= 0 && s <= 1)
+//        if (r >= 0 && r <= 1 && s >= 0 && s <= 1)
+//            return true;
+        QVector2D tmp;
+        if (getDistanceToSide(QVector2D(i.getBegin()), QVector2D(i.getEnd()), agent, tmp) < DISTANCE_TO_EXIT)
             return true;
     }
     return false;
@@ -130,6 +133,7 @@ QVector2D Calculator::calcPanicForce(const Agent &agent)
     double a = sqrt(pow(agent.getWishSpeed(),2)/desiredSpeed.lengthSquared());
     desiredSpeed *= a;
     QVector2D panicForce = (desiredSpeed - agent.getSpeed()) / m_param.deltaT * agent.getMass();
+
     return panicForce;
 }
 
@@ -197,12 +201,25 @@ QVector2D Calculator::calcWallForce(const Agent &agent)
         m_physicalForcesAgentSum += frictionForce.length();
 
         wallForce += m_param.Awall*n*exp(D/m_param.Bwall) + repulsionForce - frictionForce;
+
+//        qDebug() << "Wall force: " << wallForce;
+        qDebug() << "first force" << m_param.Awall*n*exp(D/m_param.Bwall);
+        qDebug() << "n:" << n;
+        qDebug() << "D" << D;
+        qDebug() << "nearest:" << nearestPoint;
+        qDebug() << agent.getCenter();
+//        qDebug() << "repulsionForce: " << repulsionForce;
+//        qDebug() << "frictionForce: " << frictionForce;
     }
+
+
+
     return wallForce;
 }
 
 QVector2D Calculator::getMinDistanceToObstalce(const Agent &agent, const Obstacle &obstacle)
 {
+    //return QVector2D(100, agent.getCenter().y());
     QVector2D nearestSide(0,0);
     double distanceToSide = INFINITY;
     auto apexes = obstacle.getAbsolutePoints();
@@ -219,11 +236,17 @@ QVector2D Calculator::getMinDistanceToObstalce(const Agent &agent, const Obstacl
         }
         double tmp = getDistanceToSide(prevApex, i, agent, nearestPoint);
 
+        prevApex = i;
+
         if( tmp < distanceToSide )
         {
             distanceToSide = tmp;
             nearestSide = nearestPoint;
         }
+//        qDebug() << prevApex;
+//        qDebug() << i;
+//        qDebug() << nearestPoint;
+//        qDebug() << "__________________________";
     }
     return nearestSide;
 }
@@ -295,11 +318,10 @@ void Calculator::calcForce(Agent &agent)
     if (m_iscollectStat)
         emit sendStatSignal(agent, m_physicalForcesAgentSum);
 
-    //qDebug() << m_physicalForcesAgentSum;
     m_physicalForcesAgentSum = 0;
 
     QVector2D speed = agent.getSpeed() + m_time * totalForce / agent.getMass();
-//    qDebug() << "id" << agent.getID() << "Speed" << speed;
+
     agent.setSpeed(speed);
 }
 
@@ -350,14 +372,6 @@ void Calculator::entryProcess()
 
 std::vector<QVector2D> Calculator::update(double delta)
 {
-//    int h, w;
-//    buildAStarMatrix(h, w);
-
-// test isInObstacle
-//    for (int i = 0; i < 10; i++)
-//        for (int j = 0; j < 10; j++)
-//            qDebug() << i << " " << j << " " << isInObstacle(i, j);
-
     m_time = delta / 1000;
     std::vector<QVector2D> moveRecord;
 
@@ -368,7 +382,6 @@ std::vector<QVector2D> Calculator::update(double delta)
 
     for (auto i = m_pool->getAgents().begin(); i != m_pool->getAgents().end();)
     {
-        //qDebug() << "coord: " << i->getCenter();
         calcForce(*i);
         move(*i);
 
@@ -385,8 +398,6 @@ std::vector<QVector2D> Calculator::update(double delta)
             i++;
     }
 
-    //qDebug() << "_____________________";
-
     return moveRecord;
 }
 
@@ -397,14 +408,11 @@ QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
     height  = (int)m_sceneSize.y() / m_gridStep;
     width = (int)m_sceneSize.x() / m_gridStep;
 
-    qDebug() << "wh" << width << " " << height;
-
     // TODO: maybe here ERROR - change width and height
     for(int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
         {
-            //qDebug() << "point" << m_gridStep * i + m_gridStep / 2.0 << " " << m_gridStep * j + m_gridStep / 2.0;
             res.push_back(((isInObstacle(m_gridStep * j + m_gridStep / 2.0, m_gridStep * i + m_gridStep / 2.0)) ? 9.0 : 1.0));
         }
     }
@@ -439,7 +447,6 @@ int Calculator::isInObstacle(double x, double y)
 void Calculator::pathAlgorithmChangedSlot(int index)
 {
     pathAlgorithmIndex = index;
-    qDebug() << "index: " << index;
 }
 
 void Calculator::changePanicLevelSlot(double panicLevel)

@@ -24,10 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->doubleSpinBox->setValue(10);
 
     ui->gridLayout->addWidget(m_paintWidget.get());
-//    qDebug() << ui->gridLayout->sizeHint();
-//    qDebug() << m_paintWidget->size();
-//    m_paintWidget->resize(500, 500);
-//    qDebug() << m_paintWidget->size();
+
     m_paintWidget->setMouseTracking(true);
 
     connect(m_engine.get(), &Engine::tick, m_paintWidget.get(), &PaintWidget::update);
@@ -72,15 +69,12 @@ void MainWindow::on_playButton_clicked()
 
 void MainWindow::wheelEvent(QWheelEvent *event)
 {
-    //qDebug() << m_paintWidget->mapFromGlobal(QCursor::pos());
-
     if (m_paintWidget->mapFromGlobal(QCursor::pos()).x() > 0 &&
         m_paintWidget->mapFromGlobal(QCursor::pos()).x() < m_paintWidget->size().width() &&
         m_paintWidget->mapFromGlobal(QCursor::pos()).y() > 0 &&
         m_paintWidget->mapFromGlobal(QCursor::pos()).y() < m_paintWidget->size().height())
     {
         m_engine->scrollEvent(event);
-        //qDebug() << m_paintWidget->mapFromGlobal(QCursor::pos());
     }
 }
 
@@ -164,7 +158,6 @@ void MainWindow::on_statCleanPushButton_clicked()
 
 void MainWindow::on_statToFilePushButton_clicked()
 {
-    qDebug() << QString(JsonManager::getStatPath()) + QDateTime::currentDateTime().toString(Qt::ISODate) + ".stat";
     QFile file(QString(JsonManager::getStatPath()) + QDateTime::currentDateTime().toString(Qt::ISODate) + ".stat");
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -187,7 +180,6 @@ void MainWindow::on_checkBox_2_clicked(bool checked)
 
 void MainWindow::on_doubleSpinBox_valueChanged(double arg1)
 {
-    qDebug() << arg1;
     m_engine->setTimerTick(arg1);
 }
 
@@ -217,7 +209,6 @@ void MainWindow::on_showPathCheckBox_3_clicked(bool checked)
 
 void MainWindow::on_horizontalSlider_sliderMoved(int position)
 {
-    qDebug() << (position + 1) / 100.0;
     emit changePanicLevelSignal((position + 1) / 100.0);
 }
 

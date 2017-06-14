@@ -16,12 +16,8 @@ void Statistics::simulationStartSlot(int number_of_agents)
 
 void Statistics::gatherInfoSlot(const Agent & agent, double force)
 {
-    //qDebug() << agent.getID() << force << m_agentStat.size();
-
-    //qDebug() << "______________";
     for (auto& i : m_agentStat)
     {
-       //qDebug() << i.id << i.sumForces << i.iterations;
         if (i.id == agent.getID())
         {
             i.sumForces += force;
@@ -48,7 +44,7 @@ void Statistics::gatherInfoSlot(const Agent & agent, double force)
     stat.sumForces = force;
     stat.sumSpeeds = agent.getSpeed().length();
     stat.sumWishedSpeeds = agent.getWishSpeed();
-    //qDebug() << "Added";
+
     m_agentStat.push_back(stat);
 
     m_iterations++;
@@ -74,11 +70,8 @@ ResultStat Statistics::makeReport()
 {
     ResultStat stat;
 
-    //qDebug() << m_agentStat.size();
-
     for (auto i : m_agentStat)
     {
-        //qDebug() <<  "Report" << i.id << i.sumForces << i.maxForce << i.iterations;
         stat.averageForce += (i.sumForces / i.iterations);
         stat.averageSpeed += (i.sumSpeeds / i.iterations);
         stat.averageSpeedDelta += (i.sumWishedSpeeds - i.sumSpeeds) / i.iterations;
@@ -98,7 +91,6 @@ ResultStat Statistics::makeReport()
     stat.averageSpeed /= m_agentStat.size();
     stat.averageSpeedDelta /= m_agentStat.size();
 
-    //qDebug() << m_typeRatio;
     return stat;
 }
 

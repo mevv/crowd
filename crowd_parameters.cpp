@@ -26,7 +26,6 @@ void CrowdParameters::on_saveParamsButton_clicked()
 
 void CrowdParameters::readJson(const QJsonObject &file)
 {
-    qDebug() << file;
     QJsonObject data = file["agent"].toObject();
     QJsonObject children = data.value(QString("children")).toObject();
     QJsonObject women = data.value(QString("women")).toObject();

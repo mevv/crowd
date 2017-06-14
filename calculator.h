@@ -27,6 +27,8 @@ struct MathParams
     double Kwall = 24;
 };
 
+const double DISTANCE_TO_EXIT = 0.5;
+
 class Calculator: public QObject
 {
     Q_OBJECT
@@ -59,6 +61,8 @@ public:
     double getPanicLevel() const { return m_panicLevel; }
 
     int getPathAlgorithmIndex() { return pathAlgorithmIndex; }
+
+    bool isUsePathFinding() const { return m_usePathFinding; }
 
 public slots:
     void pathAlgorithmChangedSlot(int index);

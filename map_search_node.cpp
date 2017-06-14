@@ -21,7 +21,7 @@ bool MapSearchNode::IsSameState( MapSearchNode &rhs )
 
 void MapSearchNode::PrintNodeInfo()
 {
-    std::cout << "Node position : (" << x << ", " << y << ")" << std::endl;
+    //std::cout << "Node position : (" << x << ", " << y << ")" << std::endl;
 }
 
 // Here's the heuristic function that estimates the distance from a Node
