@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->clearButton->setEnabled(false);
     ui->endButton->setEnabled(false);
 
-    ui->doubleSpinBox->setValue(10);
+    ui->doubleSpinBox->setValue(100);
 
     ui->gridLayout->addWidget(m_paintWidget.get());
 

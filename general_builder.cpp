@@ -130,11 +130,11 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool,
 
                 size = getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
                                        agentType.value("size").toObject().value("max").toDouble());
-                x += 2 * agentType.value("size").toObject().value("max").toDouble();
+                x += DISTANCE_BETWEEN_AGENTS * agentType.value("size").toObject().value("max").toDouble();
                 if (x > i.getPos().x() + i.getSize().x())
                 {
                     x = i.getPos().x();
-                    y += 2 * agentType.value("size").toObject().value("max").toDouble();
+                    y += DISTANCE_BETWEEN_AGENTS * agentType.value("size").toObject().value("max").toDouble();
                     if (y > i.getPos().y() + i.getSize().y())
                         break;
                 }

@@ -9,6 +9,7 @@
 #include "a_star.h"
 #include "lee.h"
 
+const double DISTANCE_BETWEEN_AGENTS = 3.0;
 
 class GeneralBuilder
 {

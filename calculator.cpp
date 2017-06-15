@@ -201,19 +201,7 @@ QVector2D Calculator::calcWallForce(const Agent &agent)
         m_physicalForcesAgentSum += frictionForce.length();
 
         wallForce += m_param.Awall*n*exp(D/m_param.Bwall) + repulsionForce - frictionForce;
-
-//        qDebug() << "Wall force: " << wallForce;
-        qDebug() << "first force" << m_param.Awall*n*exp(D/m_param.Bwall);
-        qDebug() << "n:" << n;
-        qDebug() << "D" << D;
-        qDebug() << "nearest:" << nearestPoint;
-        qDebug() << agent.getCenter();
-//        qDebug() << "repulsionForce: " << repulsionForce;
-//        qDebug() << "frictionForce: " << frictionForce;
     }
-
-
-
     return wallForce;
 }
 
