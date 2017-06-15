@@ -61,8 +61,12 @@ void Engine::update(bool isTimeRun)
     if (isTimeRun && !m_isMouseMove )
     {
         m_simulationTime += m_timerTick;
+        QTime start = QTime::currentTime();
+
         auto tmpMoveRecord = this->m_calculator->update(m_timerTick);
-        m_moveRecord.push_back(tmpMoveRecord);
+
+        //qDebug() << "calc update elapsed:" << start.elapsed();
+        //m_moveRecord.push_back(tmpMoveRecord);
 
     }
 

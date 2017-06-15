@@ -28,6 +28,7 @@ struct MathParams
 };
 
 const double DISTANCE_TO_EXIT = 0.5;
+const double DITANCE_OF_INTERACTION = 2.0;
 
 class Calculator: public QObject
 {
@@ -119,7 +120,7 @@ private:
 
     QVector2D calcWallForce(const Agent &agent);
 
-    QVector2D getMinDistanceToObstalce(const Agent &agent, const Obstacle &obstacle);
+    QVector2D getNearestPointOfObstacle(const Agent &agent, const Obstacle &obstacle);
 
     double getDistanceToSide(const QVector2D &a, const QVector2D &b, const Agent &agent, QVector2D &result);
 

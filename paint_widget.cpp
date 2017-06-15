@@ -16,7 +16,7 @@ void PaintWidget::update()
 void PaintWidget::paintEvent(QPaintEvent * event)
 {
     QPainter painter;
-
+    QTime start = QTime::currentTime();
     painter.begin(this);
         painter.setBrush(Qt::white);
 
@@ -27,6 +27,7 @@ void PaintWidget::paintEvent(QPaintEvent * event)
         m_engine->draw(painter);
 
     painter.end();
+    //qDebug() << "paint update elapsed:" << start.elapsed();
 }
 
 
