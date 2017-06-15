@@ -152,7 +152,7 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool,
                                     agentType.value("wish_speed").toObject().value("min").toDouble() +
                                     (agentType.value("wish_speed").toObject().value("max").toDouble() -
                                      agentType.value("wish_speed").toObject().value("min").toDouble()) * panicLevel,
-                                    agentTypes[type]));
+                                    agentTypeID));
                 id++;
             }
 
