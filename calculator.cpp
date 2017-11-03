@@ -226,9 +226,11 @@ QVector2D Calculator::calcWallForce(const Agent &agent)
 QVector2D Calculator::getNearestPointOfObstacle(const Agent &agent, const Obstacle &obstacle)
 {
     //return QVector2D(100, agent.getCenter().y());
-    QVector2D nearestSide(0,0);
+    QVector2D result(0,0);
     double distanceToSide = INFINITY;
     auto apexes = obstacle.getAbsolutePoints();
+
+    apexes.push_back(apexes[0]);
 
     QVector2D prevApex(-1,-1);
 
@@ -240,21 +242,19 @@ QVector2D Calculator::getNearestPointOfObstacle(const Agent &agent, const Obstac
             prevApex = i;
             continue;
         }
+
         double tmp = getDistanceToSide(prevApex, i, agent, nearestPoint);
 
         prevApex = i;
 
-        if( tmp < distanceToSide )
+        if(tmp < distanceToSide)
         {
             distanceToSide = tmp;
-            nearestSide = nearestPoint;
+            result = nearestPoint;
         }
-//        qDebug() << prevApex;
-//        qDebug() << i;
-//        qDebug() << nearestPoint;
-//        qDebug() << "__________________________";
     }
-    return nearestSide;
+
+    return result;
 }
 
 
