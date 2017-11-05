@@ -38,6 +38,8 @@ public:
 
     void setPrevPos(){ m_prevPos = this->getCenter(); }
 
+    void setWishSpeed(double wishSpeed) { m_wishSpeed = wishSpeed; }
+
 
     bool operator==(const Agent& a) const
     {

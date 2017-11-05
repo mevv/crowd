@@ -35,7 +35,6 @@ bool PlanBuilder::buildCalculator(const QJsonObject& plan, Calculator& calculato
 
 bool PlanBuilder::buildObstacles(const QJsonArray& obstacles, ObjectsPool& pool)
 {
-//    qDebug() << obstacles;
     int id = 0;
     for(auto i : obstacles)
     {
@@ -57,7 +56,6 @@ bool PlanBuilder::buildObstacles(const QJsonArray& obstacles, ObjectsPool& pool)
                                                        obstacle.value("color").toObject().value("G").toInt(),
                                                        obstacle.value("color").toObject().value("B").toInt(),
                                                        obstacle.value("color").toObject().value("A").toInt()), vertexes));
-        qDebug() << obstacle.value("color");
         id++;
     }
 

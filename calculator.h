@@ -27,6 +27,9 @@ struct MathParams
     double Kwall = 24;
 };
 
+const double DISTANCE_TO_EXIT = 0.5;
+const double DITANCE_OF_INTERACTION = 2.0;
+
 class Calculator: public QObject
 {
     Q_OBJECT
@@ -46,11 +49,9 @@ public:
 
     void setUsePathFinding(bool use = true) { m_usePathFinding = use; }
 
-
     bool isCollectStat() const { return m_iscollectStat; }
 
     inline MathParams getMathParams() { return m_param; }
-
 
     QVector<double> buildAStarMatrix(int & height, int & width);
 
@@ -58,10 +59,20 @@ public:
 
     double getGridStep() const { return m_gridStep; }
 
+    double getPanicLevel() const { return m_panicLevel; }
+
+    int getPathAlgorithmIndex() { return pathAlgorithmIndex; }
+
+    bool isUsePathFinding() const { return m_usePathFinding; }
+
+public slots:
+    void pathAlgorithmChangedSlot(int index);
+    void changePanicLevelSlot(double panicLevel);
+
 signals:
     void sendStatSignal(const Agent & agent, double force);
     void removeAgentSignal(const Agent& agent);
-
+    void enterAgentSignal();
     
 private:
 
@@ -72,20 +83,24 @@ private:
     std::shared_ptr<ObjectsPool> m_pool;
 
     double m_time;
+
     double m_physicalForcesAgentSum = 0;
 
+    double m_panicLevel = 0;
+
     int m_iterations = 0;
+
     int m_newId = 1000000;
 
     MathParams m_param;
 
-
+    int pathAlgorithmIndex = 0;
 
     int isInObstacle(double x, double y);
 
     bool m_iscollectStat = true;
-    bool m_usePathFinding = true;
 
+    bool m_usePathFinding = true;
 
     void move(Agent &agent);
 
@@ -97,8 +112,6 @@ private:
 
     QVector2D calcPanicForce(const Agent &agent);
 
-
-
     QVector2D calcNormal(QVector2D a, QVector2D b);
 
     QVector2D calcTau(QVector2D n, QVector2D speed);
@@ -107,7 +120,7 @@ private:
 
     QVector2D calcWallForce(const Agent &agent);
 
-    QVector2D getMinDistanceToObstalce(const Agent &agent, const Obstacle &obstacle);
+    QVector2D getNearestPointOfObstacle(const Agent &agent, const Obstacle &obstacle);
 
     double getDistanceToSide(const QVector2D &a, const QVector2D &b, const Agent &agent, QVector2D &result);
 
@@ -121,6 +134,8 @@ private:
 
     int Heaviside(double n);
 
+
+    void updateWishSpeeds();
 };
 
 #endif // CALCULATOR_H

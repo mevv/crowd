@@ -9,6 +9,7 @@
 #include "a_star.h"
 #include "lee.h"
 
+const double DISTANCE_BETWEEN_AGENTS = 3.0;
 
 class GeneralBuilder
 {
@@ -17,13 +18,20 @@ public:
 
     static bool buildCalculator(const QJsonObject& settings, Calculator& calculator);
 
-    static bool buildAgents(const QJsonObject& settings, ObjectsPool& pool);
+    static bool buildAgents(const QJsonObject& settings, ObjectsPool& pool, double panicLevel);
 
-    static Agent buildSingleAgent(const QJsonObject& settings, QVector2D pos, QVector2D speedDir);
+    static Agent buildSingleAgent(const QJsonObject& settings, QVector2D pos, QVector2D speedDir, double panicLevel);
 
-    static bool buildCheckPoints(QJsonObject& settings, ObjectsPool& pool, Calculator& calculator);
+    static bool buildCheckPoints(QJsonObject& settings,
+                                 ObjectsPool& pool,
+                                 Calculator& calculator,
+                                 const int pathAlgorithmIndex);
 
-    static bool buildCheckPointsForSingleAgent(QJsonObject& settings, ObjectsPool& pool, Calculator& calculator, const Agent& agent);
+    static bool buildCheckPointsForSingleAgent(QJsonObject& settings,
+                                               ObjectsPool& pool,
+                                               Calculator& calculator,
+                                               const Agent& agent,
+                                               const int pathAlgorithmIndex);
 
 private:
     static double getRandomNumber(double a, double b);

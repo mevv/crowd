@@ -23,14 +23,10 @@ Engine::Engine()
 
     std::srand(time(0));
 
-    //readSchemeFromFile(m_schemeFileName);
-
     QVector2D sceneRealSize(0, 0);
 
     m_scene.reset(new Scene(sceneRealSize, m_objects_pool));
     m_calculator.reset(new Calculator(sceneRealSize ,m_objects_pool));
-
-//    qDebug() << "Pool count:" << m_objects_pool.get()->use_count();
 
     connect(m_timer.get(),  &QTimer::timeout, this, [this]{ this->update(); });
     connect(m_objects_pool.get(), &ObjectsPool::endOfSimulation, this, &Engine::finishSimulation);
@@ -65,10 +61,16 @@ void Engine::update(bool isTimeRun)
     if (isTimeRun && !m_isMouseMove )
     {
         m_simulationTime += m_timerTick;
+        QTime start = QTime::currentTime();
+
         auto tmpMoveRecord = this->m_calculator->update(m_timerTick);
-        m_moveRecord.push_back(tmpMoveRecord);
+
+        //qDebug() << "calc update elapsed:" << start.elapsed();
+        //m_moveRecord.push_back(tmpMoveRecord);
 
     }
+
+    emit updateAgentInRoomSignal(m_objects_pool->getAgents().size());
 
     emit tick();
 }
@@ -140,39 +142,10 @@ void Engine::loadPlan(QString filename)
     PlanBuilder::buildObjectsPool(planData, *m_objects_pool);
     PlanBuilder::buildCalculator(planData, *m_calculator);
     GeneralBuilder::buildCalculator(configData, *m_calculator);
-    GeneralBuilder::buildAgents(configData, *m_objects_pool);
+    GeneralBuilder::buildAgents(configData, *m_objects_pool, m_calculator->getPanicLevel());
 
-    GeneralBuilder::buildCheckPoints(configData, *m_objects_pool, *m_calculator);
-
-    int n = 10;
-
-    // OBSTACLES BEHIND THE WALLS
-
-    // left wall
-//    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
-//                                         QVector2D(0,0),
-//                                         QColor(n%255, (n*2)%255, (n*3)%255),
-//                                         {QPoint(0, size.value(QString("x")).toInt())}
-//                                         ));
-
-//    // top wall
-//    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
-//                                         QVector2D(0,0),
-//                                         QColor(n%255, (n*2)%255, (n*3)%255),
-//                                         {QPoint(size.value(QString("y")).toInt(), 0)}
-//                                         ));
-//    // right wall
-//    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
-//                                         QVector2D(size.value(QString("x")).toInt(),0),
-//                                         QColor(n%255, (n*2)%255, (n*3)%255),
-//                                         {QPoint(0, size.value(QString("y")).toInt())}
-//                                         ));
-//    // bottom wall
-//    m_objects_pool->addObstacle(Obstacle(m_objects_pool->getObstacles().size(),
-//                                         QVector2D(0, size.value(QString("y")).toInt()),
-//                                         QColor(n%255, (n*2)%255, (n*3)%255),
-//                                         {QPoint(size.value(QString("x")).toInt(), 0)}
-//                                         ));
+    if (m_calculator->isUsePathFinding())
+        GeneralBuilder::buildCheckPoints(configData, *m_objects_pool, *m_calculator, m_calculator->getPathAlgorithmIndex());
 
     m_timer->singleShot(0, [this]{ this->update(false); });
 }

@@ -19,6 +19,10 @@ void Scene::draw(QPainter&  painter)
 
     //    painter.scale(m_scale, m_scale);
 
+    //filling
+    painter.setBrush(Qt::white);
+    painter.drawRect(m_pos.x(), m_pos.y(), m_size.x() * m_scale, m_size.y() * m_scale);
+
     //draw background
     painter.setBrush(Qt::gray);
     painter.drawRect(m_pos.x(), m_pos.y(), m_size.x() * m_scale, m_size.y() * m_scale);
@@ -41,7 +45,6 @@ void Scene::draw(QPainter&  painter)
 
         for (auto j : i.getPoints())
         {
-            //qDebug() << j;
             path.lineTo((j.x() + i.getPos().x()) * m_scale + m_pos.x(), (j.y() + i.getPos().y()) * m_scale + m_pos.y());
         }
 
@@ -55,7 +58,7 @@ void Scene::draw(QPainter&  painter)
     //draw exits
     for (auto i : m_pool->getExits())
     {
-        //qDebug() << (i.getEnd() - i.getPos()).length();
+
         auto curArrow = this->scalePolygon(m_arrow, (i.getEnd() - i.getPos()).length() / 4.0 );
         curArrow = this->movePolygonTo(curArrow, i.getCenter());
 
@@ -96,12 +99,14 @@ void Scene::draw(QPainter&  painter)
 
     //draw checkpoints
     if (m_drawPath)
-        {
-        painter.setBrush(Qt::white);
+    {
         for (auto i : m_pool->getAgents())
         {
             for (auto j : m_pool->getCheckpoints()[i.getID()])
-                painter.drawEllipse(j.getPos().x() * m_scale + m_pos.x(), j.getPos().y() * m_scale + m_pos.y(), 3, 3);
+            {
+                painter.setBrush(Qt::black);
+                painter.drawEllipse(j.getPos().x() * m_scale + m_pos.x(), j.getPos().y() * m_scale + m_pos.y(), 0.1 * m_scale, 0.1 * m_scale);
+            }
         }
     }
 }

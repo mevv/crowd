@@ -29,20 +29,23 @@ bool Calculator::isInExit(const Agent &agent)
 
     for(auto i : exits)
     {
-        QVector2D c = i.getBegin();
-        QVector2D d = i.getEnd();
-        double common = (b.x() - a.x())*(d.y() - c.y()) - (b.y() - a.y())*(d.x() - c.x());
+//        QVector2D c = i.getBegin();
+//        QVector2D d = i.getEnd();
+//        double common = (b.x() - a.x())*(d.y() - c.y()) - (b.y() - a.y())*(d.x() - c.x());
 
-        if (common == 0)
-            continue;
+//        if (common == 0)
+//            continue;
 
-        double rH = (a.y() - c.y())*(d.x() - c.x()) - (a.x() - c.x())*(d.y() - c.y());
-        double sH = (a.y() - c.y())*(b.x() - a.x()) - (a.x() - c.x())*(b.y() - a.y());
+//        double rH = (a.y() - c.y())*(d.x() - c.x()) - (a.x() - c.x())*(d.y() - c.y());
+//        double sH = (a.y() - c.y())*(b.x() - a.x()) - (a.x() - c.x())*(b.y() - a.y());
 
-        double r = rH / common;
-        double s = sH / common;
+//        double r = rH / common;
+//        double s = sH / common;
 
-        if (r >= 0 && r <= 1 && s >= 0 && s <= 1)
+//        if (r >= 0 && r <= 1 && s >= 0 && s <= 1)
+//            return true;
+        QVector2D tmp;
+        if (getDistanceToSide(QVector2D(i.getBegin()), QVector2D(i.getEnd()), agent, tmp) < DISTANCE_TO_EXIT)
             return true;
     }
     return false;
@@ -50,8 +53,6 @@ bool Calculator::isInExit(const Agent &agent)
 
 double Calculator::getRandomNumber(double a, double b)
 {
-    //usleep(100);
-
     if (a == b)
         return a;
 
@@ -127,9 +128,13 @@ QVector2D Calculator::calcPanicForce(const Agent &agent)
 
     }
 
-    double a = sqrt(pow(agent.getWishSpeed(),2)/desiredSpeed.lengthSquared());
-    desiredSpeed *= a;
+//    double a = sqrt(pow(agent.getWishSpeed(),2)/desiredSpeed.lengthSquared());
+//    desiredSpeed *= a;
+
+    desiredSpeed *= agent.getWishSpeed();
+
     QVector2D panicForce = (desiredSpeed - agent.getSpeed()) / m_param.deltaT * agent.getMass();
+
     return panicForce;
 }
 
@@ -159,19 +164,22 @@ QVector2D Calculator::calcCrossAgentForce(const Agent &agent)
         if(agent == i)
             continue;
 
-        double D = agent.getSize() + i.getSize() - (i.getCenter() - agent.getCenter()).length();
+        if (distanceBetweenPoints(agent.getCenter(), i.getCenter()) < DITANCE_OF_INTERACTION)
+        {
+            double D = agent.getSize() + i.getSize() - (i.getCenter() - agent.getCenter()).length();
 
-        QVector2D n = calcNormal( i.getCenter(), agent.getCenter());
-        QVector2D deltaV = i.getSpeed() - agent.getSpeed();
-        QVector2D tau = calcTau(n, agent.getSpeed());//normal rotated on 90 degrees
+            QVector2D n = calcNormal( i.getCenter(), agent.getCenter());
+            QVector2D deltaV = i.getSpeed() - agent.getSpeed();
+            QVector2D tau = calcTau(n, agent.getSpeed());//normal rotated on 90 degrees
 
-        QVector2D repulsionForce = m_param.K*Heaviside(D)*D*n;
-        QVector2D frictionForce = m_param.K*Heaviside(D)*D*deltaV*tau*tau;
+            QVector2D repulsionForce = m_param.K*Heaviside(D)*D*n;
+            QVector2D frictionForce = m_param.K*Heaviside(D)*D*deltaV*tau*tau;
 
-        m_physicalForcesAgentSum += repulsionForce.length();
-        m_physicalForcesAgentSum += frictionForce.length();
+            m_physicalForcesAgentSum += repulsionForce.length();
+            m_physicalForcesAgentSum += frictionForce.length();
 
-        crossAgentForce += m_param.A*n*exp(D/m_param.B) + repulsionForce + frictionForce;
+            crossAgentForce += m_param.A*n*exp(D/m_param.B) + repulsionForce + frictionForce;
+        }
     }
 
     return crossAgentForce;
@@ -181,10 +189,24 @@ QVector2D Calculator::calcWallForce(const Agent &agent)
 {
     QVector2D wallForce(0,0);
     auto obstacles = m_pool->getObstacles();
+
+    //QVector2D nearestPoint(-1000, -1000);
+    //double minDistance = 1000000;
+
     for(auto i : obstacles)
     {
-        QVector2D nearestPoint(getMinDistanceToObstalce(agent, i));
+        QVector2D nearestPoint(getNearestPointOfObstacle(agent, i));
+//        double curDistance = distanceBetweenPoints(agent.getCenter(), nearestPoint);
 
+//        if (curDistance < DITANCE_OF_INTERACTION)
+//            continue;
+
+//        if (curDistance < minDistance)
+//        {
+//            nearestPoint = curObtacleNearestPoint;
+//            minDistance = curDistance;
+//        }
+//    }
         double D = agent.getSize() - (agent.getCenter() - nearestPoint).length();
 
         QVector2D n = calcNormal(nearestPoint, agent.getCenter());
@@ -201,11 +223,14 @@ QVector2D Calculator::calcWallForce(const Agent &agent)
     return wallForce;
 }
 
-QVector2D Calculator::getMinDistanceToObstalce(const Agent &agent, const Obstacle &obstacle)
+QVector2D Calculator::getNearestPointOfObstacle(const Agent &agent, const Obstacle &obstacle)
 {
-    QVector2D nearestSide(0,0);
+    //return QVector2D(100, agent.getCenter().y());
+    QVector2D result(0,0);
     double distanceToSide = INFINITY;
     auto apexes = obstacle.getAbsolutePoints();
+
+    apexes.push_back(apexes[0]);
 
     QVector2D prevApex(-1,-1);
 
@@ -217,15 +242,19 @@ QVector2D Calculator::getMinDistanceToObstalce(const Agent &agent, const Obstacl
             prevApex = i;
             continue;
         }
+
         double tmp = getDistanceToSide(prevApex, i, agent, nearestPoint);
 
-        if( tmp < distanceToSide )
+        prevApex = i;
+
+        if(tmp < distanceToSide)
         {
             distanceToSide = tmp;
-            nearestSide = nearestPoint;
+            result = nearestPoint;
         }
     }
-    return nearestSide;
+
+    return result;
 }
 
 
@@ -287,19 +316,24 @@ int Calculator::Heaviside(double n)
 
 void Calculator::calcForce(Agent &agent)
 {
+    QTime start = QTime::currentTime();
     QVector2D panicForce = calcPanicForce(agent);
+    //qDebug() << "panic force:" << start.elapsed();
+    start = QTime::currentTime();
     QVector2D crossAgentForce = calcCrossAgentForce(agent);
+    //qDebug() << "cross agent force:" << start.elapsed();
+    start = QTime::currentTime();
     QVector2D wallForce = calcWallForce(agent);
+    //qDebug() << "wall force:" << start.elapsed();
     QVector2D totalForce = panicForce + crossAgentForce + wallForce;
 
     if (m_iscollectStat)
         emit sendStatSignal(agent, m_physicalForcesAgentSum);
 
-    //qDebug() << m_physicalForcesAgentSum;
     m_physicalForcesAgentSum = 0;
 
     QVector2D speed = agent.getSpeed() + m_time * totalForce / agent.getMass();
-//    qDebug() << "id" << agent.getID() << "Speed" << speed;
+
     agent.setSpeed(speed);
 }
 
@@ -331,11 +365,13 @@ void Calculator::entryProcess()
             entry.normalize();
             QVector2D entryDir(entry.y(), -entry.x());
 
-            Agent newAgent = GeneralBuilder::buildSingleAgent(configData, getPointOnLine(i.getPos(), i.getEnd()), entryDir);
+            Agent newAgent = GeneralBuilder::buildSingleAgent(configData, getPointOnLine(i.getPos(), i.getEnd()), entryDir, m_panicLevel);
 
             m_pool->addAgent(newAgent);
 
-            GeneralBuilder::buildCheckPointsForSingleAgent(configData, *m_pool, *this, newAgent);
+            emit enterAgentSignal();
+
+            GeneralBuilder::buildCheckPointsForSingleAgent(configData, *m_pool, *this, newAgent, pathAlgorithmIndex);
 
             i.resetTimeFromLastGenerate();
         }
@@ -348,14 +384,6 @@ void Calculator::entryProcess()
 
 std::vector<QVector2D> Calculator::update(double delta)
 {
-//    int h, w;
-//    buildAStarMatrix(h, w);
-
-// test isInObstacle
-//    for (int i = 0; i < 10; i++)
-//        for (int j = 0; j < 10; j++)
-//            qDebug() << i << " " << j << " " << isInObstacle(i, j);
-
     m_time = delta / 1000;
     std::vector<QVector2D> moveRecord;
 
@@ -366,11 +394,10 @@ std::vector<QVector2D> Calculator::update(double delta)
 
     for (auto i = m_pool->getAgents().begin(); i != m_pool->getAgents().end();)
     {
-        //qDebug() << "coord: " << i->getCenter();
         calcForce(*i);
         move(*i);
 
-        moveRecord.push_back(i->getCenter());
+        //moveRecord.push_back(i->getCenter());
 
         if (isInExit(*i))
         {
@@ -383,8 +410,6 @@ std::vector<QVector2D> Calculator::update(double delta)
             i++;
     }
 
-    //qDebug() << "_____________________";
-
     return moveRecord;
 }
 
@@ -395,14 +420,11 @@ QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
     height  = (int)m_sceneSize.y() / m_gridStep;
     width = (int)m_sceneSize.x() / m_gridStep;
 
-    qDebug() << "wh" << width << " " << height;
-
     // TODO: maybe here ERROR - change width and height
     for(int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
         {
-            //qDebug() << "point" << m_gridStep * i + m_gridStep / 2.0 << " " << m_gridStep * j + m_gridStep / 2.0;
             res.push_back(((isInObstacle(m_gridStep * j + m_gridStep / 2.0, m_gridStep * i + m_gridStep / 2.0)) ? 9.0 : 1.0));
         }
     }
@@ -432,5 +454,51 @@ int Calculator::isInObstacle(double x, double y)
     }
 
     return false;
+}
+
+void Calculator::pathAlgorithmChangedSlot(int index)
+{
+    pathAlgorithmIndex = index;
+}
+
+void Calculator::changePanicLevelSlot(double panicLevel)
+{
+    m_panicLevel = panicLevel;
+    updateWishSpeeds();
+}
+
+void Calculator::updateWishSpeeds()
+{
+    QJsonObject configData = JsonManager::parseJsonFile(JsonManager::getConfPath());
+
+    QJsonObject childWishSpeed = configData.value("agent").toObject().value("children").toObject().value("wish_speed").toObject();
+    QJsonObject manWishSpeed = configData.value("agent").toObject().value("children").toObject().value("wish_speed").toObject();
+    QJsonObject womanWishSpeed = configData.value("agent").toObject().value("children").toObject().value("wish_speed").toObject();
+    QJsonObject oldWishSpeed = configData.value("agent").toObject().value("children").toObject().value("wish_speed").toObject();
+    QJsonObject customWishSpeed = configData.value("agent").toObject().value("children").toObject().value("wish_speed").toObject();
+
+    for (auto& i : m_pool->getAgents())
+    {
+        if (i.getType() == AgentType::Child)
+            i.setWishSpeed(childWishSpeed.value("min").toDouble() +
+                          (childWishSpeed.value("max").toDouble() -
+                           childWishSpeed.value("min").toDouble()) * m_panicLevel);
+        else if (i.getType() == AgentType::Man)
+            i.setWishSpeed(manWishSpeed.value("min").toDouble() +
+                          (manWishSpeed.value("max").toDouble() -
+                           manWishSpeed.value("min").toDouble()) * m_panicLevel);
+        else if (i.getType() == AgentType::Woman)
+            i.setWishSpeed(womanWishSpeed.value("min").toDouble() +
+                          (womanWishSpeed.value("max").toDouble() -
+                           womanWishSpeed.value("min").toDouble()) * m_panicLevel);
+        else if (i.getType() == AgentType::Old)
+            i.setWishSpeed(oldWishSpeed.value("min").toDouble() +
+                          (oldWishSpeed.value("max").toDouble() -
+                           oldWishSpeed.value("min").toDouble()) * m_panicLevel);
+        else if (i.getType() == AgentType::Custom)
+            i.setWishSpeed(customWishSpeed.value("min").toDouble() +
+                          (customWishSpeed.value("max").toDouble() -
+                           customWishSpeed.value("min").toDouble()) * m_panicLevel);
+    }
 }
 

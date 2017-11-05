@@ -62,6 +62,19 @@ private slots:
 
     void on_horizontalSlider_sliderMoved(int position);
 
+    void on_algorithmComboBox_currentIndexChanged(int index);
+
+
+    void updateAgentsInRoomSlot(int num);
+
+    void updateEnterAgentSlot();
+
+    void on_actionQt_triggered();
+
+    void on_action_triggered();
+
+    void on_action_2_triggered();
+
 private:
     Ui::MainWindow *ui;
 
@@ -78,6 +91,8 @@ signals:
     void openedCrowdParamsFile(QString file_name);
     void clearSimulation();
     void startSimulation();
+    void pathAlgorithmChangedSignal(int index);
+    void changePanicLevelSignal(double panicLevel);
 
 };
 

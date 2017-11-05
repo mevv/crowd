@@ -5,6 +5,8 @@
 
 #include "json_manager.h"
 
+#include <QMessageBox>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -15,12 +17,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_paintWidget.reset(new PaintWidget(this, m_engine));
 
-    ui->playButton->hide();
-    ui->clearButton->hide();
+    ui->playButton->setEnabled(false);
+    ui->clearButton->setEnabled(false);
+    ui->endButton->setEnabled(false);
 
-    ui->doubleSpinBox->setValue(10);
+    ui->doubleSpinBox->setValue(100);
 
     ui->gridLayout->addWidget(m_paintWidget.get());
+
     m_paintWidget->setMouseTracking(true);
 
     connect(m_engine.get(), &Engine::tick, m_paintWidget.get(), &PaintWidget::update);
@@ -32,6 +36,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_engine.get(), &Engine::changeScaleSignal, this, &MainWindow::updateScale);
     connect(m_engine.get(), &Engine::sendStatReportSignal, this, &MainWindow::updateStatSlot);
+    connect(this, &MainWindow::pathAlgorithmChangedSignal,&(m_engine.get()->getCalculator()), &Calculator::pathAlgorithmChangedSlot);
+    connect(this, &MainWindow::changePanicLevelSignal, &(m_engine->getCalculator()), &Calculator::changePanicLevelSlot);
+    connect(m_engine.get(), &Engine::updateAgentInRoomSignal, this, &MainWindow::updateAgentsInRoomSlot);
+    connect(&(m_engine->getCalculator()), &Calculator::enterAgentSignal, this, &MainWindow::updateEnterAgentSlot);
+
 
     //connect(this, &MainWindow::openedSaveFile, m_engine.get(), &Engine::setSaveFileName);
 }
@@ -60,15 +69,12 @@ void MainWindow::on_playButton_clicked()
 
 void MainWindow::wheelEvent(QWheelEvent *event)
 {
-    //qDebug() << m_paintWidget->mapFromGlobal(QCursor::pos());
-
     if (m_paintWidget->mapFromGlobal(QCursor::pos()).x() > 0 &&
         m_paintWidget->mapFromGlobal(QCursor::pos()).x() < m_paintWidget->size().width() &&
         m_paintWidget->mapFromGlobal(QCursor::pos()).y() > 0 &&
         m_paintWidget->mapFromGlobal(QCursor::pos()).y() < m_paintWidget->size().height())
     {
         m_engine->scrollEvent(event);
-        //qDebug() << m_paintWidget->mapFromGlobal(QCursor::pos());
     }
 }
 
@@ -98,9 +104,14 @@ void MainWindow::on_change_crowd_params_triggered()
 void MainWindow::on_open_shcheme_menu_triggered()
 {
     auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити креслення"), "/home", tr("JSON Files (*.json)"));
-    ui->clearButton->show();
-    ui->playButton->show();
+
+    ui->clearButton->setEnabled(true);
+    ui->playButton->setEnabled(true);
+    ui->endButton->setEnabled(true);
+
     ui->scaleDoubleSpinBox->setValue(1);
+    ui->enteredLineEdit->setText(QString::number(0));
+
     emit openedSchemeFile(file_name);
 }
 
@@ -127,7 +138,10 @@ void MainWindow::on_path_to_simulations_menu_triggered()
 void MainWindow::on_clearButton_clicked()
 {
     ui->playButton->setText("Почати");
+
     ui->scaleDoubleSpinBox->setValue(1);
+    ui->enteredLineEdit->setText(QString::number(0));
+
     emit clearSimulation();
 }
 
@@ -144,7 +158,6 @@ void MainWindow::on_statCleanPushButton_clicked()
 
 void MainWindow::on_statToFilePushButton_clicked()
 {
-    qDebug() << QString(JsonManager::getStatPath()) + QDateTime::currentDateTime().toString(Qt::ISODate) + ".stat";
     QFile file(QString(JsonManager::getStatPath()) + QDateTime::currentDateTime().toString(Qt::ISODate) + ".stat");
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -158,21 +171,32 @@ void MainWindow::on_statToFilePushButton_clicked()
 
 void MainWindow::on_checkBox_2_clicked(bool checked)
 {
+    ui->statTextEdit->setEnabled(checked);
+    ui->statCleanPushButton->setEnabled(checked);
+    ui->statToFilePushButton->setEnabled(checked);
+
     m_engine->setCollectStat(checked);
 }
 
 void MainWindow::on_doubleSpinBox_valueChanged(double arg1)
 {
-    qDebug() << arg1;
     m_engine->setTimerTick(arg1);
 }
 
 void MainWindow::on_pathfindingCheckBox_clicked(bool checked)
 {
     if (checked)
+    {
+        ui->algorithmComboBox->setEnabled(true);
+
         m_engine->getCalculator().setUsePathFinding();
+    }
     else
+    {
+        ui->algorithmComboBox->setEnabled(false);
+
         m_engine->getCalculator().setUsePathFinding(false);
+    }
 }
 
 void MainWindow::on_showPathCheckBox_3_clicked(bool checked)
@@ -185,5 +209,35 @@ void MainWindow::on_showPathCheckBox_3_clicked(bool checked)
 
 void MainWindow::on_horizontalSlider_sliderMoved(int position)
 {
-    qDebug() << position;
+    emit changePanicLevelSignal((position + 1) / 100.0);
+}
+
+void MainWindow::on_algorithmComboBox_currentIndexChanged(int index)
+{
+    emit pathAlgorithmChangedSignal(index);
+}
+
+void MainWindow::updateAgentsInRoomSlot(int num)
+{
+    ui->inRoomLineEdit->setText(QString::number(num));
+}
+
+void MainWindow::updateEnterAgentSlot()
+{
+    ui->enteredLineEdit->setText(QString::number(ui->enteredLineEdit->text().toInt() + 1));
+}
+
+void MainWindow::on_actionQt_triggered()
+{
+    QMessageBox::about(this, "Про Qt", QString("Qt ver. ") + QString(QT_VERSION_STR));
+}
+
+void MainWindow::on_action_triggered()
+{
+    QMessageBox::about(this, "Про програму", "Crowd Modeling Tool\nАвтоматизована система моделювання поведінки великої кількості людей в обмеженому просторі.\nДипломний проект. НТУУ \"КПІ\". ФІОТ. Київ - 2017.");
+}
+
+void MainWindow::on_action_2_triggered()
+{
+    QMessageBox::about(this, "Про авторів", "Мезеря Валерій Васильвич\nЩербатюк Петро Ігорович");
 }

@@ -34,6 +34,7 @@ SOURCES += main.cpp\
     checkpoint.cpp \
     map_search_node.cpp \
     a_star.cpp \
+    leePathfinder.cpp \
     lee.cpp
 
 HEADERS  += mainwindow.h \
@@ -60,6 +61,7 @@ HEADERS  += mainwindow.h \
     checkpoint.h \
     map_search_node.h \
     map_container.h \
+    leePathfinder.h \
     lee.h
 
 FORMS    += mainwindow.ui \
