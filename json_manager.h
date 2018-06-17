@@ -16,7 +16,7 @@ public:
     static bool serializeJson(const QJsonObject& json, QString filename);
 
 
-    static QString getConfPath() { return QDir::current().absolutePath() + "/config.json"; }
+    static QString getConfPath() { return QDir::current().absolutePath() + "/config/config.json"; }
 
     static QString getStatPath() { return QDir::current().absolutePath() + "/stat/"; }
 };
