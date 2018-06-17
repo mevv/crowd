@@ -39,3 +39,4 @@ crowd.pro.user
 CMakeLists.txt.user
 
 crowd
+build/
