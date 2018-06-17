@@ -13,15 +13,8 @@ GeneralBuilder::GeneralBuilder()
 
 }
 
-static bool CalculatorBuilder(const QJsonObject& settings, Calculator& calculator)
-{
-
-}
-
 double GeneralBuilder::getRandomNumber(double a, double b)
 {
-    //usleep(100);
-
     if (a == b)
         return a;
 
@@ -62,7 +55,7 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool,
     qsrand((uint)t.msec());
 
     int totalNumber = settings.value("agent").toObject().value("number").toInt();
-    double panic = settings.value("agent").toObject().value("number").toDouble();
+    //double panic = settings.value("agent").toObject().value("number").toDouble();
     QPair<double, double> entryPeriod(settings.value("agent").toObject().value("entry_period").toObject().value("min").toDouble(),
                                     settings.value("agent").toObject().value("entry_period").toObject().value("max").toDouble());
 
@@ -104,57 +97,54 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool,
         double x = i.getPos().x();
         double y = i.getPos().y();
 
-        int type = 0;
+        double size;
 
+        for (int count = 0; count < curNum; count++)
+        {
+            AgentType agentTypeID = static_cast<AgentType>((int)getRandomNumber(0, 4));
 
-            double size;
-
-            for (int count = 0; count < curNum; count++)
+            while (numAgents[static_cast<AgentType>(agentTypeID)] <= 0)
             {
-                AgentType agentTypeID = static_cast<AgentType>((int)getRandomNumber(0, 4));
-
-                while (numAgents[static_cast<AgentType>(agentTypeID)] <= 0)
+                if (curNum < 10)
                 {
-                    if (curNum < 10)
-                    {
-                        agentTypeID = static_cast<AgentType>(count % 5);
-                        break;
-                    }
-
-                    agentTypeID = static_cast<AgentType>((int)getRandomNumber(0, 4));
+                    agentTypeID = static_cast<AgentType>(count % 5);
+                    break;
                 }
 
-               numAgents[static_cast<AgentType>(agentTypeID)]--;
-
-               QJsonObject agentType = agentTypesConfig[static_cast<AgentType>(agentTypeID)];
-
-                size = getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
-                                       agentType.value("size").toObject().value("max").toDouble());
-                x += DISTANCE_BETWEEN_AGENTS * agentType.value("size").toObject().value("max").toDouble();
-                if (x > i.getPos().x() + i.getSize().x())
-                {
-                    x = i.getPos().x();
-                    y += DISTANCE_BETWEEN_AGENTS * agentType.value("size").toObject().value("max").toDouble();
-                    if (y > i.getPos().y() + i.getSize().y())
-                        break;
-                }
-
-                pool.addAgent(Agent(id,
-                                    size,
-                                    getRandomNumber(agentType.value("mass").toObject().value("min").toDouble(),
-                                                    agentType.value("mass").toObject().value("max").toDouble()),
-                                    QVector2D(x, y),
-                                    QVector2D(0, 0),
-                                    QColor(agentType.value("color").toObject().value("R").toInt(),
-                                           agentType.value("color").toObject().value("G").toInt(),
-                                           agentType.value("color").toObject().value("B").toInt(),
-                                           agentType.value("color").toObject().value("A").toDouble()),
-                                    agentType.value("wish_speed").toObject().value("min").toDouble() +
-                                    (agentType.value("wish_speed").toObject().value("max").toDouble() -
-                                     agentType.value("wish_speed").toObject().value("min").toDouble()) * panicLevel,
-                                    agentTypeID));
-                id++;
+                agentTypeID = static_cast<AgentType>((int)getRandomNumber(0, 4));
             }
+
+           numAgents[static_cast<AgentType>(agentTypeID)]--;
+
+           QJsonObject agentType = agentTypesConfig[static_cast<AgentType>(agentTypeID)];
+
+            size = getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
+                                   agentType.value("size").toObject().value("max").toDouble());
+            x += DISTANCE_BETWEEN_AGENTS * agentType.value("size").toObject().value("max").toDouble();
+            if (x > i.getPos().x() + i.getSize().x())
+            {
+                x = i.getPos().x();
+                y += DISTANCE_BETWEEN_AGENTS * agentType.value("size").toObject().value("max").toDouble();
+                if (y > i.getPos().y() + i.getSize().y())
+                    break;
+            }
+
+            pool.addAgent(Agent(id,
+                                size,
+                                getRandomNumber(agentType.value("mass").toObject().value("min").toDouble(),
+                                                agentType.value("mass").toObject().value("max").toDouble()),
+                                QVector2D(x, y),
+                                QVector2D(0, 0),
+                                QColor(agentType.value("color").toObject().value("R").toInt(),
+                                       agentType.value("color").toObject().value("G").toInt(),
+                                       agentType.value("color").toObject().value("B").toInt(),
+                                       agentType.value("color").toObject().value("A").toDouble()),
+                                agentType.value("wish_speed").toObject().value("min").toDouble() +
+                                (agentType.value("wish_speed").toObject().value("max").toDouble() -
+                                 agentType.value("wish_speed").toObject().value("min").toDouble()) * panicLevel,
+                                agentTypeID));
+            id++;
+        }
 
     }
 
@@ -229,16 +219,6 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
 
     auto matrix = calculator.buildAStarMatrix(height, width);
 
-    int count = 0;
-//    for(int i = 0; i < height; i++)
-//    {
-//        for(int j = 0; j < width; j++)
-//        {
-//            std::cout << matrix[count++] << " ";
-//        }
-//        std::cout << std::endl;
-//    }
-
     for (auto agent : pool.getAgents())
     {
         QVector2D nearestExit = calculator.getNearestExit(agent);
@@ -262,17 +242,17 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
         {
             case 0:
                 path = Astar(matrix.toStdVector(),
-                                                                         width,
-                                                                         height,
-                                                                         std::make_pair(agentMatrixX, agentMatrixY),
-                                                                         std::make_pair(exitMatrixX, exitMatrixY));
+                             width,
+                             height,
+                             std::make_pair(agentMatrixX, agentMatrixY),
+                             std::make_pair(exitMatrixX, exitMatrixY));
                 break;
             case 1:
                 path = Lee(matrix.toStdVector(),
-                                                                 width,
-                                                                 height,
-                                                                 std::make_pair(agentMatrixX, agentMatrixY),
-                                                                 std::make_pair(exitMatrixX, exitMatrixY));
+                           width,
+                           height,
+                           std::make_pair(agentMatrixX, agentMatrixY),
+                           std::make_pair(exitMatrixX, exitMatrixY));
                 break;
 
         }
@@ -281,13 +261,15 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
 
         for (auto i : path)
             checkpoints.push_back(Checkpoint(0,
-                                             QVector2D(i.first * calculator.getGridStep() + calculator.getGridStep() / 2.0,
-                                                       i.second * calculator.getGridStep() + calculator.getGridStep() / 2.0),
-                                             QColor(),
-                                             settings.value("calculator").toObject().value("checkpoint_radius").toDouble()));
+                                  QVector2D(i.first * calculator.getGridStep() + calculator.getGridStep() / 2.0,
+                                            i.second * calculator.getGridStep() + calculator.getGridStep() / 2.0),
+                                  QColor(),
+                                  settings.value("calculator").toObject().value("checkpoint_radius").toDouble()));
 
         pool.getCheckpoints()[agent.getID()] = checkpoints;
     }
+
+    return true;
 }
 
 bool GeneralBuilder::buildCheckPointsForSingleAgent(QJsonObject& settings,
@@ -341,10 +323,12 @@ bool GeneralBuilder::buildCheckPointsForSingleAgent(QJsonObject& settings,
 
     for (auto i : path)
         checkpoints.push_back(Checkpoint(0,
-                                         QVector2D(i.first * calculator.getGridStep() + calculator.getGridStep() / 2.0,
-                                                   i.second * calculator.getGridStep() + calculator.getGridStep() / 2.0),
-                                         QColor(),
-                                         settings.value("calculator").toObject().value("checkpoint_radius").toDouble()));
+                              QVector2D(i.first * calculator.getGridStep() + calculator.getGridStep() / 2.0,
+                                        i.second * calculator.getGridStep() + calculator.getGridStep() / 2.0),
+                              QColor(),
+                              settings.value("calculator").toObject().value("checkpoint_radius").toDouble()));
 
     pool.getCheckpoints()[agent.getID()] = checkpoints;
+
+    return true;
 }

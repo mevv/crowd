@@ -18,9 +18,9 @@ class PaintWidget : public QWidget
 public:
     explicit PaintWidget(QWidget *parent = 0, const std::shared_ptr<Engine>& engine = nullptr);
 
-    void paintEvent(QPaintEvent * event);
+    void paintEvent(QPaintEvent*);
 
-    void resizeEvent(QResizeEvent * event);
+    void resizeEvent(QResizeEvent*);
 signals:
 
 public slots:

@@ -13,10 +13,10 @@ void PaintWidget::update()
     this->repaint();
 }
 
-void PaintWidget::paintEvent(QPaintEvent * event)
+void PaintWidget::paintEvent(QPaintEvent*)
 {
     QPainter painter;
-    QTime start = QTime::currentTime();
+    //QTime start = QTime::currentTime();
     painter.begin(this);
         painter.setBrush(Qt::white);
 
@@ -31,7 +31,7 @@ void PaintWidget::paintEvent(QPaintEvent * event)
 }
 
 
-void PaintWidget::resizeEvent(QResizeEvent * event)
+void PaintWidget::resizeEvent(QResizeEvent*)
 {
     //this->size(event->size());
 }

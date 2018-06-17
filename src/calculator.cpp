@@ -24,8 +24,6 @@ void Calculator::move(Agent &agent)
 bool Calculator::isInExit(const Agent &agent)
 {
     auto exits = m_pool->getExits();
-    QVector2D a = agent.getCenter();
-    QVector2D b = agent.getPrevPos();
 
     for(auto i : exits)
     {
@@ -48,6 +46,7 @@ bool Calculator::isInExit(const Agent &agent)
         if (getDistanceToSide(QVector2D(i.getBegin()), QVector2D(i.getEnd()), agent, tmp) < DISTANCE_TO_EXIT)
             return true;
     }
+
     return false;
 }
 

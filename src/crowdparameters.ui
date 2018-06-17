@@ -966,22 +966,6 @@
      <string>%</string>
     </property>
    </widget>
-   <zorder>label_41</zorder>
-   <zorder>label_42</zorder>
-   <zorder>label_43</zorder>
-   <zorder>label_44</zorder>
-   <zorder>label_45</zorder>
-   <zorder>men_part</zorder>
-   <zorder>child_part</zorder>
-   <zorder>other_part</zorder>
-   <zorder>women_part</zorder>
-   <zorder>old_part</zorder>
-   <zorder>label_46</zorder>
-   <zorder>label_47</zorder>
-   <zorder>label_48</zorder>
-   <zorder>label_49</zorder>
-   <zorder>label_50</zorder>
-   <zorder>groupBox</zorder>
   </widget>
   <widget class="QPushButton" name="saveParamsButton">
    <property name="geometry">
@@ -996,7 +980,7 @@
     <string>Зберегти</string>
    </property>
   </widget>
-  <widget class="QGroupBox" name="groupBox">
+  <widget class="QGroupBox" name="generateGroupBox">
    <property name="geometry">
     <rect>
      <x>280</x>

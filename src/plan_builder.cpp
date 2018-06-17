@@ -17,10 +17,10 @@ bool PlanBuilder::buildObjectsPool(const QJsonObject& plan, ObjectsPool& pool)
     QJsonArray entries = plan.value(QString("entries")).toArray();
     QJsonObject size = plan.value(QString("size")).toObject();
 
-    result = buildObstacles(obstacles, pool);
-    result = buildExits(exits, pool);
-    result = buildEntries(entries, pool);
-    result = buildSpawnZones(spawn_zones, pool);
+    result &= buildObstacles(obstacles, pool);
+    result &= buildExits(exits, pool);
+    result &= buildEntries(entries, pool);
+    result &= buildSpawnZones(spawn_zones, pool);
 
     return result;
 }
@@ -80,6 +80,8 @@ bool PlanBuilder::buildExits(const QJsonArray& exits, ObjectsPool& pool)
                              QVector2D(b.value("x").toDouble(), b.value("y").toDouble())));
         id++;
     }
+
+    return true;
 }
 
 bool PlanBuilder::buildEntries(const QJsonArray& entries, ObjectsPool& pool)

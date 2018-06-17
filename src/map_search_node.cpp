@@ -137,5 +137,6 @@ bool MapSearchNode::GetSuccessors( AStarSearch<MapSearchNode> *astarsearch, MapS
 // conceptually where we're moving
 float MapSearchNode::GetCost( MapSearchNode &successor )
 {
+    successor.PrintNodeInfo();
     return (float) map_container.GetMap( x, y );
 }

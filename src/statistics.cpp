@@ -8,7 +8,7 @@ Statistics::Statistics()
 
 }
 
-void Statistics::simulationStartSlot(int number_of_agents)
+void Statistics::simulationStartSlot()
 {
     m_startTime = QDateTime::currentDateTime();
 }
@@ -57,11 +57,6 @@ void Statistics::agentQuitSlot(const Agent& agent)
 }
 
 void Statistics::finishSimulation()
-{
-
-}
-
-void Statistics::updateAgentStat(const Agent& agent, double force)
 {
 
 }

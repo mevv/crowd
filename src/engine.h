@@ -50,9 +50,9 @@ public:
 
     void scrollEvent(QWheelEvent * event);
 
-    void mouseClickEvent(QMouseEvent * event);
+    void mouseClickEvent(QMouseEvent*);
 
-    void mouseReleaseEvent(QMouseEvent * event);
+    void mouseReleaseEvent(QMouseEvent*);
 
 signals:
     void tick();

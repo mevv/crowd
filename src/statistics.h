@@ -46,7 +46,7 @@ public:
     void reset();
 
 public slots:
-    void simulationStartSlot(int number_of_agents);
+    void simulationStartSlot();
     void agentQuitSlot(const Agent& agent);
     void gatherInfoSlot(const Agent & agent, double force);
     void finishSimulation();
@@ -62,8 +62,6 @@ private:
     QVector<AgentStat> m_agentStat;
     QMap<AgentType, int> m_quitTypeRatio;
     QMap<AgentType, int> m_injuredTypeRatio;
-
-    void updateAgentStat(const Agent& agent, double force);
 
     ResultStat makeReport();
 };

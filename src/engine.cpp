@@ -61,7 +61,7 @@ void Engine::update(bool isTimeRun)
     if (isTimeRun && !m_isMouseMove )
     {
         m_simulationTime += m_timerTick;
-        QTime start = QTime::currentTime();
+        //QTime start = QTime::currentTime();
 
         auto tmpMoveRecord = this->m_calculator->update(m_timerTick);
 
@@ -96,7 +96,7 @@ void Engine::resume()
 void Engine::scrollEvent(QWheelEvent * event)
 {
     double scale = (event->delta() > 0) ? event->delta() * SCALE_SENSIVITY : 1.0 / abs(event->delta()) / SCALE_SENSIVITY;
-    double prevScale = m_scene->getScale();
+    //double prevScale = m_scene->getScale();
 
     m_scene->scale(scale);
 
@@ -105,7 +105,7 @@ void Engine::scrollEvent(QWheelEvent * event)
     emit changeScaleSignal(scale);
 }
 
-void Engine::mouseClickEvent(QMouseEvent *event)
+void Engine::mouseClickEvent(QMouseEvent*)
 {
     m_isMouseMove = true;
     m_mousePrevPos = QCursor::pos();
@@ -117,7 +117,7 @@ void Engine::mouseClickEvent(QMouseEvent *event)
     }
 }
 
-void Engine::mouseReleaseEvent(QMouseEvent * event)
+void Engine::mouseReleaseEvent(QMouseEvent*)
 {
     m_isMouseMove = false;
 
