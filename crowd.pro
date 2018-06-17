@@ -13,6 +13,11 @@ TEMPLATE = app
 
 CONFIG += c++11
 
+linux {
+    QMAKE_CXXFLAGS += -std=c++11 -W -Wall -Wextra -pedantic
+    message("Linux system")
+}
+
 SOURCES += src/main.cpp\
         src/mainwindow.cpp \
     src/paint_widget.cpp \
