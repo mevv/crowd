@@ -1,4 +1,4 @@
-#include <lee.h>
+#include <src/lee.h>
 
 std::vector<std::pair<double, double> > Lee(std::vector<double> map,
                                             int width, int height ,

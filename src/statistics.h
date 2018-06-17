@@ -1,7 +1,7 @@
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
-#include <agent.h>
+#include <src/agent.h>
 #include <QObject>
 #include <QVector>
 #include <QDebug>
