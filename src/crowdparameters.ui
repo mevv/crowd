@@ -38,19 +38,19 @@
     </rect>
    </property>
    <property name="title">
-    <string>Швидкість</string>
+    <string>Velocity</string>
    </property>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>30</y>
-      <width>101</width>
+      <width>111</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Швидкість дітей</string>
+     <string>Velocity of children</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="child_max_speed">
@@ -73,7 +73,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>м/с</string>
+     <string>m/s</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -81,12 +81,12 @@
      <rect>
       <x>10</x>
       <y>60</y>
-      <width>101</width>
+      <width>111</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Швидкість жінок</string>
+     <string>Velocity of woman</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
@@ -99,7 +99,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Швидкість чоловіків</string>
+     <string>Velocity of men</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
@@ -112,7 +112,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Швидкість людей похилого віку</string>
+     <string>Velocity of elders</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="women_max_speed">
@@ -155,7 +155,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>м/с</string>
+     <string>m/s</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_7">
@@ -168,7 +168,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>м/с</string>
+     <string>m/s</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_8">
@@ -181,7 +181,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>м/с</string>
+     <string>m/s</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_9">
@@ -189,12 +189,12 @@
      <rect>
       <x>220</x>
       <y>30</y>
-      <width>21</width>
+      <width>31</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>від</string>
+     <string>from</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_10">
@@ -202,12 +202,12 @@
      <rect>
       <x>220</x>
       <y>60</y>
-      <width>21</width>
+      <width>31</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>від</string>
+     <string>from</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_11">
@@ -215,12 +215,12 @@
      <rect>
       <x>220</x>
       <y>90</y>
-      <width>21</width>
+      <width>31</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>від</string>
+     <string>from</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_12">
@@ -228,12 +228,12 @@
      <rect>
       <x>220</x>
       <y>120</y>
-      <width>21</width>
+      <width>31</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>від</string>
+     <string>from</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="child_min_speed">
@@ -286,7 +286,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>до</string>
+     <string>to</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_14">
@@ -299,7 +299,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>до</string>
+     <string>to</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_15">
@@ -312,7 +312,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>до</string>
+     <string>to</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_16">
@@ -325,7 +325,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>до</string>
+     <string>to</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_17">
@@ -338,7 +338,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Швидкість додаткової групи</string>
+     <string>Velocity of additional group</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_18">
@@ -346,12 +346,12 @@
      <rect>
       <x>220</x>
       <y>150</y>
-      <width>21</width>
+      <width>31</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>від</string>
+     <string>from</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="other_max_speed">
@@ -384,7 +384,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>м/с</string>
+     <string>m/s</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_20">
@@ -397,7 +397,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>до</string>
+     <string>to</string>
     </property>
    </widget>
   </widget>
@@ -411,7 +411,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Маса</string>
+    <string>Mass</string>
    </property>
    <widget class="QLabel" name="label_21">
     <property name="geometry">
@@ -423,7 +423,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Маса дітей</string>
+     <string>Mass of children</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_22">
@@ -436,7 +436,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Маса людей похилого віку</string>
+     <string>Mass of elders</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_23">
@@ -449,7 +449,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Маса додаткової групи</string>
+     <string>Mass of additional group</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_24">
@@ -462,7 +462,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Маса чоловіків</string>
+     <string>Mass of men</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_25">
@@ -475,7 +475,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Маса жінок</string>
+     <string>Mass of woman</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_26">
@@ -483,12 +483,12 @@
      <rect>
       <x>210</x>
       <y>150</y>
-      <width>21</width>
+      <width>31</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>від</string>
+     <string>from</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="child_min_mass">
@@ -511,7 +511,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>до</string>
+     <string>to</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_28">
@@ -524,7 +524,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>до</string>
+     <string>to</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="women_min_mass">
@@ -542,12 +542,12 @@
      <rect>
       <x>210</x>
       <y>27</y>
-      <width>21</width>
+      <width>31</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>від</string>
+     <string>from</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="women_max_mass">
@@ -605,12 +605,12 @@
      <rect>
       <x>210</x>
       <y>90</y>
-      <width>21</width>
+      <width>31</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>від</string>
+     <string>from</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_31">
@@ -623,7 +623,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>до</string>
+     <string>to</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_32">
@@ -636,7 +636,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>до</string>
+     <string>to</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="other_max_mass">
@@ -664,12 +664,12 @@
      <rect>
       <x>210</x>
       <y>60</y>
-      <width>21</width>
+      <width>31</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>від</string>
+     <string>from</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="men_max_mass">
@@ -692,7 +692,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>до</string>
+     <string>to</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_35">
@@ -700,12 +700,12 @@
      <rect>
       <x>210</x>
       <y>120</y>
-      <width>21</width>
+      <width>31</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>від</string>
+     <string>from</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_36">
@@ -718,7 +718,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>кг</string>
+     <string>kg</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_37">
@@ -731,7 +731,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>кг</string>
+     <string>kg</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_38">
@@ -744,7 +744,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>кг</string>
+     <string>kg</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_39">
@@ -757,7 +757,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>кг</string>
+     <string>kg</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_40">
@@ -770,7 +770,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>кг</string>
+     <string>kg</string>
     </property>
    </widget>
   </widget>
@@ -784,7 +784,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Склад натовпу</string>
+    <string>Crowd composition</string>
    </property>
    <widget class="QLabel" name="label_41">
     <property name="geometry">
@@ -796,7 +796,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Частка додаткової групи</string>
+     <string>Part of additional group</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_42">
@@ -809,7 +809,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Частка дітей</string>
+     <string>Part of children</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_43">
@@ -822,7 +822,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Частка жінок</string>
+     <string>Part of women</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_44">
@@ -835,7 +835,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Частка чоловіків</string>
+     <string>Part of men</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_45">
@@ -848,7 +848,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Частка людей похилого віку</string>
+     <string>Part of elders</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="men_part">
@@ -977,7 +977,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Зберегти</string>
+    <string>Save</string>
    </property>
   </widget>
   <widget class="QGroupBox" name="generateGroupBox">
@@ -990,7 +990,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Генерація агентів</string>
+    <string>Agent generation</string>
    </property>
    <widget class="QLabel" name="label_71">
     <property name="geometry">
@@ -1002,7 +1002,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Період генерації:</string>
+     <string>Generation period</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="minEntryPeriodDoubleSpinBox">
@@ -1041,7 +1041,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Макс</string>
+     <string>Max</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_73">
@@ -1054,7 +1054,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Мін</string>
+     <string>Min</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_74">
@@ -1067,7 +1067,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Кількість у приміщенні:</string>
+     <string>Amount in room</string>
     </property>
    </widget>
    <widget class="QSpinBox" name="agentNumSpinBox">
@@ -1093,7 +1093,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>с</string>
+     <string>s</string>
     </property>
    </widget>
   </widget>

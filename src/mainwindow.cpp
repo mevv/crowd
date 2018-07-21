@@ -52,17 +52,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_playButton_clicked()
 {
-    if(ui->playButton->text() == "Почати")
+    if(ui->playButton->text() == tr("Start"))
         emit startSimulation();
 
     if (m_engine->isStarted())
     {
-        ui->playButton->setText("Продовжити");
+        ui->playButton->setText(tr("Stop"));
         m_engine->pause();
     }
     else
     {
-        ui->playButton->setText("Зупинити");
+        ui->playButton->setText(tr("Pause"));
         m_engine->resume();
     }
 }
@@ -103,7 +103,7 @@ void MainWindow::on_change_crowd_params_triggered()
 
 void MainWindow::on_open_shcheme_menu_triggered()
 {
-    auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити креслення"), "/home", tr("JSON Files (*.json)"));
+    auto file_name = QFileDialog::getOpenFileName(this, tr("Open scheme"), "/home", tr("JSON Files (*.json)"));
 
     ui->clearButton->setEnabled(true);
     ui->playButton->setEnabled(true);
@@ -117,7 +117,7 @@ void MainWindow::on_open_shcheme_menu_triggered()
 
 void MainWindow::on_open_simulation_menu_triggered()
 {
-    auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити файл симуляції"), "/home", tr("JSON Files (*.sim)"));
+    auto file_name = QFileDialog::getOpenFileName(this, tr("Open simulation"), "/home", tr("JSON Files (*.sim)"));
     ui->clearButton->show();
     ui->playButton->show();
     emit openedSaveFile(file_name);
@@ -125,19 +125,19 @@ void MainWindow::on_open_simulation_menu_triggered()
 
 void MainWindow::on_path_to_crowd_params_file_menu_triggered()
 {
-    auto file_name = QFileDialog::getOpenFileName(this, tr("Відкрити файл характеристики натовпу"), "/home", tr("JSON Files (*.json)"));
+    auto file_name = QFileDialog::getOpenFileName(this, tr("Open config"), "/home", tr("JSON Files (*.json)"));
     emit openedCrowdParamsFile(file_name);
 }
 
 void MainWindow::on_path_to_simulations_menu_triggered()
 {
-    auto path = QFileDialog::getExistingDirectory( this, tr("Зберегти симуляції до..."), "/home", QFileDialog::ShowDirsOnly);
+    auto path = QFileDialog::getExistingDirectory( this, tr("Save simulation to..."), "/home", QFileDialog::ShowDirsOnly);
     emit changedPathToSimulations(path);
 }
 
 void MainWindow::on_clearButton_clicked()
 {
-    ui->playButton->setText("Почати");
+    ui->playButton->setText(tr("Start"));
 
     ui->scaleDoubleSpinBox->setValue(1);
     ui->enteredLineEdit->setText(QString::number(0));
@@ -147,7 +147,7 @@ void MainWindow::on_clearButton_clicked()
 
 void MainWindow::on_endButton_clicked()
 {
-    ui->playButton->setText("Продовжити");
+    ui->playButton->setText(tr("Continue"));
     m_engine->finishSimulation();
 }
 
@@ -229,15 +229,15 @@ void MainWindow::updateEnterAgentSlot()
 
 void MainWindow::on_actionQt_triggered()
 {
-    QMessageBox::about(this, "Про Qt", QString("Qt ver. ") + QString(QT_VERSION_STR));
+    QMessageBox::about(this, tr("About Qt"), QString(tr("Qt v. ")) + QString(QT_VERSION_STR));
 }
 
 void MainWindow::on_action_triggered()
 {
-    QMessageBox::about(this, "Про програму", "Crowd Modeling Tool\nАвтоматизована система моделювання поведінки великої кількості людей в обмеженому просторі.\nДипломний проект. НТУУ \"КПІ\". ФІОТ. Київ - 2017.");
+    QMessageBox::about(this, tr("About"), tr("Crowd Modeling Tool"));
 }
 
 void MainWindow::on_action_2_triggered()
 {
-    QMessageBox::about(this, "Про авторів", "Мезеря Валерій Васильвич\nЩербатюк Петро Ігорович");
+    QMessageBox::about(this, tr("Authors"), tr("Mezeria Valeriy Vasilevich\nShcherbatyuk Petr Igorevich"));
 }

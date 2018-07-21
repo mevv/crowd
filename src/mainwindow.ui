@@ -57,7 +57,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>Симуляція</string>
+     <string>Simulation</string>
     </property>
     <widget class="QPushButton" name="playButton">
      <property name="geometry">
@@ -75,7 +75,7 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>Почати</string>
+      <string>Start</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="totalTimeLineEdit">
@@ -104,7 +104,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Час, с</string>
+      <string>Time, s</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_3">
@@ -117,7 +117,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Швидкість</string>
+      <string>Speed</string>
      </property>
     </widget>
     <widget class="QDoubleSpinBox" name="doubleSpinBox">
@@ -177,7 +177,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Маштаб</string>
+      <string>Scale</string>
      </property>
     </widget>
     <widget class="QPushButton" name="clearButton">
@@ -196,7 +196,7 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>Перезапустити</string>
+      <string>Restart</string>
      </property>
     </widget>
     <widget class="QPushButton" name="endButton">
@@ -215,7 +215,7 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>Завершити</string>
+      <string>Finish</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="inRoomLineEdit">
@@ -241,7 +241,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>В приміщенні</string>
+      <string>In room</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="enteredLineEdit">
@@ -267,7 +267,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Увійшло</string>
+      <string>Entered</string>
      </property>
     </widget>
    </widget>
@@ -281,7 +281,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>Статистика симуляції</string>
+     <string>Simulation stats</string>
     </property>
     <widget class="QTextEdit" name="statTextEdit">
      <property name="geometry">
@@ -303,7 +303,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>До файлу</string>
+      <string>Save</string>
      </property>
     </widget>
     <widget class="QPushButton" name="statCleanPushButton">
@@ -316,7 +316,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Очистити</string>
+      <string>Clear</string>
      </property>
     </widget>
    </widget>
@@ -343,12 +343,12 @@
      </property>
      <item>
       <property name="text">
-       <string>Алгоритм A-Star</string>
+       <string>A* algorithm</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Алгоритм Лі</string>
+       <string>Lee algorithm</string>
       </property>
      </item>
     </widget>
@@ -375,7 +375,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Рівень паніки:</string>
+      <string>Panic level:</string>
      </property>
     </widget>
     <widget class="QSlider" name="horizontalSlider">
@@ -401,7 +401,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Статистика</string>
+      <string>Stats</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -417,7 +417,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Пошук шляху</string>
+      <string>Path finding</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -433,7 +433,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Показувати шлях</string>
+      <string>Show path</string>
      </property>
     </widget>
    </widget>
@@ -449,14 +449,14 @@
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
-     <string>Файл</string>
+     <string>File</string>
     </property>
     <addaction name="open_shcheme_menu"/>
     <addaction name="open_simulation_menu"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
-     <string>Налаштування</string>
+     <string>Settings</string>
     </property>
     <addaction name="path_to_crowd_params_file_menu"/>
     <addaction name="path_to_simulations_menu"/>
@@ -464,7 +464,7 @@
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
-     <string>Про програму</string>
+     <string>About</string>
     </property>
     <addaction name="action"/>
     <addaction name="action_2"/>
@@ -476,37 +476,37 @@
   </widget>
   <action name="open_shcheme_menu">
    <property name="text">
-    <string>Відкрити креслення</string>
+    <string>Open scheme</string>
    </property>
   </action>
   <action name="open_simulation_menu">
    <property name="text">
-    <string>Відкрити симуляцію</string>
+    <string>Open simulation</string>
    </property>
   </action>
   <action name="path_to_crowd_params_file_menu">
    <property name="text">
-    <string>Шлях до файлу характеристик натовпу</string>
+    <string>Config path</string>
    </property>
   </action>
   <action name="path_to_simulations_menu">
    <property name="text">
-    <string>Директорія для запису симуляцій</string>
+    <string>Simulation path</string>
    </property>
   </action>
   <action name="change_crowd_params">
    <property name="text">
-    <string>Характеристики натовпу</string>
+    <string>Crowd params</string>
    </property>
   </action>
   <action name="action">
    <property name="text">
-    <string>Программа</string>
+    <string>About</string>
    </property>
   </action>
   <action name="action_2">
    <property name="text">
-    <string>Автори</string>
+    <string>Authors</string>
    </property>
   </action>
   <action name="actionQt">
