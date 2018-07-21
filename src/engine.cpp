@@ -47,7 +47,8 @@ Engine::Engine()
 
 Engine::~Engine()
 {
-
+    m_stat_thread->quit();
+    m_stat_thread->wait();
 }
 
 void Engine::update(bool isTimeRun)
