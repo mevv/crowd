@@ -4,6 +4,8 @@
 #include <QTextStream>
 #include <QJsonDocument>
 
+QString JsonManager::m_confPath("config/config.json");
+
 JsonManager::JsonManager()
 {
 

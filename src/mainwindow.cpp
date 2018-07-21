@@ -95,7 +95,7 @@ void MainWindow::updateStatSlot(QString report)
 
 void MainWindow::on_change_crowd_params_triggered()
 {
-    QJsonObject curParam = JsonManager::parseJsonFile(JsonManager::getConfPath());
+    QJsonObject curParam = JsonManager::parseJsonFile(m_configPath);
 
     m_crowdParameters.reset(new CrowdParameters(curParam));
     m_crowdParameters->show();
@@ -125,8 +125,7 @@ void MainWindow::on_open_simulation_menu_triggered()
 
 void MainWindow::on_path_to_crowd_params_file_menu_triggered()
 {
-    auto file_name = QFileDialog::getOpenFileName(this, tr("Open config"), "/home", tr("JSON Files (*.json)"));
-    emit openedCrowdParamsFile(file_name);
+    JsonManager::setConfPath(QFileDialog::getOpenFileName(this, tr("Open config"), "/home", tr("JSON Files (*.json)")));
 }
 
 void MainWindow::on_path_to_simulations_menu_triggered()

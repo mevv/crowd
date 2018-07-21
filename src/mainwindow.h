@@ -79,16 +79,15 @@ private:
     Ui::MainWindow *ui;
 
     std::shared_ptr<Engine> m_engine;
-
     std::unique_ptr<CrowdParameters> m_crowdParameters;
-
     std::unique_ptr<PaintWidget> m_paintWidget;
+
+    QString m_configPath;
 
 signals:
     void openedSchemeFile(QString file_name);
     void openedSaveFile(QString file_name);
     void changedPathToSimulations(QString path);
-    void openedCrowdParamsFile(QString file_name);
     void clearSimulation();
     void startSimulation();
     void pathAlgorithmChangedSignal(int index);

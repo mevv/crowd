@@ -103,7 +103,7 @@ QString Statistics::getReport()
     result += tr("Simulation finished: ") + QDateTime::currentDateTime().toString(Qt::ISODate) + "\n";
     result += tr("Average force: ") + QString::number(stat.averageForce) + tr(", N") + "\n";
     result += tr("Average velocity: ") + QString::number(stat.averageSpeed) + tr(", m/s") + "\n";
-    result += tr("Average wished and actual speed delta: ") + QString::number(stat.averageSpeedDelta) + tr(", m/s") + "\n";
+    result += tr("Average wished and actual velocity delta: ") + QString::number(stat.averageSpeedDelta) + tr(", m/s") + "\n";
     result += tr("Number of evacuated people: ") + QString::number(m_agentQuitNum) + "\n";
     result += tr("Number of injured people: ") + QString::number(stat.injuringNum) + "\n";
     //result += tr("Number of dead people: ") + QString::number(stat.deadNum) + "\n";
