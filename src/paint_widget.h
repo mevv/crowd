@@ -20,14 +20,9 @@ public:
 
     void paintEvent(QPaintEvent*);
 
-    void resizeEvent(QResizeEvent*);
-signals:
-
 public slots:
     void update();
-
     void mousePressEvent (QMouseEvent * event);
-
     void mouseReleaseEvent (QMouseEvent * event);
 
 private:

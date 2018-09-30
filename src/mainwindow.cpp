@@ -40,9 +40,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, &MainWindow::changePanicLevelSignal, &(m_engine->getCalculator()), &Calculator::changePanicLevelSlot);
     connect(m_engine.get(), &Engine::updateAgentInRoomSignal, this, &MainWindow::updateAgentsInRoomSlot);
     connect(&(m_engine->getCalculator()), &Calculator::enterAgentSignal, this, &MainWindow::updateEnterAgentSlot);
-
-
-    //connect(this, &MainWindow::openedSaveFile, m_engine.get(), &Engine::setSaveFileName);
 }
 
 MainWindow::~MainWindow()
@@ -115,23 +112,9 @@ void MainWindow::on_open_shcheme_menu_triggered()
     emit openedSchemeFile(file_name);
 }
 
-void MainWindow::on_open_simulation_menu_triggered()
-{
-    auto file_name = QFileDialog::getOpenFileName(this, tr("Open simulation"), "/home", tr("JSON Files (*.sim)"));
-    ui->clearButton->show();
-    ui->playButton->show();
-    emit openedSaveFile(file_name);
-}
-
 void MainWindow::on_path_to_crowd_params_file_menu_triggered()
 {
     JsonManager::setConfPath(QFileDialog::getOpenFileName(this, tr("Open config"), "/home", tr("JSON Files (*.json)")));
-}
-
-void MainWindow::on_path_to_simulations_menu_triggered()
-{
-    auto path = QFileDialog::getExistingDirectory( this, tr("Save simulation to..."), "/home", QFileDialog::ShowDirsOnly);
-    emit changedPathToSimulations(path);
 }
 
 void MainWindow::on_clearButton_clicked()

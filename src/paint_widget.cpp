@@ -2,11 +2,10 @@
 
 #include <QDebug>
 
-PaintWidget::PaintWidget(QWidget *parent, const std::shared_ptr<Engine>& engine) : QWidget(parent)
-{
-    m_engine = engine;
-}
-
+PaintWidget::PaintWidget(QWidget *parent, const std::shared_ptr<Engine>& engine) :
+    QWidget(parent),
+    m_engine(engine)
+{}
 
 void PaintWidget::update()
 {  
@@ -16,24 +15,15 @@ void PaintWidget::update()
 void PaintWidget::paintEvent(QPaintEvent*)
 {
     QPainter painter;
-    //QTime start = QTime::currentTime();
+
     painter.begin(this);
-        painter.setBrush(Qt::white);
+    painter.setBrush(Qt::white);
+    this->resize(QSize(800, 10000));
+    painter.drawRect(-1, -1, this->height(), this->width());
 
-        this->resize(QSize(800, 10000));
-
-        painter.drawRect(-1, -1, this->height(), this->width());
-
-        m_engine->draw(painter);
+    m_engine->draw(painter);
 
     painter.end();
-    //qDebug() << "paint update elapsed:" << start.elapsed();
-}
-
-
-void PaintWidget::resizeEvent(QResizeEvent*)
-{
-    //this->size(event->size());
 }
 
 void PaintWidget::mousePressEvent (QMouseEvent * event)

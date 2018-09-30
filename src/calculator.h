@@ -37,7 +37,7 @@ public:
 
     Calculator(QVector2D sceneSize, std::shared_ptr<ObjectsPool> pool);
 
-    std::vector<QVector2D> update(double delta);
+    void update(double delta);
 
     void setMathParams(const MathParams& param) { m_param = param; }
 

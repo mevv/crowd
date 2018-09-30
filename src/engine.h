@@ -75,7 +75,7 @@ public slots:
     void startSimulationSlot();
 
 private:
-    int m_timerTick = 100;//milliseconds
+    int m_timerTick = 100; // milliseconds
     int m_simulationTime = 0;
 
     bool m_isMouseMove = false;
@@ -91,10 +91,6 @@ private:
     std::shared_ptr<ObjectsPool> m_objects_pool;
     std::unique_ptr<Statistics> m_stat;
     std::unique_ptr<QThread>m_stat_thread;
-
-    std::vector<std::vector<QVector2D>> m_moveRecord;
-
-    void writeRecordToFile();
 
     void readSchemeFromFile(QString filename);
 };

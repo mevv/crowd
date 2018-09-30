@@ -330,7 +330,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>Алгоритм</string>
+     <string>Algo</string>
     </property>
     <widget class="QComboBox" name="algorithmComboBox">
      <property name="geometry">
@@ -363,7 +363,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>Параметри</string>
+     <string>Params</string>
     </property>
     <widget class="QLabel" name="label_2">
      <property name="geometry">
@@ -452,14 +452,12 @@
      <string>File</string>
     </property>
     <addaction name="open_shcheme_menu"/>
-    <addaction name="open_simulation_menu"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
      <string>Settings</string>
     </property>
     <addaction name="path_to_crowd_params_file_menu"/>
-    <addaction name="path_to_simulations_menu"/>
     <addaction name="change_crowd_params"/>
    </widget>
    <widget class="QMenu" name="menu_3">

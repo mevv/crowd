@@ -381,22 +381,17 @@ void Calculator::entryProcess()
     }
 }
 
-std::vector<QVector2D> Calculator::update(double delta)
+void Calculator::update(double delta)
 {
     m_time = delta / 1000;
-    std::vector<QVector2D> moveRecord;
-
     m_iterations++;
 
     entryProcess();
-
 
     for (auto i = m_pool->getAgents().begin(); i != m_pool->getAgents().end();)
     {
         calcForce(*i);
         move(*i);
-
-        //moveRecord.push_back(i->getCenter());
 
         if (isInExit(*i))
         {
@@ -408,8 +403,6 @@ std::vector<QVector2D> Calculator::update(double delta)
         else
             i++;
     }
-
-    return moveRecord;
 }
 
 QVector<double> Calculator::buildAStarMatrix(int & height, int & width)

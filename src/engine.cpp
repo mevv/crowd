@@ -63,12 +63,8 @@ void Engine::update(bool isTimeRun)
     {
         m_simulationTime += m_timerTick;
         //QTime start = QTime::currentTime();
-
-        auto tmpMoveRecord = this->m_calculator->update(m_timerTick);
-
+        this->m_calculator->update(m_timerTick);
         //qDebug() << "calc update elapsed:" << start.elapsed();
-        //m_moveRecord.push_back(tmpMoveRecord);
-
     }
 
     emit updateAgentInRoomSignal(m_objects_pool->getAgents().size());
@@ -157,16 +153,6 @@ void Engine::finishSimulation()
 
     if (m_calculator->isCollectStat())
         emit sendStatReportSignal(m_stat->getReport());
-}
-
-void Engine::writeRecordToFile()
-{
-    QFile file;
-    file.setFileName("");
-    file.open(QIODevice::ReadWrite | QIODevice::Text);
-    QTextStream stream(&file);
-//    stream << js_data << endl;
-    file.close();
 }
 
 void Engine::clear()
