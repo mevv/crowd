@@ -92,9 +92,7 @@ void MainWindow::updateStatSlot(QString report)
 
 void MainWindow::on_change_crowd_params_triggered()
 {
-    QJsonObject curParam = JsonManager::parseJsonFile(m_configPath);
-
-    m_crowdParameters.reset(new CrowdParameters(curParam));
+    m_crowdParameters.reset(new CrowdParameters(JsonManager::parseJsonFile(JsonManager::getConfPath())));
     m_crowdParameters->show();
 }
 
@@ -162,7 +160,7 @@ void MainWindow::on_checkBox_2_clicked(bool checked)
 
 void MainWindow::on_doubleSpinBox_valueChanged(double arg1)
 {
-    m_engine->setTimerTick(arg1);
+    m_engine->setSimulationStep(arg1);
 }
 
 void MainWindow::on_pathfindingCheckBox_clicked(bool checked)
