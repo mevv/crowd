@@ -26,13 +26,15 @@ public:
 
     void setCollectStat(bool collectStat = true) { m_calculator->setCollectStat(collectStat); }
 
-    void setTimerTick(double tick) { m_timerTick = tick; }
+    void setSimulationStep(double step) { m_simulationStep = step; }
+
+    void setDelay(double delay) { m_simulationDelay = delay; }
 
     bool isStarted() const { return m_timer->isActive(); }
 
     int getSimulationTime() const { return m_simulationTime; }
 
-    int getTimerTick() const { return m_timerTick; }
+    int getTimerTick() const { return m_simulationStep; }
 
     QString getPlanFilePath() const { return m_lastPlanFilePath; }
 
@@ -58,7 +60,6 @@ signals:
     void tick();
     void enableStatButton();
     void startSimulation(int n);
-
     void sendStatReportSignal(QString report);
     void changeScaleSignal(double scale);
     void updateAgentInRoomSignal(int num);
@@ -75,7 +76,8 @@ public slots:
     void startSimulationSlot();
 
 private:
-    int m_timerTick = 100; // milliseconds
+    int m_simulationStep = 100; // milliseconds
+    int m_simulationDelay = 100; // milliseconds
     int m_simulationTime = 0;
 
     bool m_isMouseMove = false;

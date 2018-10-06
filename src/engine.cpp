@@ -31,7 +31,7 @@ Engine::Engine()
     connect(m_timer.get(),  &QTimer::timeout, this, [this]{ this->update(); });
     connect(m_objects_pool.get(), &ObjectsPool::endOfSimulation, this, &Engine::finishSimulation);
 
-    m_timer->setInterval(m_timerTick);
+    m_timer->setInterval(m_simulationDelay);
 
     m_stat_thread.reset(new QThread());
     m_stat.reset(new Statistics());
@@ -59,11 +59,11 @@ void Engine::update(bool isTimeRun)
         m_mousePrevPos = QCursor::pos();
     }
 
-    if (isTimeRun && !m_isMouseMove )
+    if (isTimeRun && !m_isMouseMove)
     {
-        m_simulationTime += m_timerTick;
+        m_simulationTime += m_simulationStep;
         //QTime start = QTime::currentTime();
-        this->m_calculator->update(m_timerTick);
+        this->m_calculator->update(m_simulationStep);
         //qDebug() << "calc update elapsed:" << start.elapsed();
     }
 
@@ -85,7 +85,7 @@ void Engine::pause()
 void Engine::resume()
 {
     m_stat->reset();
-    m_timer->setInterval(m_timerTick);
+    m_timer->setInterval(m_simulationDelay);
     emit startSimulation(0);
     m_timer->start();
 }
