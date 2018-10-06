@@ -60,7 +60,7 @@ private:
     std::unique_ptr<CrowdParameters> m_crowdParameters;
     std::unique_ptr<PaintWidget> m_paintWidget;
 
-    QString m_configPath;
+    QString m_schemePath = "/home";
 
 signals:
     void openedSchemeFile(QString file_name);

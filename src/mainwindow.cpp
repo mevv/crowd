@@ -98,7 +98,7 @@ void MainWindow::on_change_crowd_params_triggered()
 
 void MainWindow::on_open_shcheme_menu_triggered()
 {
-    auto file_name = QFileDialog::getOpenFileName(this, tr("Open scheme"), "/home", tr("JSON Files (*.json)"));
+    m_schemePath = QFileDialog::getOpenFileName(this, tr("Open scheme"), m_schemePath, tr("JSON Files (*.json)"));
 
     ui->clearButton->setEnabled(true);
     ui->playButton->setEnabled(true);
@@ -107,12 +107,12 @@ void MainWindow::on_open_shcheme_menu_triggered()
     ui->scaleDoubleSpinBox->setValue(1);
     ui->enteredLineEdit->setText(QString::number(0));
 
-    emit openedSchemeFile(file_name);
+    emit openedSchemeFile(m_schemePath);
 }
 
 void MainWindow::on_path_to_crowd_params_file_menu_triggered()
 {
-    JsonManager::setConfPath(QFileDialog::getOpenFileName(this, tr("Open config"), "/home", tr("JSON Files (*.json)")));
+    JsonManager::setConfPath(QFileDialog::getOpenFileName(this, tr("Open config"), JsonManager::getConfPath(), tr("JSON Files (*.json)")));
 }
 
 void MainWindow::on_clearButton_clicked()
