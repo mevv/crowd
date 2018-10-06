@@ -216,8 +216,8 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
                                       const int pathAlgorithmIndex)
 {
     int height, width;
-
     auto matrix = calculator.buildAStarMatrix(height, width);
+    std::vector<std::pair<double, double>> backupPath;
 
     for (auto agent : pool.getAgents())
     {
@@ -236,7 +236,7 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
         if(exitMatrixY >= height)
             exitMatrixY--;
 
-        std::vector<std::pair<double, double> > path;
+        std::vector<std::pair<double, double>> path;
 
         switch(pathAlgorithmIndex)
         {
@@ -256,6 +256,12 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
                 break;
 
         }
+
+        // temporary fix for those, who didn't find a way
+        if (!path.empty())
+            backupPath = path;
+        else
+            path = backupPath;
 
         std::vector<Checkpoint> checkpoints;
 
@@ -279,9 +285,7 @@ bool GeneralBuilder::buildCheckPointsForSingleAgent(QJsonObject& settings,
                                                     const int pathAlgorithmIndex)
 {
     int height, width;
-
     auto matrix = calculator.buildAStarMatrix(height, width);
-
     QVector2D nearestExit = calculator.getNearestExit(agent);
 
     int agentMatrixX = floor(agent.getCenter().x() / calculator.getGridStep());
@@ -297,7 +301,7 @@ bool GeneralBuilder::buildCheckPointsForSingleAgent(QJsonObject& settings,
     if(exitMatrixY >= height)
         exitMatrixY--;
 
-    std::vector<std::pair<double, double> > path;
+    std::vector<std::pair<double, double>> path;
 
     switch(pathAlgorithmIndex)
     {

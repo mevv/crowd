@@ -41,31 +41,23 @@ std::vector< std::pair<double, double> > Astar(std::vector<double> map, int widt
 
         if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED )
         {
-//            cout << "Search found goal state\n";
-
             MapSearchNode *node = astarsearch.GetSolutionStart();
 
             int steps = 0;
 
-//            node->PrintNodeInfo();
+            //node->PrintNodeInfo();
             for( ;; )
             {
                 node = astarsearch.GetSolutionNext();
 
-
-
-                if( !node )
-                {
+                if(!node)
                     break;
-                }
 
                 result.push_back(std::make_pair(node->x, node->y));
 
-//                node->PrintNodeInfo();
-                steps ++;
-            };
-
-//            cout << "Solution steps " << steps << endl;
+                //node->PrintNodeInfo();
+                steps++;
+            }
 
             // Once you're done with the solution you can free the nodes up
             astarsearch.FreeSolutionNodes();
@@ -73,13 +65,14 @@ std::vector< std::pair<double, double> > Astar(std::vector<double> map, int widt
         else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED )
         {
             cout << "Search terminated. Did not find goal state\n";
-
+//            for (auto i : result)
+//            {
+//                cout << "(" << i.first << i.second << ")" << " ";
+//            }
+//            cout << "\n";
         }
 
-        // Display the number of loops the search went through
-//        cout << "SearchSteps : " << SearchSteps << "\n";
-
-        SearchCount ++;
+        SearchCount++;
 
         astarsearch.EnsureMemoryFreed();
     }
