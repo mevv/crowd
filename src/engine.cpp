@@ -93,7 +93,11 @@ void Engine::resume()
 void Engine::scrollEvent(QWheelEvent * event)
 {
     double scale = (event->delta() > 0) ? event->delta() * SCALE_SENSIVITY : 1.0 / abs(event->delta()) / SCALE_SENSIVITY;
-    //double prevScale = m_scene->getScale();
+
+    if (scale > 1.2)
+        scale = 1.005;
+    if (scale < 0.8)
+        scale = 0.995;
 
     m_scene->scale(scale);
 
