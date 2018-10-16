@@ -7,6 +7,7 @@
 #include "engine.h"
 #include "agent.h"
 #include "non_gui.h"
+#include "a_star_step.h"
 
 QCoreApplication* createApplication(int &argc, char *argv[])
 {
@@ -18,6 +19,16 @@ QCoreApplication* createApplication(int &argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
+//    std::vector<double> map = {1, 9, 1, 1,
+//                               1, 9, 1, 9,
+//                               1, 1, 1, 1};
+
+//    ASTAR::AStar algo(map, 3, 4, ASTAR::Cell(0, 0), ASTAR::Cell(0, 3));
+
+//    auto path = algo.findPath();
+//    for (auto p : path)
+//        qDebug() << "(" << p.first << ", " << p.second << ")";
+
     std::unique_ptr<QCoreApplication> a(createApplication(argc, argv));
     std::unique_ptr<MainWindow> w;
     std::unique_ptr<NonGuiRunner> runner;
