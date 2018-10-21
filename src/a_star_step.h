@@ -16,24 +16,24 @@ namespace ASTAR {
 using Cell = std::pair<size_t, size_t>;
 
 template<typename T, typename priority_t>
-struct PriorityQueue {
-  typedef std::pair<priority_t, T> PQElement;
-  std::priority_queue<PQElement, std::vector<PQElement>,
-                 std::greater<PQElement>> elements;
+struct PriorityQueue
+{
+    typedef std::pair<priority_t, T> PQElement;
+    std::priority_queue<PQElement, std::vector<PQElement>, std::greater<PQElement>> elements;
 
-  inline bool empty() const {
-     return elements.empty();
-  }
+    inline bool empty() const { return elements.empty(); }
 
-  inline void push(T item, priority_t priority) {
-    elements.emplace(priority, item);
-  }
+    inline void push(T item, priority_t priority) { elements.emplace(priority, item); }
 
-  T pop() {
-    T best_item = elements.top().second;
-    elements.pop();
-    return best_item;
-  }
+    inline T top() { return elements.top().second; }
+
+    T pop()
+    {
+        T best_item = elements.top().second;
+        elements.pop();
+
+        return best_item;
+    }
 };
 
 struct Map
@@ -63,18 +63,25 @@ public:
     {}
 
     void setStart(const Cell& s) { m_start = s; }
-    void setEnd(const Cell& s) { m_start = s; }
+    void setEnd(const Cell& e) { m_end = e; }
     void setMap(const Map& m) { m_map = m; }
 
     std::vector<Cell> findPath();
-//    Cell nextStep();
+    Cell nextStep();
 
 private:
     Map m_map;
     Cell m_start;
     Cell m_end;
 
-    void printMap(std::map<Cell, double> cost, std::vector<Cell> path);
+    PriorityQueue<Cell, double> m_frontier;
+    std::map<Cell, double> m_cost;
+    std::map<Cell, Cell> m_cameFrom;
+
+    void reset();
+    bool step();
+
+    void printMap(std::vector<Cell> path);
 };
 
 }

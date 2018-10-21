@@ -67,40 +67,54 @@ double Map::cost(const Cell& cell)
 
 std::vector<Cell> AStar::findPath()
 {
-    PriorityQueue<Cell, double> frontier;
-    std::map<Cell, double> cost;
-    std::map<Cell, Cell> cameFrom;
+    reset();
 
-    frontier.push(m_start, 0);
-    cameFrom[m_start] = m_start;
-    cost[m_start] = 0;
-
-    while (!frontier.empty())
-    {
-        Cell current = frontier.pop();
-
-        if (current == m_end)
-            break;
-
-        for (Cell next : m_map.neighbors(current))
-        {
-            double new_cost = cost[current] + m_map.cost(next);
-            if (cost.find(next) == cost.end() || new_cost < cost[next])
-            {
-                cost[next] = new_cost;
-                double priority = new_cost + heuristic(next, m_end);
-                cameFrom[next] = current;
-                frontier.push(next, priority);
-            }
-        }
-    }
+    while (step()) {}
 
     //printMap(cost, reconstructPath(cameFrom, m_start, m_end));
 
-    return reconstructPath(cameFrom, m_start, m_end);
+    return reconstructPath(m_cameFrom, m_start, m_end);
 }
 
-void AStar::printMap(std::map<Cell, double> cost, std::vector<Cell> path)
+Cell AStar::nextStep()
+{
+    step();
+    return m_frontier.top();
+}
+
+void AStar::reset()
+{
+    m_frontier.push(m_start, 0);
+    m_cameFrom[m_start] = m_start;
+    m_cost[m_start] = 0;
+}
+
+bool AStar::step()
+{
+    if (m_frontier.empty())
+        return false;
+
+    if (m_frontier.top() == m_end)
+        return false;
+
+    Cell current = m_frontier.pop();
+
+    for (Cell next : m_map.neighbors(current))
+    {
+        double new_cost = m_cost[current] + m_map.cost(next);
+        if (m_cost.find(next) == m_cost.end() || new_cost < m_cost[next])
+        {
+            m_cost[next] = new_cost;
+            double priority = new_cost + heuristic(next, m_end);
+            m_cameFrom[next] = current;
+            m_frontier.push(next, priority);
+        }
+    }
+
+    return true;
+}
+
+void AStar::printMap(std::vector<Cell> path)
 {
     std::cout << "(" << m_start.first << ", " << m_start.second << ")" << std::endl;
     std::cout << "(" << m_end.first << ", " << m_end.second << ")" << std::endl;
@@ -112,7 +126,7 @@ void AStar::printMap(std::map<Cell, double> cost, std::vector<Cell> path)
               std::cout << "* ";
             else
                 std::cout << m_map.get(i, j) << " ";
-            //std::cout << cost[Cell(i, j)] << " ";
+            //std::cout << m_cost[Cell(i, j)] << " ";
         std::cout << std::endl;
     }
     std::cout << std::endl;
