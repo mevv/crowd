@@ -110,8 +110,9 @@ void Engine::mouseClickEvent(QMouseEvent*)
 {
     m_isMouseMove = true;
     m_mousePrevPos = QCursor::pos();
+    m_simRunOnMouseClick = m_timer->isActive();
 
-    if (!m_timer->isActive())
+    if (!m_simRunOnMouseClick)
     {
         m_timer->setInterval(0);
         m_timer->start();
@@ -122,7 +123,7 @@ void Engine::mouseReleaseEvent(QMouseEvent*)
 {
     m_isMouseMove = false;
 
-    if (m_timer->interval() == 0)
+    if (!m_simRunOnMouseClick)
         m_timer->stop();
 }
 

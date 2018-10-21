@@ -81,6 +81,7 @@ private:
     int m_simulationTime = 0;
 
     bool m_isMouseMove = false;
+    bool m_simRunOnMouseClick = false;
 
     QPoint m_mousePrevPos;
 
