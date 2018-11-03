@@ -22,10 +22,9 @@ struct PriorityQueue
     std::priority_queue<PQElement, std::vector<PQElement>, std::greater<PQElement>> elements;
 
     inline bool empty() const { return elements.empty(); }
-
     inline void push(T item, priority_t priority) { elements.emplace(priority, item); }
-
     inline T top() { return elements.top().second; }
+    inline priority_t top_priority() { return elements.top().first; }
 
     T pop()
     {
@@ -56,18 +55,22 @@ struct Map
 class AStar
 {
 public:
+    AStar() : m_map(std::vector<double>(), 0, 0) {}
+
     explicit AStar(std::vector<double> map, size_t height, size_t width, Cell start, Cell end) :
         m_map(map, height, width),
         m_start(start),
         m_end(end)
     {}
 
-    void setStart(const Cell& s) { m_start = s; }
+    Map getMap() { return m_map; }
+
+    void setStart(const Cell& s) { m_start = s; reset(); }
     void setEnd(const Cell& e) { m_end = e; }
     void setMap(const Map& m) { m_map = m; }
+    void setMap(std::vector<double> map, size_t height, size_t width) { m_map = Map(map, height, width); }
 
     std::vector<Cell> findPath();
-    Cell nextStep();
 
 private:
     Map m_map;

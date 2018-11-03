@@ -25,6 +25,8 @@ std::vector<Cell> reconstructPath(std::map<Cell, Cell> came_from, Cell start, Ce
   while (current != start)
   {
     path.push_back(current);
+    if (current == came_from[current])
+        break;
     current = came_from[current];
   }
 
@@ -76,12 +78,6 @@ std::vector<Cell> AStar::findPath()
     return reconstructPath(m_cameFrom, m_start, m_end);
 }
 
-Cell AStar::nextStep()
-{
-    step();
-    return m_frontier.top();
-}
-
 void AStar::reset()
 {
     m_frontier.push(m_start, 0);
@@ -95,6 +91,9 @@ bool AStar::step()
         return false;
 
     if (m_frontier.top() == m_end)
+        return false;
+
+    if (std::isinf(m_frontier.top_priority()))
         return false;
 
     Cell current = m_frontier.pop();

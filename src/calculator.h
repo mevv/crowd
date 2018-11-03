@@ -6,6 +6,7 @@
 
 //#include "a_star.h"
 #include "objects_pool.h"
+#include "a_star_step.h"
 
 //const double defaultSpeedModule = 5;
 //const double delta_T = 0.5;
@@ -40,16 +41,14 @@ public:
     void update(double delta);
 
     void setMathParams(const MathParams& param) { m_param = param; }
-
     void setCollectStat(bool collectStat = true) { m_iscollectStat = collectStat; }
-
     void setSceneSize(QVector2D size) { m_sceneSize = size; }
-
     void setGridStep(double gridStep) { m_gridStep = gridStep; }
-
+    void setCheckpointRadius(double radius) { m_checkpointRadius = radius; }
     void setUsePathFinding(bool use = true) { m_usePathFinding = use; }
 
     bool isCollectStat() const { return m_iscollectStat; }
+    bool isUsePathFinding() const { return m_usePathFinding; }
 
     inline MathParams getMathParams() { return m_param; }
 
@@ -58,16 +57,14 @@ public:
     QVector2D getNearestExit(const Agent &agent);
 
     double getGridStep() const { return m_gridStep; }
-
     double getPanicLevel() const { return m_panicLevel; }
 
     int getPathAlgorithmIndex() { return pathAlgorithmIndex; }
 
-    bool isUsePathFinding() const { return m_usePathFinding; }
-
 public slots:
     void pathAlgorithmChangedSlot(int index);
     void changePanicLevelSlot(double panicLevel);
+    void buildPathfinfingMatrixSlot();
 
 signals:
     void sendStatSignal(const Agent & agent, double force);
@@ -76,20 +73,22 @@ signals:
     
 private:
 
-    double m_gridStep = 2;
+    double m_gridStep = 1;
+    double m_checkpointRadius = 1;
 
-    QVector2D m_sceneSize;//meters
+    QVector2D m_sceneSize; // meters
 
     std::shared_ptr<ObjectsPool> m_pool;
+    QMap<int, ASTAR::AStar> m_pathfinding;
+
+    bool m_iscollectStat = true;
+    bool m_usePathFinding = true;
 
     double m_time;
-
     double m_physicalForcesAgentSum = 0;
-
     double m_panicLevel = 0;
 
     int m_iterations = 0;
-
     int m_newId = 1000000;
 
     MathParams m_param;
@@ -98,42 +97,28 @@ private:
 
     int isInObstacle(double x, double y);
 
-    bool m_iscollectStat = true;
-
-    bool m_usePathFinding = true;
-
     void move(Agent &agent);
-
     void entryProcess();
+    void calcForce(Agent &agent);
 
     bool isInExit(const Agent &agent);
 
-    void calcForce(Agent &agent);
-
     QVector2D calcPanicForce(const Agent &agent);
-
     QVector2D calcNormal(QVector2D a, QVector2D b);
-
     QVector2D calcTau(QVector2D n, QVector2D speed);
-
     QVector2D calcCrossAgentForce(const Agent &agent);
-
     QVector2D calcWallForce(const Agent &agent);
-
     QVector2D getNearestPointOfObstacle(const Agent &agent, const Obstacle &obstacle);
-
-    double getDistanceToSide(const QVector2D &a, const QVector2D &b, const Agent &agent, QVector2D &result);
-
     QVector2D getPointOnLine(QVector2D a, QVector2D b);
 
+    std::vector<Checkpoint> getPath(const Agent &agent);
+
+    double getDistanceToSide(const QVector2D &a, const QVector2D &b, const Agent &agent, QVector2D &result);
     double scalarMultiplication(const QVector2D &a, const QVector2D &b);
-
     double distanceBetweenPoints(const QVector2D &a, const QVector2D &b);
-
     double getRandomNumber(double a, double b);
 
     int Heaviside(double n);
-
 
     void updateWishSpeeds();
 };

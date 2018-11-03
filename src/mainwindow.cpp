@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, &MainWindow::openedSchemeFile, m_engine.get(), &Engine::loadPlan);
     connect(m_engine.get(), &Engine::enableStatButton, this, [this](){ ui->stat_groupBox->show();});
     connect(this, &MainWindow::clearSimulation, m_engine.get(), &Engine::reset);
+    connect(this, &MainWindow::clearSimulation, &(m_engine.get()->getCalculator()), &Calculator::buildPathfinfingMatrixSlot);
     connect(this, &MainWindow::startSimulation, m_engine.get(), &Engine::startSimulationSlot);
 
     connect(m_engine.get(), &Engine::changeScaleSignal, this, &MainWindow::updateScale);
