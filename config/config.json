@@ -13,7 +13,8 @@
         "B_wall": 0.12,
         "K_wall": 24,
         "grid_step": 0.25,
-        "checkpoint_radius": 1
+        "checkpoint_radius": 1,
+        "repath_coef": 2
     },
     "agent":
     {

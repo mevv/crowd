@@ -100,50 +100,41 @@ QVector2D Calculator::getNearestExit(const Agent &agent)
 
 QVector2D Calculator::calcPanicForce(const Agent &agent)
 {
-    QVector2D coord = getNearestExit(agent);
+    QVector2D exit = getNearestExit(agent);
 
-    if(agent.getCenter() == coord)
+    if(agent.getCenter() == exit)
         return QVector2D(0, 0);
 
-    QVector2D desiredSpeed(0, 0);
+    QVector2D desiredSpeed = calcNormal(agent.getCenter(), exit);
 
-    desiredSpeed = calcNormal(agent.getCenter(), coord);
-
-    //auto agentCheckpoints = m_pool->getCheckpoints()[agent.getID()];
     if (m_usePathFinding)
     {
-        if (m_pool->getCheckpoints().find(agent.getID()) != m_pool->getCheckpoints().end())
+        if (m_pool->getCheckpoints()[agent.getID()].size() > 0)
         {
-            if (m_pool->getCheckpoints()[agent.getID()].size() > 0)
+            if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) > m_repathCoef * std::max(m_gridStep, m_checkpointRadius))
             {
-                if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) > 2.0 * std::max(m_gridStep, m_checkpointRadius))
-                {
-                    m_pool->getCheckpoints()[agent.getID()] = getPath(agent);
-                }
+                //qDebug() << "rebuild" << distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos());
+                m_pool->getCheckpoints()[agent.getID()] = getPath(agent);
+            }
 
-                if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) < m_pool->getCheckpoints()[agent.getID()][0].getRadius())
-                {
-                    m_pool->getCheckpoints()[agent.getID()].erase(m_pool->getCheckpoints()[agent.getID()].begin());
-                    //m_pool->getCheckpoints()[agent.getID()] = std::vector<Checkpoint>(1, getNextCheckpoint(agent));
-                    //getNextCheckpoint(agent);
-                }
-                else
-                {
-                    desiredSpeed = calcNormal(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos());
-                }
+            if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) < m_pool->getCheckpoints()[agent.getID()][0].getRadius())
+            {
+                m_pool->getCheckpoints()[agent.getID()].erase(m_pool->getCheckpoints()[agent.getID()].begin());
             }
             else
             {
-                m_pool->getCheckpoints().erase(agent.getID());
+                desiredSpeed = calcNormal(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos());
             }
+        }
+        else
+        {
+            m_pool->getCheckpoints().erase(agent.getID());
         }
     }
 
     desiredSpeed *= agent.getWishSpeed();
 
-    QVector2D panicForce = (desiredSpeed - agent.getSpeed()) / m_param.deltaT * agent.getMass();
-
-    return panicForce;
+    return (desiredSpeed - agent.getSpeed()) / m_param.deltaT * agent.getMass();
 }
 
 QVector2D Calculator::calcNormal(QVector2D a, QVector2D b)
@@ -362,8 +353,8 @@ QVector2D Calculator::getPointOnLine(QVector2D a, QVector2D b)
 std::vector<Checkpoint> Calculator::getPath(const Agent& agent)
 {
     QVector2D nearestExit = getNearestExit(agent);
-    int height, width;
-    buildAStarMatrix(height, width);
+    int height  = (int)m_sceneSize.y() / m_gridStep;
+    int width = (int)m_sceneSize.x() / m_gridStep;
 
     int agentMatrixX = floor(agent.getCenter().x() / getGridStep());
     if(agentMatrixX >= width)
@@ -472,7 +463,28 @@ QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
     {
         for(int j = 0; j < width; j++)
         {
-            res.push_back(((isInObstacle(m_gridStep * j + m_gridStep / 2.0, m_gridStep * i + m_gridStep / 2.0)) ? 9.0 : 1.0));
+            // check all grid cell vertices
+            if (isInObstacle(m_gridStep * j, m_gridStep * i))
+            {
+              res.push_back(9.0);
+              continue;
+            }
+            if (isInObstacle(m_gridStep * j + m_gridStep, m_gridStep * i))
+            {
+              res.push_back(9.0);
+              continue;
+            }
+            if (isInObstacle(m_gridStep * j, m_gridStep * i + m_gridStep))
+            {
+              res.push_back(9.0);
+              continue;
+            }
+            if (isInObstacle(m_gridStep * j + m_gridStep, m_gridStep * i + m_gridStep))
+            {
+              res.push_back(9.0);
+              continue;
+            }
+            res.push_back(1.0);
         }
     }
     return res;

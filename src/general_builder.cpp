@@ -44,6 +44,7 @@ bool GeneralBuilder::buildCalculator(const QJsonObject& settings, Calculator& ca
 
     calculator.setGridStep(tmp.value("grid_step").toDouble());
     calculator.setCheckpointRadius(tmp.value("checkpoint_radius").toDouble());
+    calculator.setRepathCoef(tmp.value("repath_coef").toDouble());
 
     return true;
 }

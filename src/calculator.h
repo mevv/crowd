@@ -46,6 +46,7 @@ public:
     void setGridStep(double gridStep) { m_gridStep = gridStep; }
     void setCheckpointRadius(double radius) { m_checkpointRadius = radius; }
     void setUsePathFinding(bool use = true) { m_usePathFinding = use; }
+    void setRepathCoef(double coef) { m_repathCoef = coef; }
 
     bool isCollectStat() const { return m_iscollectStat; }
     bool isUsePathFinding() const { return m_usePathFinding; }
@@ -75,6 +76,7 @@ private:
 
     double m_gridStep = 1;
     double m_checkpointRadius = 1;
+    double m_repathCoef = 2;
 
     QVector2D m_sceneSize; // meters
 
