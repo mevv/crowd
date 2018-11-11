@@ -43,6 +43,8 @@ bool GeneralBuilder::buildCalculator(const QJsonObject& settings, Calculator& ca
     calculator.setMathParams(param);
 
     calculator.setGridStep(tmp.value("grid_step").toDouble());
+    calculator.setCheckpointRadius(tmp.value("checkpoint_radius").toDouble());
+    calculator.setRepathCoef(tmp.value("repath_coef").toDouble());
 
     return true;
 }
@@ -256,12 +258,6 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
                 break;
 
         }
-
-        // temporary fix for those, who didn't find a way
-        if (!path.empty())
-            backupPath = path;
-        else
-            path = backupPath;
 
         std::vector<Checkpoint> checkpoints;
 

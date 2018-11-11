@@ -35,7 +35,7 @@ public:
 
     inline std::vector<SpawnZone>& getSpawnZones() { return m_spawnZones; }
 
-    inline std::map<int,std::vector<Checkpoint> >& getCheckpoints() { return m_checkpoints; }
+    inline std::map<int,std::vector<Checkpoint>>& getCheckpoints() { return m_checkpoints; }
 
 
     void addAgent(Agent agent) { m_agents.push_back(agent); }

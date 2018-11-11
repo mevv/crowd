@@ -7,6 +7,7 @@
 #include "json_manager.h"
 #include "general_builder.h"
 #include "is_in_polygon.h"
+#include "pia.h"
 
 Calculator::Calculator(QVector2D sceneSize, std::shared_ptr<ObjectsPool> pool) :
     m_sceneSize(sceneSize),
@@ -14,6 +15,11 @@ Calculator::Calculator(QVector2D sceneSize, std::shared_ptr<ObjectsPool> pool) :
 {
     QTime t = QTime::currentTime();
     qsrand((uint)t.msec());
+
+//    int height, width;
+//    auto matrix = buildAStarMatrix(height, width).toStdVector();
+
+//    m_astar = ASTAR::AStar(matrix, height, width, ASTAR::Cell(), ASTAR::Cell());
 }
 
 void Calculator::move(Agent &agent)
@@ -95,46 +101,41 @@ QVector2D Calculator::getNearestExit(const Agent &agent)
 
 QVector2D Calculator::calcPanicForce(const Agent &agent)
 {
-    QVector2D coord = getNearestExit(agent);
+    QVector2D exit = getNearestExit(agent);
 
-    if(agent.getCenter() == coord)
+    if(agent.getCenter() == exit)
         return QVector2D(0, 0);
 
-    QVector2D desiredSpeed(0, 0);
-
-    desiredSpeed = calcNormal(agent.getCenter(), coord);
+    QVector2D desiredSpeed = calcNormal(agent.getCenter(), exit);
 
     if (m_usePathFinding)
     {
-        if (m_pool->getCheckpoints().find(agent.getID()) != m_pool->getCheckpoints().end())
+        if (m_pool->getCheckpoints()[agent.getID()].size() > 0)
         {
-            if (m_pool->getCheckpoints()[agent.getID()].size() > 0)
+            if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) > m_repathCoef * std::max(m_gridStep, m_checkpointRadius))
             {
-                if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) < m_pool->getCheckpoints()[agent.getID()][0].getRadius())
-                {
-                    m_pool->getCheckpoints()[agent.getID()].erase(m_pool->getCheckpoints()[agent.getID()].begin());
-                }
-                else
-                {
-                    desiredSpeed = calcNormal(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos());
-                }
+                m_pool->getCheckpoints()[agent.getID()] = getPath(agent);
+                //qDebug() << "rebuild";
+            }
+
+            if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) < m_pool->getCheckpoints()[agent.getID()][0].getRadius())
+            {
+                m_pool->getCheckpoints()[agent.getID()].erase(m_pool->getCheckpoints()[agent.getID()].begin());
             }
             else
             {
-                m_pool->getCheckpoints().erase(agent.getID());
+                desiredSpeed = calcNormal(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos());
             }
         }
-
+        else
+        {
+            m_pool->getCheckpoints().erase(agent.getID());
+        }
     }
-
-//    double a = sqrt(pow(agent.getWishSpeed(),2)/desiredSpeed.lengthSquared());
-//    desiredSpeed *= a;
 
     desiredSpeed *= agent.getWishSpeed();
 
-    QVector2D panicForce = (desiredSpeed - agent.getSpeed()) / m_param.deltaT * agent.getMass();
-
-    return panicForce;
+    return (desiredSpeed - agent.getSpeed()) / m_param.deltaT * agent.getMass();
 }
 
 QVector2D Calculator::calcNormal(QVector2D a, QVector2D b)
@@ -350,6 +351,53 @@ QVector2D Calculator::getPointOnLine(QVector2D a, QVector2D b)
     }
 }
 
+std::vector<Checkpoint> Calculator::getPath(const Agent& agent)
+{
+    QVector2D nearestExit = getNearestExit(agent);
+    int height  = (int)m_sceneSize.y() / m_gridStep;
+    int width = (int)m_sceneSize.x() / m_gridStep;
+
+    int agentMatrixX = floor(agent.getCenter().x() / getGridStep());
+    if(agentMatrixX >= width)
+        agentMatrixX--;
+    int agentMatrixY = floor(agent.getCenter().y() / getGridStep());
+    if(agentMatrixY >= height)
+        agentMatrixY--;
+    int exitMatrixX = floor(nearestExit.x() / getGridStep());
+    if(exitMatrixX >= width)
+        exitMatrixX--;
+    int exitMatrixY = floor(nearestExit.y() / getGridStep());
+    if(exitMatrixY >= height)
+        exitMatrixY--;
+
+    if (m_pathfinding.find(agent.getID()) == m_pathfinding.end())
+    {
+        int height, width;
+        auto matrix = buildAStarMatrix(height, width).toStdVector();
+
+        m_pathfinding[agent.getID()] = ASTAR::AStar(matrix, height, width, ASTAR::Cell(agentMatrixY, agentMatrixX), ASTAR::Cell(exitMatrixY, exitMatrixX));
+    }
+
+    m_pathfinding[agent.getID()].setStart(ASTAR::Cell(agentMatrixY, agentMatrixX));
+    m_pathfinding[agent.getID()].setEnd(ASTAR::Cell(exitMatrixY, exitMatrixX));
+
+//    qDebug() << "Start: " << agentMatrixY << ", " << agentMatrixX;
+//    qDebug() << "End: " << exitMatrixY << ", " << exitMatrixX;
+
+    auto path = m_pathfinding[agent.getID()].findPath();
+    std::vector<Checkpoint> checkpoints;
+//        for (auto p : path)
+//            qDebug() << "(" << p.first << ", " << p.second << ")";
+    for (auto p : path)
+        checkpoints.push_back(Checkpoint(0,
+                              QVector2D(p.second * getGridStep() + getGridStep() / 2.0,
+                                        p.first * getGridStep() + getGridStep() / 2.0),
+                              QColor(),
+                              m_checkpointRadius));
+
+    return checkpoints;
+}
+
 void Calculator::entryProcess()
 {
     for (auto& i : m_pool->getEntries())
@@ -412,12 +460,56 @@ QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
     height  = (int)m_sceneSize.y() / m_gridStep;
     width = (int)m_sceneSize.x() / m_gridStep;
 
-    // TODO: maybe here ERROR - change width and height
     for(int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
         {
-            res.push_back(((isInObstacle(m_gridStep * j + m_gridStep / 2.0, m_gridStep * i + m_gridStep / 2.0)) ? 9.0 : 1.0));
+            bool freeCell = true;
+            for (auto obstacle : m_pool->getObstacles())
+            {
+                point_t* obstaclePoly = new point_t[obstacle.getPoints().size()];
+                point_t cellPoly[4];
+
+                size_t k = 0;
+                for (auto point : obstacle.getPoints())
+                {
+                    obstaclePoly[k].x = point.x() + obstacle.getPos().x();
+                    obstaclePoly[k++].y = point.y() + obstacle.getPos().y();
+                }
+
+                cellPoly[0].x = m_gridStep * j; cellPoly[0].y = m_gridStep * i;
+                cellPoly[1].x = m_gridStep * j + m_gridStep; cellPoly[1].y = m_gridStep * i;
+                cellPoly[2].x = m_gridStep * j + m_gridStep; cellPoly[2].y = m_gridStep * i + m_gridStep;
+                cellPoly[3].x = m_gridStep * j; cellPoly[3].y = m_gridStep * i + m_gridStep;
+
+                if (abs(pia_area(obstaclePoly, obstacle.getPoints().size(), cellPoly, 4)) > 0)
+                {
+                    res.push_back(std::numeric_limits<double>::infinity());
+                    freeCell = false;
+                    delete[] obstaclePoly;
+                    break;
+                }
+
+                delete[] obstaclePoly;
+            }
+
+            if (freeCell)
+            {
+                res.push_back(1.0);
+//                std::vector<Point> polygon;
+//                size_t i = 1;
+
+//                polygon.push_back(Point(m_gridStep * j, m_gridStep * i));
+//                polygon.push_back(Point(m_gridStep * j + m_gridStep, m_gridStep * i));
+//                polygon.push_back(Point(m_gridStep * j + m_gridStep, m_gridStep * i + m_gridStep));
+//                polygon.push_back(Point(m_gridStep * j, m_gridStep * i + m_gridStep));
+
+//                for (auto agent : m_pool->getAgents())
+//                    if (InPolygon(polygon, Point(agent.getCenter().x(), agent.getCenter().y())))
+//                        i++;
+
+//                res.push_back(i);
+            }
         }
     }
     return res;
@@ -457,6 +549,14 @@ void Calculator::changePanicLevelSlot(double panicLevel)
 {
     m_panicLevel = panicLevel;
     updateWishSpeeds();
+}
+
+void Calculator::buildPathfinfingMatrixSlot()
+{
+//        int height, width;
+//        auto matrix = buildAStarMatrix(height, width).toStdVector();
+
+//        m_astar = ASTAR::AStar(matrix, height, width, ASTAR::Cell(), ASTAR::Cell());
 }
 
 void Calculator::updateWishSpeeds()

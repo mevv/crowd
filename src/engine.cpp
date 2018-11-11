@@ -62,9 +62,9 @@ void Engine::update(bool isTimeRun)
     if (isTimeRun && !m_isMouseMove)
     {
         m_simulationTime += m_simulationStep;
-        //QTime start = QTime::currentTime();
+        if (m_simulationTime / 1000.0 > m_simLimit)
+            finishSimulation();
         this->m_calculator->update(m_simulationStep);
-        //qDebug() << "calc update elapsed:" << start.elapsed();
     }
 
     emit updateAgentInRoomSignal(m_objects_pool->getAgents().size());
@@ -134,6 +134,8 @@ void Engine::loadPlan(QString filename)
 
     QJsonObject planData = JsonManager::parseJsonFile(filename);
     QJsonObject configData = JsonManager::parseJsonFile(JsonManager::getConfPath());
+
+    m_simLimit = configData.value("calculator").toObject().value("sim_limit").toDouble();
 
     QJsonObject size = planData.value(QString("size")).toObject();
     m_scene->setSize(QVector2D(size.value("x").toDouble(), size.value("y").toDouble()));
