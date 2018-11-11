@@ -122,7 +122,8 @@
         "checkpoint_radius": 0.5,
         "delta_t": 0.5,
         "grid_step": 0.7,
-        "repath_coef": 3
+        "repath_coef": 3,
+        "sim_limit": 300
     },
     "path": {
         "record_path": "./records"
