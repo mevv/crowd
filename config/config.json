@@ -1,159 +1,130 @@
 {
-    "path":
-    {
-        "record_path": "./records"
-    },
-    "calculator":
-    {
-        "delta_t": 0.5,
-        "A": 50,
-        "B": 0.8,
-        "K": 120,
-        "A_wall": 40,
-        "B_wall": 0.12,
-        "K_wall": 24,
-        "grid_step": 0.25,
-        "checkpoint_radius": 1,
-        "repath_coef": 2
-    },
-    "agent":
-    {
-        "number": 100,
-        "panic_level": 1 ,
-        "entry_period": 
-        {
-            "min": 1,
-            "max": 2
-        },
-        "children":
-        {
-            "part": 0.1,
-            "wish_speed": 
-            {
-                "min": 1,
-                "max": 1
-            },
-            "size":
-            {
-                "min": 0.3,
-                "max": 0.5
-            },
-            "mass":
-            {
-                "min": 20,
-                "max": 40
-            },
-            "color":
-            {
-                "R": 0,
+    "agent": {
+        "children": {
+            "color": {
+                "A": 255,
+                "B": 0,
                 "G": 255,
-                "B": 0,
-                "A": 255
-            }
-        },
-        "men":
-        {
-            "part": 0.4,
-            "wish_speed": 
-            {
-                "min": 1,
-                "max": 1
+                "R": 0
             },
-            "size":
-            {
-                "min": 0.6,
-                "max": 0.8
+            "mass": {
+                "max": 40,
+                "min": 20
             },
-            "mass":
-            {
-                "min": 60,
-                "max": 100
-            },
-            "color":
-            {
-                "R": 0,
-                "G": 0,
-                "B": 255,
-                "A": 255
-            }
-        },
-        "women":
-        {
-            "part": 0.4,
-            "wish_speed": 
-            {
-                "min": 1,
-                "max": 1
-            },
-            "size":
-            {
-                "min": 0.5,
-                "max": 0.6
-            },
-            "mass":
-            {
-                "min": 50,
-                "max": 80
-            },
-            "color":
-            {
-                "R": 255,
-                "G": 0,
-                "B": 0,
-                "A": 255
-            }
-        },
-        "old":
-        {
-            "part": 0.1,
-            "wish_speed": 
-            {
-                "min": 1,
-                "max": 1
-            },
-            "size":
-            {
-                "min": 0.4,
-                "max": 0.6
-            },
-            "mass":
-            {
-                "min": 60,
-                "max": 80
-            },
-            "color":
-            {
-                "R": 0,
-                "G": 0,
-                "B": 0,
-                "A": 255
-            }
-        },
-        "custom":
-        {
             "part": 0,
-            "wish_speed": 
-            {
-                "min": 1,
-                "max": 1
+            "size": {
+                "max": 0.5,
+                "min": 0.3
             },
-            "size":
-            {
-                "min": 0.1,
-                "max": 0.1
-            },
-            "mass":
-            {
-                "min": 1,
-                "max": 1
-            },
-            "color":
-            {
-                "R": 0,
-                "G": 0,
+            "wish_speed": {
+                "max": 1,
+                "min": 1
+            }
+        },
+        "custom": {
+            "color": {
+                "A": 255,
                 "B": 0,
-                "A": 255
+                "G": 0,
+                "R": 0
+            },
+            "mass": {
+                "max": 80,
+                "min": 60
+            },
+            "part": 0,
+            "size": {
+                "max": 0.1,
+                "min": 0.1
+            },
+            "wish_speed": {
+                "max": 0,
+                "min": 0
+            }
+        },
+        "entry_period": {
+            "max": 2,
+            "min": 1
+        },
+        "men": {
+            "color": {
+                "A": 255,
+                "B": 255,
+                "G": 0,
+                "R": 0
+            },
+            "mass": {
+                "max": 100,
+                "min": 60
+            },
+            "part": 0.5,
+            "size": {
+                "max": 0.7,
+                "min": 0.5
+            },
+            "wish_speed": {
+                "max": 1,
+                "min": 1
+            }
+        },
+        "number": 1000,
+        "old": {
+            "color": {
+                "A": 255,
+                "B": 0,
+                "G": 0,
+                "R": 0
+            },
+            "mass": {
+                "max": 80,
+                "min": 60
+            },
+            "part": 0,
+            "size": {
+                "max": 0.6,
+                "min": 0.4
+            },
+            "wish_speed": {
+                "max": 1,
+                "min": 1
+            }
+        },
+        "panic_level": 1,
+        "women": {
+            "color": {
+                "A": 255,
+                "B": 0,
+                "G": 0,
+                "R": 255
+            },
+            "mass": {
+                "max": 80,
+                "min": 50
+            },
+            "part": 0.5,
+            "size": {
+                "max": 0.5,
+                "min": 0.4
+            },
+            "wish_speed": {
+                "max": 1,
+                "min": 1
             }
         }
+    },
+    "calculator": {
+        "A": 50,
+        "A_wall": 40,
+        "B": 0.8,
+        "B_wall": 0.12,
+        "K": 120,
+        "K_wall": 24,
+        "checkpoint_radius": 0.5,
+        "delta_t": 0.5,
+        "grid_step": 0.7,
+        "repath_coef": 3
+    },
+    "path": {
+        "record_path": "./records"
     }
 }

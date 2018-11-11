@@ -115,6 +115,7 @@ QVector2D Calculator::calcPanicForce(const Agent &agent)
             if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) > m_repathCoef * std::max(m_gridStep, m_checkpointRadius))
             {
                 m_pool->getCheckpoints()[agent.getID()] = getPath(agent);
+                //qDebug() << "rebuild";
             }
 
             if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) < m_pool->getCheckpoints()[agent.getID()][0].getRadius())
@@ -482,7 +483,7 @@ QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
 
                 if (abs(pia_area(obstaclePoly, obstacle.getPoints().size(), cellPoly, 4)) > 0)
                 {
-                    res.push_back(9.0);
+                    res.push_back(std::numeric_limits<double>::infinity());
                     freeCell = false;
                     delete[] obstaclePoly;
                     break;
