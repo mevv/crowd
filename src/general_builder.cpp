@@ -259,14 +259,7 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
 
         }
 
-        // temporary fix for those, who didn't find a way
-        if (!path.empty())
-            backupPath = path;
-        else
-            path = backupPath;
-
         std::vector<Checkpoint> checkpoints;
-
         for (auto i : path)
             checkpoints.push_back(Checkpoint(0,
                                   QVector2D(i.first * calculator.getGridStep() + calculator.getGridStep() / 2.0,

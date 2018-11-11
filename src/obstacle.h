@@ -11,12 +11,10 @@ class Obstacle : public SceneObject
 public:
     Obstacle(int id, QVector2D position, QColor color, QVector<QVector2D> points);
 
-    inline QVector<QVector2D> getPoints() const { return m_points; }
-
-    //QColor getColor() const { return this->get; }
-
+    QVector<QVector2D> getPoints() const { return m_points; }
     QVector<QVector2D> getAbsolutePoints() const;
 
+    void print();
 private:
     QVector<QVector2D> m_points;//up left point (0, 0)
 };

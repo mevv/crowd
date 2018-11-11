@@ -73,8 +73,6 @@ std::vector<Cell> AStar::findPath()
 
     while (step()) {}
 
-    //printMap(cost, reconstructPath(cameFrom, m_start, m_end));
-
     return reconstructPath(m_cameFrom, m_start, m_end);
 }
 

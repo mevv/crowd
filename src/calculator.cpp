@@ -7,6 +7,7 @@
 #include "json_manager.h"
 #include "general_builder.h"
 #include "is_in_polygon.h"
+#include "pia.h"
 
 Calculator::Calculator(QVector2D sceneSize, std::shared_ptr<ObjectsPool> pool) :
     m_sceneSize(sceneSize),
@@ -113,7 +114,6 @@ QVector2D Calculator::calcPanicForce(const Agent &agent)
         {
             if (distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos()) > m_repathCoef * std::max(m_gridStep, m_checkpointRadius))
             {
-                //qDebug() << "rebuild" << distanceBetweenPoints(agent.getCenter(), m_pool->getCheckpoints()[agent.getID()][0].getPos());
                 m_pool->getCheckpoints()[agent.getID()] = getPath(agent);
             }
 
@@ -458,33 +458,41 @@ QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
     height  = (int)m_sceneSize.y() / m_gridStep;
     width = (int)m_sceneSize.x() / m_gridStep;
 
-    // TODO: maybe here ERROR - change width and height
     for(int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
         {
-            // check all grid cell vertices
-            if (isInObstacle(m_gridStep * j, m_gridStep * i))
+            bool freeCell = true;
+            for (auto obstacle : m_pool->getObstacles())
             {
-              res.push_back(9.0);
-              continue;
+                point_t* obstaclePoly = new point_t[obstacle.getPoints().size()];
+                point_t cellPoly[4];
+
+                size_t k = 0;
+                for (auto point : obstacle.getPoints())
+                {
+                    obstaclePoly[k].x = point.x() + obstacle.getPos().x();
+                    obstaclePoly[k++].y = point.y() + obstacle.getPos().y();
+                }
+
+                cellPoly[0].x = m_gridStep * j; cellPoly[0].y = m_gridStep * i;
+                cellPoly[1].x = m_gridStep * j + m_gridStep; cellPoly[1].y = m_gridStep * i;
+                cellPoly[2].x = m_gridStep * j + m_gridStep; cellPoly[2].y = m_gridStep * i + m_gridStep;
+                cellPoly[3].x = m_gridStep * j; cellPoly[3].y = m_gridStep * i + m_gridStep;
+
+                if (abs(pia_area(obstaclePoly, obstacle.getPoints().size(), cellPoly, 4)) > 0)
+                {
+                    res.push_back(9.0);
+                    freeCell = false;
+                    delete[] obstaclePoly;
+                    break;
+                }
+
+                delete[] obstaclePoly;
             }
-            if (isInObstacle(m_gridStep * j + m_gridStep, m_gridStep * i))
-            {
-              res.push_back(9.0);
-              continue;
-            }
-            if (isInObstacle(m_gridStep * j, m_gridStep * i + m_gridStep))
-            {
-              res.push_back(9.0);
-              continue;
-            }
-            if (isInObstacle(m_gridStep * j + m_gridStep, m_gridStep * i + m_gridStep))
-            {
-              res.push_back(9.0);
-              continue;
-            }
-            res.push_back(1.0);
+
+            if (freeCell)
+                res.push_back(1.0);
         }
     }
     return res;
