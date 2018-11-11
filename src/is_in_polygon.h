@@ -13,6 +13,8 @@ using std::min;
 static const double ESP = 1e-5;
 
 struct Point {
+    Point() : x(0), y(0) {}
+    Point(double px, double py) : x(px), y(py) {}
     double x, y;
 };
 

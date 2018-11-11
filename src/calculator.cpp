@@ -374,6 +374,7 @@ std::vector<Checkpoint> Calculator::getPath(const Agent& agent)
     {
         int height, width;
         auto matrix = buildAStarMatrix(height, width).toStdVector();
+
         m_pathfinding[agent.getID()] = ASTAR::AStar(matrix, height, width, ASTAR::Cell(agentMatrixY, agentMatrixX), ASTAR::Cell(exitMatrixY, exitMatrixX));
     }
 
@@ -493,7 +494,22 @@ QVector<double> Calculator::buildAStarMatrix(int & height, int & width)
             }
 
             if (freeCell)
+            {
                 res.push_back(1.0);
+//                std::vector<Point> polygon;
+//                size_t i = 1;
+
+//                polygon.push_back(Point(m_gridStep * j, m_gridStep * i));
+//                polygon.push_back(Point(m_gridStep * j + m_gridStep, m_gridStep * i));
+//                polygon.push_back(Point(m_gridStep * j + m_gridStep, m_gridStep * i + m_gridStep));
+//                polygon.push_back(Point(m_gridStep * j, m_gridStep * i + m_gridStep));
+
+//                for (auto agent : m_pool->getAgents())
+//                    if (InPolygon(polygon, Point(agent.getCenter().x(), agent.getCenter().y())))
+//                        i++;
+
+//                res.push_back(i);
+            }
         }
     }
     return res;
