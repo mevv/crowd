@@ -49,6 +49,10 @@
 		     + __GNUC_MINOR__ * 100 \
 		     + __GNUC_PATCHLEVEL__)
 
+#pragma GCC diagnostic ignored "-Wpedantic"
+#pragma GCC diagnostic ignored "-Wnarrowing"
+#pragma GCC diagnostic ignored "-Wvla"
+
 #include "pia.h"
 
 #include <stddef.h>
