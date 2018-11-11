@@ -11,11 +11,13 @@ Model is based on Newtonian mechanics and using pathfinding algorithms (A*, Lee)
 Link to original paper: http://crm-en.ics.org.ru/uploads/crmissues/crm_2013_3/13313.pdf
 
 # Libs
-Project uses 2 external libs implementing popular pathfinding algorithms ([Lee algorithm](https://en.wikipedia.org/wiki/Lee_algorithm), [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm)):
+Project is using or used in previous versions following external libs :
 * lee-pathfinder (https://github.com/dibadov/lee-pathfinder);
-* astar-algorithm-cpp (https://github.com/justinhj/astar-algorithm-cpp).
+* astar-algorithm-cpp (https://github.com/justinhj/astar-algorithm-cpp);
+* self-implemented A* algo `a_star_step.h` using following implementation guide (https://www.redblobgames.com/pathfinding/a-star/implementation.html);
+* pia (https://github.com/smuelpeng/pia) - polygon intersection area algo.
 
-Both of them are included directly to project (so no need to build and install them) and slightly modified to be used in our project.
+All of them are included directly to project as source files. Some of them are slightly modified to fit our goals.
 
 # Build and run
 Project can be built both by native Qt tools (Qt Creator, qmake) and by cmake.
