@@ -3,10 +3,11 @@
 #include <unistd.h>
 #include <time.h>
 
-
 #include <QTime>
 
 #include "spawn_zone.h"
+
+double GeneralBuilder::m_distanceBetweenAgents;
 
 GeneralBuilder::GeneralBuilder()
 {
@@ -29,8 +30,9 @@ double GeneralBuilder::getRandomNumber(double a, double b)
 bool GeneralBuilder::buildCalculator(const QJsonObject& settings, Calculator& calculator)
 {
     MathParams param;
-
     QJsonObject tmp = settings.value("calculator").toObject();
+
+    m_distanceBetweenAgents = tmp.value("spawn_dist").toDouble();
 
     param.deltaT = tmp.value("delta_t").toDouble();
     param.A = tmp.value("A").toDouble();
@@ -122,11 +124,11 @@ bool GeneralBuilder::buildAgents(const QJsonObject& settings, ObjectsPool& pool,
 
             size = getRandomNumber(agentType.value("size").toObject().value("min").toDouble(),
                                    agentType.value("size").toObject().value("max").toDouble());
-            x += DISTANCE_BETWEEN_AGENTS * agentType.value("size").toObject().value("max").toDouble();
+            x += m_distanceBetweenAgents * agentType.value("size").toObject().value("max").toDouble();
             if (x > i.getPos().x() + i.getSize().x())
             {
                 x = i.getPos().x();
-                y += DISTANCE_BETWEEN_AGENTS * agentType.value("size").toObject().value("max").toDouble();
+                y += m_distanceBetweenAgents * agentType.value("size").toObject().value("max").toDouble();
                 if (y > i.getPos().y() + i.getSize().y())
                     break;
             }

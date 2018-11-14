@@ -9,8 +9,6 @@
 #include "a_star.h"
 #include "lee.h"
 
-const double DISTANCE_BETWEEN_AGENTS = 3.0;
-
 class GeneralBuilder
 {
 public:
@@ -34,8 +32,9 @@ public:
                                                const int pathAlgorithmIndex);
 
 private:
-    static double getRandomNumber(double a, double b);
+    static double m_distanceBetweenAgents;
 
+    static double getRandomNumber(double a, double b);
     static inline double distanceBetweenPoints(const QPoint &a, const QPoint &b)
     {
         return sqrt(pow(b.x() - a.x(), 2) + pow( b.y() - a.y(), 2) );

@@ -92,41 +92,40 @@ ResultStat Statistics::makeReport()
 QString Statistics::getReport()
 {
     QString result;
-
-    //usleep(5000);
-
     ResultStat stat = makeReport();
 
-    result += "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+    // result += QString::number(m_agentQuitNum) + " " + QString::number(stat.injuringNum) + " " + QString::number(stat.deadNum)
 
-    result += tr("Simulation started:") + m_startTime.toString(Qt::ISODate) + "\n";
-    result += tr("Simulation finished: ") + QDateTime::currentDateTime().toString(Qt::ISODate) + "\n";
-    result += tr("Average force: ") + QString::number(stat.averageForce) + tr(", N") + "\n";
-    result += tr("Average velocity: ") + QString::number(stat.averageSpeed) + tr(", m/s") + "\n";
-    result += tr("Average wished and actual velocity delta: ") + QString::number(stat.averageSpeedDelta) + tr(", m/s") + "\n";
+//    result += "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+
+//    result += tr("Simulation started:") + m_startTime.toString(Qt::ISODate) + "\n";
+//    result += tr("Simulation finished: ") + QDateTime::currentDateTime().toString(Qt::ISODate) + "\n";
+//    result += tr("Average force: ") + QString::number(stat.averageForce) + tr(", N") + "\n";
+//    result += tr("Average velocity: ") + QString::number(stat.averageSpeed) + tr(", m/s") + "\n";
+//    result += tr("Average wished and actual velocity delta: ") + QString::number(stat.averageSpeedDelta) + tr(", m/s") + "\n";
     result += tr("Number of evacuated people: ") + QString::number(m_agentQuitNum) + "\n";
     result += tr("Number of injured people: ") + QString::number(stat.injuringNum) + "\n";
-    //result += tr("Number of dead people: ") + QString::number(stat.deadNum) + "\n";
+    result += tr("Number of dead people: ") + QString::number(stat.deadNum) + "\n";
 
-    if (m_agentQuitNum > 0)
-    {
-        result += tr("Evacuated people ratio:\n");
-        result += tr("    Male - ") + QString::number((double)m_quitTypeRatio[AgentType::Man] / m_agentQuitNum * 100.0) + " %" + "\n";
-        result += tr("    Female - ") + QString::number((double)m_quitTypeRatio[AgentType::Woman] / m_agentQuitNum * 100.0) + " %" + "\n";
-        result += tr("    Child - ") + QString::number((double)m_quitTypeRatio[AgentType::Child] / m_agentQuitNum * 100.0) +  " %" + "\n";
-        result += tr("    Old - ") + QString::number((double)m_quitTypeRatio[AgentType::Old] / m_agentQuitNum * 100.0) + " %" + "\n";
-        result += tr("    Additional - ") + QString::number((double)m_quitTypeRatio[AgentType::Custom] / m_agentQuitNum * 100.0) + " %" + "\n";
-    }
+//    if (m_agentQuitNum > 0)
+//    {
+//        result += tr("Evacuated people ratio:\n");
+//        result += tr("    Male - ") + QString::number((double)m_quitTypeRatio[AgentType::Man] / m_agentQuitNum * 100.0) + " %" + "\n";
+//        result += tr("    Female - ") + QString::number((double)m_quitTypeRatio[AgentType::Woman] / m_agentQuitNum * 100.0) + " %" + "\n";
+//        result += tr("    Child - ") + QString::number((double)m_quitTypeRatio[AgentType::Child] / m_agentQuitNum * 100.0) +  " %" + "\n";
+//        result += tr("    Old - ") + QString::number((double)m_quitTypeRatio[AgentType::Old] / m_agentQuitNum * 100.0) + " %" + "\n";
+//        result += tr("    Additional - ") + QString::number((double)m_quitTypeRatio[AgentType::Custom] / m_agentQuitNum * 100.0) + " %" + "\n";
+//    }
 
-    if (stat.injuringNum > 0)
-    {
-        result += "Injured people ratio:\n";
-        result += "    Male - " + QString::number((double)m_injuredTypeRatio[AgentType::Man] / stat.injuringNum * 100.0) + " %" + "\n";
-        result += "    Female - " + QString::number((double)m_injuredTypeRatio[AgentType::Woman] / stat.injuringNum * 100.0) + " %" + "\n";
-        result += "    Child - " + QString::number((double)m_injuredTypeRatio[AgentType::Child] / stat.injuringNum * 100.0) + " %" + "\n";
-        result += "    Old - " + QString::number((double)m_injuredTypeRatio[AgentType::Old] / stat.injuringNum * 100.0) + " %" + "\n";
-        result += "    Additional - " + QString::number((double)m_injuredTypeRatio[AgentType::Custom] / stat.injuringNum * 100.0) + " %" + "\n";
-    }
+//    if (stat.injuringNum > 0)
+//    {
+//        result += "Injured people ratio:\n";
+//        result += "    Male - " + QString::number((double)m_injuredTypeRatio[AgentType::Man] / stat.injuringNum * 100.0) + " %" + "\n";
+//        result += "    Female - " + QString::number((double)m_injuredTypeRatio[AgentType::Woman] / stat.injuringNum * 100.0) + " %" + "\n";
+//        result += "    Child - " + QString::number((double)m_injuredTypeRatio[AgentType::Child] / stat.injuringNum * 100.0) + " %" + "\n";
+//        result += "    Old - " + QString::number((double)m_injuredTypeRatio[AgentType::Old] / stat.injuringNum * 100.0) + " %" + "\n";
+//        result += "    Additional - " + QString::number((double)m_injuredTypeRatio[AgentType::Custom] / stat.injuringNum * 100.0) + " %" + "\n";
+//    }
     return result;
 }
 
