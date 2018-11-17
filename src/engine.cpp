@@ -137,6 +137,9 @@ void Engine::loadPlan(QString filename)
 
     m_simLimit = configData.value("calculator").toObject().value("sim_limit").toDouble();
 
+    m_stat->setInjuringForce(configData.value("calculator").toObject().value("injuring_force").toDouble());
+    m_stat->setInjuringForce(configData.value("calculator").toObject().value("dead_force").toDouble());
+
     QJsonObject size = planData.value(QString("size")).toObject();
     m_scene->setSize(QVector2D(size.value("x").toDouble(), size.value("y").toDouble()));
     m_scene->setScale(50);
@@ -157,6 +160,8 @@ void Engine::loadPlan(QString filename)
 void Engine::finishSimulation()
 {
     this->pause();
+
+    m_stat->finishSimulation(m_simulationTime);
 
     if (m_calculator->isCollectStat())
         emit sendStatReportSignal(m_stat->getReport());

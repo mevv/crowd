@@ -78,8 +78,8 @@ public slots:
 private:
     int m_simulationStep = 100; // milliseconds
     int m_simulationDelay = 0; // milliseconds
-    int m_simulationTime = 0;
-    int m_simLimit = 0; // seconds
+    int m_simulationTime = 0; // milliseconds
+    double m_simLimit = 0; // seconds
 
     bool m_isMouseMove = false;
     bool m_simRunOnMouseClick = false;

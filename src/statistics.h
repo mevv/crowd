@@ -2,15 +2,12 @@
 #define STATISTICS_H
 
 #include "agent.h"
+
 #include <QObject>
 #include <QVector>
 #include <QDebug>
 #include <QMap>
-
 #include <QDateTime>
-
-const int INJURING_FORCE = 1000;
-const int DEAD_FORCE = 1500;
 
 struct AgentStat
 {
@@ -39,26 +36,28 @@ class Statistics: public QObject
 {
     Q_OBJECT
 public:
-    Statistics();
+    Statistics() {}
 
     QString getReport();
 
+    void setInjuringForce(double force) { m_injuringForce = force; }
+    void setDeadForce(double force) { m_deadForce = force; }
     void reset();
 
 public slots:
     void simulationStartSlot();
     void agentQuitSlot(const Agent& agent);
     void gatherInfoSlot(const Agent & agent, double force);
-    void finishSimulation();
+    void finishSimulation(int time);
 
 private:
-    double m_currentTime = 0;
-
+    int m_simTime = 0; // milliseconds
     int m_agentQuitNum = 0;
     int m_iterations = 0;
+    double m_injuringForce = 1000;
+    double m_deadForce = 1500;
 
     QDateTime m_startTime;
-
     QVector<AgentStat> m_agentStat;
     QMap<AgentType, int> m_quitTypeRatio;
     QMap<AgentType, int> m_injuredTypeRatio;

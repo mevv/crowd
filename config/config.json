@@ -124,7 +124,9 @@
         "grid_step": 0.7,
         "repath_coef": 3,
         "sim_limit": 300,
-        "spawn_dist": 1.2
+        "spawn_dist": 1.2,
+        "injuring_force": 1000,
+        "dead_force": 1500
     },
     "path": {
         "record_path": "./records"

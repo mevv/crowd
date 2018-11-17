@@ -1,13 +1,6 @@
 #include "statistics.h"
 #include "unistd.h"
 
-
-
-Statistics::Statistics()
-{
-
-}
-
 void Statistics::simulationStartSlot()
 {
     m_startTime = QDateTime::currentDateTime();
@@ -56,9 +49,9 @@ void Statistics::agentQuitSlot(const Agent& agent)
     m_agentQuitNum++;
 }
 
-void Statistics::finishSimulation()
+void Statistics::finishSimulation(int time)
 {
-
+    m_simTime = time;
 }
 
 ResultStat Statistics::makeReport()
@@ -71,14 +64,14 @@ ResultStat Statistics::makeReport()
         stat.averageSpeed += (i.sumSpeeds / i.iterations);
         stat.averageSpeedDelta += (i.sumWishedSpeeds - i.sumSpeeds) / i.iterations;
 
-        if (i.maxForce > INJURING_FORCE)
+        if (i.maxForce > m_injuringForce)
         {
             stat.injuringNum++;
 
             m_injuredTypeRatio[i.type]++;
         }
 
-        if (i.maxForce > DEAD_FORCE)
+        if (i.maxForce > m_deadForce)
             stat.deadNum++;
     }
 
@@ -96,13 +89,15 @@ QString Statistics::getReport()
 
     // result += QString::number(m_agentQuitNum) + " " + QString::number(stat.injuringNum) + " " + QString::number(stat.deadNum)
 
-//    result += "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+    result += "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
 
 //    result += tr("Simulation started:") + m_startTime.toString(Qt::ISODate) + "\n";
 //    result += tr("Simulation finished: ") + QDateTime::currentDateTime().toString(Qt::ISODate) + "\n";
 //    result += tr("Average force: ") + QString::number(stat.averageForce) + tr(", N") + "\n";
 //    result += tr("Average velocity: ") + QString::number(stat.averageSpeed) + tr(", m/s") + "\n";
 //    result += tr("Average wished and actual velocity delta: ") + QString::number(stat.averageSpeedDelta) + tr(", m/s") + "\n";
+
+    result += tr("Simulation time: ") + QString::number(m_simTime / 1000.0) + "\n";
     result += tr("Number of evacuated people: ") + QString::number(m_agentQuitNum) + "\n";
     result += tr("Number of injured people: ") + QString::number(stat.injuringNum) + "\n";
     result += tr("Number of dead people: ") + QString::number(stat.deadNum) + "\n";
@@ -131,7 +126,7 @@ QString Statistics::getReport()
 
 void Statistics::reset()
 {
-    m_currentTime = 0;
+    m_simTime = 0;
     m_agentQuitNum = 0;
     m_agentStat.clear();
     m_quitTypeRatio.clear();
