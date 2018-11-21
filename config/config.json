@@ -63,8 +63,8 @@
                 "min": 0.5
             },
             "wish_speed": {
-                "max": 1,
-                "min": 1
+                "max": 4,
+                "min": 4
             }
         },
         "number": 1000,
@@ -107,8 +107,8 @@
                 "min": 0.4
             },
             "wish_speed": {
-                "max": 1,
-                "min": 1
+                "max": 4,
+                "min": 4
             }
         }
     },
@@ -119,12 +119,12 @@
         "B_wall": 0.12,
         "K": 120,
         "K_wall": 24,
-        "checkpoint_radius": 0.5,
+        "checkpoint_radius": 0.8,
         "delta_t": 0.5,
         "grid_step": 0.7,
         "repath_coef": 3,
         "sim_limit": 300,
-        "spawn_dist": 1.2,
+        "spawn_dist": 1.25,
         "injuring_force": 1000,
         "dead_force": 1500
     },
