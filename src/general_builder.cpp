@@ -267,7 +267,7 @@ bool GeneralBuilder::buildCheckPoints(QJsonObject& settings,
             checkpoints.push_back(Checkpoint(0,
                                   QVector2D(i.first * calculator.getGridStep() + calculator.getGridStep() / 2.0,
                                             i.second * calculator.getGridStep() + calculator.getGridStep() / 2.0),
-                                  QColor(),
+                                  QColor(0, 200, 0, 20),
                                   settings.value("calculator").toObject().value("checkpoint_radius").toDouble()));
 
         pool.getCheckpoints()[agent.getID()] = checkpoints;
@@ -327,7 +327,7 @@ bool GeneralBuilder::buildCheckPointsForSingleAgent(QJsonObject& settings,
         checkpoints.push_back(Checkpoint(0,
                               QVector2D(i.first * calculator.getGridStep() + calculator.getGridStep() / 2.0,
                                         i.second * calculator.getGridStep() + calculator.getGridStep() / 2.0),
-                              QColor(),
+                              QColor(0, 200, 0, 20),
                               settings.value("calculator").toObject().value("checkpoint_radius").toDouble()));
 
     pool.getCheckpoints()[agent.getID()] = checkpoints;

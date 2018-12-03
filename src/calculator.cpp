@@ -392,7 +392,7 @@ std::vector<Checkpoint> Calculator::getPath(const Agent& agent)
         checkpoints.push_back(Checkpoint(0,
                               QVector2D(p.second * getGridStep() + getGridStep() / 2.0,
                                         p.first * getGridStep() + getGridStep() / 2.0),
-                              QColor(),
+                              QColor(0, 200, 0, 20),
                               m_checkpointRadius));
 
     return checkpoints;
